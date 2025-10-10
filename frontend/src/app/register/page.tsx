@@ -6,16 +6,20 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const Login = () => {
+const Register = () => {
   const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleRegister = () => {
-    router.push("/register");
-  };
-  const handleLogin = () => {
-    if (!email || !password) {
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match", {
+        description: "Please make sure both passwords are the same.",
+      });
+      return;
+    } else if (!email || !password) {
       toast.error("Email and password are required", {
         description: "Please fill in all the fields.",
       });
@@ -31,14 +35,16 @@ const Login = () => {
       });
       return;
     }
-    toast.success("Logged in successfully!");
-    router.push("/");
+
+    toast.success("Registered successfully!");
+    router.push("/login");
   };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="mx-auto flex flex-col gap-4 border p-10 rounded-lg bg-white shadow-lg">
         <p className="flex w-full justify-center items-center text-2xl">
-          Login
+          Register
         </p>
         <Input
           placeholder="Email"
@@ -52,13 +58,15 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button onClick={() => handleLogin()}>Login</Button>
-        <Button onClick={() => handleRegister()} variant="outline">
-          Register
-        </Button>
+        <Input
+          placeholder="Confirm Password"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <Button onClick={() => handleRegister()}>Register</Button>
       </div>
     </div>
   );
 };
-
-export default Login;
+export default Register;
