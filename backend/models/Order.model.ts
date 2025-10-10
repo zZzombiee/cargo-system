@@ -1,15 +1,11 @@
 import mongoose, { ObjectId, Schema } from "mongoose";
 
 export interface Order {
-  _id: string;
+  _id: ObjectId;
   orderNumber: string;
-  productName: string[];
-  senderName: string;
-  receiverName: string;
   weight: number;
-  status: "Ordered" | "PreparingToShip" | "Shipped" | "Delivered";
-  // userId: Number;
-  location: string;
+  status: "Хятад агуулахад" | "Замд явж байна" | "Хүлээн авсан" | "Саатсан";
+  location: "Улаанбаатар" | "Эрээн" | "Замын-Үүд" | "Хятад";
   price: number;
 }
 
@@ -17,18 +13,25 @@ const OrderSchema = new Schema<Order>(
   {
     status: {
       type: String,
-      enum: ["Ordered", "PreparingToShip", "Shipped", "Delivered"],
-      default: "Ordered",
+      enum: [
+        "Хятад агуулахад",
+        "Замд явж байна",
+        "Хүлээн авсан",
+        "Хүргэгдсэн",
+        "Саатсан",
+      ],
+      default: "Хятад агуулахад",
       required: true,
     },
-    // userId: { type: Number },
     orderNumber: { type: String },
-    senderName: { type: String },
-    receiverName: { type: String },
     weight: { type: Number },
-    location: { type: String },
+    location: {
+      type: String,
+      enum: ["Улаанбаатар", "Эрээн", "Замын-Үүд", "Хятад"],
+      default: "Хятад",
+      required: true,
+    },
     price: { type: Number },
-    productName: { type: [String] },
   },
   { timestamps: true }
 );

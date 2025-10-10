@@ -4,52 +4,67 @@ import { useState, useEffect } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
-const Price = () => {
-  const [weight, setWeight] = useState(0); // actual weight
-  const [dimensions, setDimensions] = useState(""); // "100x60x30"
-  const [price, setPrice] = useState(0);
-  const [chargeableWeight, setChargeableWeight] = useState(0);
+interface PriceProps {
+  onChange?: (data: { price: number; chargeableWeight: number }) => void;
+  ratePerKg?: number;
+}
+
+const Price = ({ onChange, ratePerKg = 8000 }: PriceProps) => {
+  const [weight, setWeight] = useState<number>(0);
+  const [dimensions, setDimensions] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
+  const [chargeableWeight, setChargeableWeight] = useState<number>(0);
 
   useEffect(() => {
     calculatePrice();
   }, [weight, dimensions]);
 
   const calculatePrice = () => {
-    if (!dimensions) return;
+    if (!dimensions.trim()) {
+      setPrice(0);
+      setChargeableWeight(weight);
+      onChange?.({ price: 0, chargeableWeight: weight });
+      return;
+    }
 
-    // parse "100x60x30"
-    const [length, width, height] = dimensions
+    const parts = dimensions
+      .toLowerCase()
       .split("x")
-      .map((v) => parseFloat(v));
+      .map((v) => parseFloat(v.trim()));
+    if (parts.length !== 3 || parts.some(isNaN)) {
+      setPrice(0);
+      setChargeableWeight(weight);
+      onChange?.({ price: 0, chargeableWeight: weight });
+      return;
+    }
 
-    if (!length || !width || !height) return;
-
+    const [length, width, height] = parts;
     const volumetricWeight = (length * width * height) / 6000;
     const chargeWeight = Math.max(weight, volumetricWeight);
-    setChargeableWeight(chargeWeight);
-
-    const ratePerKg = 8000; // ₮ per kg (can be adjusted)
     const total = chargeWeight * ratePerKg;
 
+    setChargeableWeight(chargeWeight);
     setPrice(Math.round(total));
+    onChange?.({ price: Math.round(total), chargeableWeight: chargeWeight });
   };
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex gap-6">
-        <div className="grid gap-3">
-          <Label>Жин (кг)</Label>
+      {/* 🔹 Inputs */}
+      <div className="flex flex-wrap gap-6">
+        <div className="grid gap-2 w-full sm:w-1/2">
+          <Label>Бодит жин (кг)</Label>
           <Input
             type="number"
             placeholder="жишээ: 50"
-            value={weight === 0 ? "" : weight}
+            value={weight || ""}
             onChange={(e) => setWeight(Math.max(0, Number(e.target.value)))}
             min={0}
           />
         </div>
 
-        <div className="grid gap-3">
-          <Label>Хэмжээ (см)</Label>
+        <div className="grid gap-2 w-full sm:w-1/2">
+          <Label>Савны хэмжээ (см)</Label>
           <Input
             type="text"
             placeholder="жишээ: 100x60x30"
@@ -59,17 +74,19 @@ const Price = () => {
         </div>
       </div>
 
-      <div className="grid gap-3">
+      {/* 🔹 Chargeable weight */}
+      <div className="grid gap-2">
         <Label>Төлбөрт жин (кг)</Label>
-        <p className="flex items-center h-9 p-3 border rounded-md bg-gray-50">
+        <p className="flex items-center h-10 px-3 border rounded-md bg-gray-50">
           {chargeableWeight.toFixed(2)} кг
         </p>
       </div>
 
-      <div className="grid gap-3">
+      {/* 🔹 Total price */}
+      <div className="grid gap-2">
         <Label>Нийт үнэ (₮)</Label>
-        <p className="flex items-center h-9 p-3 border rounded-md bg-gray-50">
-          {new Intl.NumberFormat("mn-MN").format(price)} ₮
+        <p className="flex items-center h-10 px-3 border rounded-md bg-gray-50 font-medium">
+          {price > 0 ? new Intl.NumberFormat("mn-MN").format(price) : 0} ₮
         </p>
       </div>
     </div>
