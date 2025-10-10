@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { connectDb } from "./database";
-import { orderRouter } from "./routes/api/cargo/getItem";
+import { orderRouter } from "./routes";
 
 const app = express();
 
