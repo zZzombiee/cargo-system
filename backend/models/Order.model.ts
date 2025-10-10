@@ -2,12 +2,15 @@ import mongoose, { ObjectId, Schema } from "mongoose";
 
 export interface Order {
   _id: string;
+  orderNumber: string;
+  productName: string[];
+  senderName: string;
+  receiverName: string;
+  weight: number;
   status: "Ordered" | "PreparingToShip" | "Shipped" | "Delivered";
-  userId: Number;
-  orderNumber: String;
-  deliveryDate: Date;
-  price: string;
-  orderItem: String[];
+  // userId: Number;
+  location: string;
+  price: number;
 }
 
 const OrderSchema = new Schema<Order>(
@@ -18,10 +21,14 @@ const OrderSchema = new Schema<Order>(
       default: "Ordered",
       required: true,
     },
-    userId: { type: Number },
+    // userId: { type: Number },
     orderNumber: { type: String },
-    price: { type: String },
-    orderItem: { type: [String] },
+    senderName: { type: String },
+    receiverName: { type: String },
+    weight: { type: Number },
+    location: { type: String },
+    price: { type: Number },
+    productName: { type: [String] },
   },
   { timestamps: true }
 );

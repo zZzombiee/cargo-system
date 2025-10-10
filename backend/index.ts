@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import { connectDB } from "./database/index.js";
-import { orderRouter } from "./routes/getItem.js";
+import { orderRouter } from "./routes/order.router.js";
+import { userRouter } from "./routes/user.router.js";
 
 const app = express();
 
@@ -12,7 +13,8 @@ const port = 8000;
 
 app.use(cors());
 
-app.use("/", orderRouter);
+app.use("/order", orderRouter);
+app.use("/user", userRouter);
 
 const server = async () => {
   await connectDB();
