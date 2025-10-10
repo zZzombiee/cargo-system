@@ -1,10 +1,19 @@
 import mongoose from "mongoose";
-import "dotenv/config";
+import dotenv from "dotenv";
 
-export const connectDb = async () => {
+dotenv.config();
+
+const MONGODB_URI =
+  process.env.MONGODB_URI || "mongodb://localhost:3000/cargo_system";
+
+export const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.NEXT_PUBLIC_BACKEND_URL as string);
+    await mongoose.connect(MONGODB_URI);
+    console.log("MongoDB connected successfully");
   } catch (error) {
-    console.log(error);
+    console.error("MongoDB connection error:", error);
+    process.exit(1);
   }
 };
+
+export default mongoose;

@@ -3,11 +3,11 @@ import mongoose, { ObjectId, Schema } from "mongoose";
 export interface Order {
   _id: string;
   status: "Ordered" | "PreparingToShip" | "Shipped" | "Delivered";
-  userId: ObjectId;
+  userId: Number;
   orderNumber: String;
   deliveryDate: Date;
   price: string;
-  orderItem: Schema.Types.ObjectId[];
+  orderItem: String[];
 }
 
 const OrderSchema = new Schema<Order>(
@@ -18,10 +18,10 @@ const OrderSchema = new Schema<Order>(
       default: "Ordered",
       required: true,
     },
-    userId: { type: Schema.Types.ObjectId, ref: "User" },
+    userId: { type: Number },
     orderNumber: { type: String },
     price: { type: String },
-    orderItem: [{ type: Schema.Types.ObjectId, ref: "OrderDetails" }],
+    orderItem: { type: [String] },
   },
   { timestamps: true }
 );

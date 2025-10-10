@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { OrderModel } from "../../models/Order.model";
+import { OrderModel } from "../../models/Order.model.js";
 
 export const getOrders = async (_req: Request, res: Response) => {
   try {
     const orders = await OrderModel.find();
-    res.json({ orders });
+    res.status(200).json({ orders: orders });
   } catch (error) {
-    res.json({ message: error });
+    res.status(500).json({ message: error });
   }
 };

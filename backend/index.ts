@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
-import { connectDb } from "./database";
-import { orderRouter } from "./routes";
+import "dotenv/config";
+import { connectDB } from "./database/index.js";
+import { orderRouter } from "./routes/getItem.js";
 
 const app = express();
 
@@ -14,9 +15,9 @@ app.use(cors());
 app.use("/", orderRouter);
 
 const server = async () => {
-  await connectDb();
+  await connectDB();
   app.listen(port, () => {
-    console.log(`server running at a http://localhost:${port}/`);
+    console.log(`server running at http://localhost:${port}/`);
   });
 };
 
