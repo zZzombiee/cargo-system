@@ -1,13 +1,34 @@
 import { Request, Response } from "express";
+import bcrypt from "bcrypt";
 import { UserModel } from "../../models/User.model.js";
 
 const createUser = async (req: Request, res: Response) => {
-  const { userName, email, password } = req.body;
+  const { email, password } = req.body;
+
   try {
-    const user = await new UserModel({ userName, email, password }).save();
-    res.status(200).json({ message: "Created new User", user: user });
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const existingUser = await UserModel.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already in use" });
+    }
+    const user = await new UserModel({
+      email,
+      password: hashedPassword,
+    }).save();
+
+    res.status(201).json({
+      message: "Created new user successfully",
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error) {
-    res.json({ message: error });
+    console.error(error);
+    res.status(500).json({ message: "Error creating user", error });
   }
 };
 

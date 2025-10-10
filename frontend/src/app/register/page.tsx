@@ -5,6 +5,7 @@ import { Button } from "../../components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import axios from "axios";
 
 const Register = () => {
   const router = useRouter();
@@ -13,7 +14,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (password !== confirmPassword) {
       toast.error("Passwords do not match", {
         description: "Please make sure both passwords are the same.",
@@ -35,9 +36,17 @@ const Register = () => {
       });
       return;
     }
+    try {
+      await axios.post(`http://localhost:8000/user`, {
+        email: email,
+        password: password,
+      });
 
-    toast.success("Registered successfully!");
-    router.push("/login");
+      toast.success("Registered successfully!");
+      router.push("/login");
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
   };
 
   return (

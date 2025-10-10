@@ -5,6 +5,7 @@ import { Button } from "../../components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import axios from "axios";
 
 const Login = () => {
   const router = useRouter();
@@ -14,15 +15,10 @@ const Login = () => {
   const handleRegister = () => {
     router.push("/register");
   };
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       toast.error("Email and password are required", {
         description: "Please fill in all the fields.",
-      });
-      return;
-    } else if (password.length < 6) {
-      toast.error("Password too short", {
-        description: "Password must be at least 6 characters long.",
       });
       return;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
@@ -31,8 +27,23 @@ const Login = () => {
       });
       return;
     }
-    toast.success("Logged in successfully!");
-    router.push("/");
+    try {
+      const response = await axios.post(`http://localhost:8000/user/login`, {
+        email: email,
+        password: password,
+      });
+      localStorage.setItem("userid", response.data.user.id);
+      if (response.data.user.role === "ADMIN") {
+        toast.success("Admin logged in successfully!");
+        router.push("/admin");
+      } else {
+        toast.success("Logged in successfully!");
+        router.push("/");
+      }
+    } catch (error) {
+      toast.error("Имэйл эсвэл Нууц үг буруу байна.");
+      console.log(error);
+    }
   };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
