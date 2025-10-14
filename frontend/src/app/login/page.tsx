@@ -28,7 +28,7 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post(`http://localhost:8000/user/login`, {
+      const response = await axios.post(`http://host:8000/user/login`, {
         email: email,
         password: password,
       });
@@ -38,11 +38,10 @@ const Login = () => {
         router.push("/admin");
       } else {
         toast.success("Logged in successfully!");
-        router.push("/");
+        router.push("/user");
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error("Имэйл эсвэл Нууц үг буруу байна.");
-      console.log(error);
     }
   };
   return (

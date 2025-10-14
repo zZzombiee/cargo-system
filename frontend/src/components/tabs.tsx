@@ -30,7 +30,7 @@ const Tab = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:8000/order", {
+      await axios.post("http://localhost:8000/order", {
         orderNumber,
         price,
         weight,
@@ -39,7 +39,6 @@ const Tab = () => {
       });
 
       toast.success("✅ Захиалга амжилттай үүсгэлээ!");
-      console.log(res.data);
       setOrderNumber("");
       setPrice(0);
       setWeight(0);
