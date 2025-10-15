@@ -1,29 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Dropdown from "./dropdown";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { useUser } from "@/context/UserContext";
+import ModeToggle from "./themeToggle";
 
 const Header = () => {
   const router = useRouter();
-  const { user, loading, logout } = useUser();
-
-  const [userId, setUserId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const storedUserId = localStorage.getItem("userid");
-    setUserId(storedUserId);
-  }, [user]);
+  const { user, logout } = useUser();
 
   const handleTracking = () => {
     router.push("/user/tracks");
   };
 
   return (
-    <header className="flex justify-around p-2 w-full border-b bg-white/80 backdrop-blur-md">
+    <header className="flex justify-around p-2 w-full border-b backdrop-blur-md dark:bg-gray-900">
       <div
         className="flex items-center cursor-pointer"
         onClick={() => router.push("/user")}
@@ -56,8 +49,9 @@ const Header = () => {
           menuItems={["Contacts", "Groups", "Blocked"]}
         />
       </div>
-      <div className="flex items-center">
-        {!userId ? (
+      <div className="flex items-center gap-2">
+        <ModeToggle />
+        {!user ? (
           <>
             <Button
               onClick={() => router.push("/login")}
@@ -71,7 +65,8 @@ const Header = () => {
             </Button>
           </>
         ) : (
-          <div className="mr-4">
+          <div className="mr-4 flex gap-2">
+            {user.role === "ADMIN" ? <p>Welcome Admin</p> : <p>Welcome</p>}
             <Dropdown
               name={`${user?.name}`}
               menuItems={[

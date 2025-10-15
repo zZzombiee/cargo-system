@@ -12,7 +12,7 @@ const Profile = () => {
 
   if (loading)
     return (
-      <div className="flex flex-col justify-center items-center gap-2 p-6 w-80 border rounded-2xl shadow-md bg-white">
+      <div className="flex flex-col justify-center items-center gap-2 p-6 w-80 border rounded-2xl shadow-md">
         <Skeleton className="h-[100px] w-[100px] rounded-full" />
         <Skeleton className="h-[36px] w-[100px] rounded-xl mt-4" />
         <Skeleton className="h-[20px] w-[120px] rounded-xl" />
@@ -23,7 +23,7 @@ const Profile = () => {
 
   if (!user)
     return (
-      <div className="flex flex-col justify-center items-center gap-2 p-6 w-80 border rounded-2xl shadow-md bg-white">
+      <div className="flex flex-col justify-center items-center gap-2 p-6 w-80 border rounded-2xl shadow-md ">
         <Skeleton className="h-[100px] w-[100px] rounded-full" />
         <p>No user logged in.</p>
         <Button onClick={() => router.push("/login")} className="mt-4">
@@ -33,7 +33,7 @@ const Profile = () => {
     );
 
   return (
-    <div className="flex flex-col justify-center items-center gap-2 p-6 w-80 border rounded-2xl shadow-md bg-white">
+    <div className="flex flex-col justify-center items-center gap-2 p-6 w-80 border rounded-2xl shadow-md">
       <Image
         src="/profilePic.png"
         alt="Profile"
@@ -42,14 +42,14 @@ const Profile = () => {
         height={100}
       />
       <p className="text-2xl font-bold mt-4">{user.name}</p>
-      <p className="text-gray-600">{user.email}</p>
-      {user.number && <p className="text-gray-600">{user.number}</p>}
+      <p className="">{user.email}</p>
+      {user.number && <p className="">{user.number}</p>}
       <Button
         onClick={() => {
           logout();
           router.push("/login");
         }}
-        className="mt-4 w-full bg-red-500 hover:bg-red-600"
+        className="mt-4 w-full "
       >
         Log Out
       </Button>

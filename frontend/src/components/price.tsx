@@ -50,9 +50,8 @@ const Price = ({ onChange, ratePerKg = 8000 }: PriceProps) => {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* 🔹 Inputs */}
-      <div className="flex flex-wrap gap-6">
-        <div className="grid gap-2 w-full sm:w-1/2">
+      <div className="flex gap-6">
+        <div className="grid gap-2 w-full ">
           <Label>Бодит жин (кг)</Label>
           <Input
             type="number"
@@ -62,8 +61,7 @@ const Price = ({ onChange, ratePerKg = 8000 }: PriceProps) => {
             min={0}
           />
         </div>
-
-        <div className="grid gap-2 w-full sm:w-1/2">
+        <div className="grid gap-2 w-full">
           <Label>Савны хэмжээ (см)</Label>
           <Input
             type="text"
@@ -77,7 +75,7 @@ const Price = ({ onChange, ratePerKg = 8000 }: PriceProps) => {
       {/* 🔹 Chargeable weight */}
       <div className="grid gap-2">
         <Label>Төлбөрт жин (кг)</Label>
-        <p className="flex items-center h-10 px-3 border rounded-md bg-gray-50">
+        <p className="flex items-center h-10 px-3 border rounded-md bg-gray-50 dark:bg-gray-800">
           {chargeableWeight.toFixed(2)} кг
         </p>
       </div>
@@ -85,7 +83,7 @@ const Price = ({ onChange, ratePerKg = 8000 }: PriceProps) => {
       {/* 🔹 Total price */}
       <div className="grid gap-2">
         <Label>Нийт үнэ (₮)</Label>
-        <p className="flex items-center h-10 px-3 border rounded-md bg-gray-50 font-medium">
+        <p className="flex items-center h-10 px-3 border rounded-md bg-gray-50 font-medium dark:bg-gray-800">
           {price > 0 ? new Intl.NumberFormat("mn-MN").format(price) : 0} ₮
         </p>
       </div>

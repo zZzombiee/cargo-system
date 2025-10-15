@@ -22,6 +22,7 @@ const Tab = () => {
   const [orderNumber, setOrderNumber] = useState("");
   const [price, setPrice] = useState(0);
   const [weight, setWeight] = useState(0);
+  const [description, setDescription] = useState<string>("");
 
   const handleCreateOrder = async () => {
     if (!orderNumber || price <= 0) {
@@ -67,14 +68,25 @@ const Tab = () => {
             </CardHeader>
 
             <CardContent className="grid gap-6">
-              <div className="grid gap-3">
-                <Label htmlFor="orderNumber">Захиалгын дугаар</Label>
-                <Input
-                  id="orderNumber"
-                  value={orderNumber}
-                  onChange={(e) => setOrderNumber(e.target.value)}
-                  placeholder="жишээ: ORD-20251001-001"
-                />
+              <div className="flex gap-6">
+                <div className="grid gap-2 w-full ">
+                  <Label htmlFor="orderNumber">Захиалгын дугаар</Label>
+                  <Input
+                    id="orderNumber"
+                    value={orderNumber}
+                    onChange={(e) => setOrderNumber(e.target.value)}
+                    placeholder="жишээ: ORD-20251001-001"
+                  />
+                </div>
+                <div className="grid gap-2 w-full ">
+                  <Label>Тэмдгэлгээ</Label>
+                  <Input
+                    type="text"
+                    placeholder="жишээ: Хагарах аюултай, заавал дээш харуулж тавих ..."
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
               </div>
 
               {/* ✅ Get both price & weight */}

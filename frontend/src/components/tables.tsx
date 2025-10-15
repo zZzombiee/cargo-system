@@ -25,8 +25,15 @@ export interface Order {
   _id: string;
   orderNumber: string;
   price: number;
-  status: "Хятад агуулахад" | "Замд явж байна" | "Хүргэгдсэн" | "Саатсан";
+  status:
+    | "Бүртгүүлсэн"
+    | "Эрээнд ирсэн"
+    | "Монголд ирсэн"
+    | "Хүргэгдсэн"
+    | "Саатсан"
+    | "Цуцалсан";
   location: "Улаанбаатар" | "Эрээн" | "Замын-Үүд" | "Хятад";
+  weight: number;
   createdAt: string;
 }
 
@@ -52,10 +59,12 @@ const Tables = () => {
   };
 
   const statuses: Order["status"][] = [
-    "Хятад агуулахад",
-    "Замд явж байна",
+    "Бүртгүүлсэн",
+    "Эрээнд ирсэн",
+    "Монголд ирсэн",
     "Хүргэгдсэн",
     "Саатсан",
+    "Цуцалсан",
   ];
 
   const locations: Order["location"][] = [
@@ -78,6 +87,9 @@ const Tables = () => {
             <TableHead className="text-center w-[60px]">№</TableHead>
             <TableHead className="text-center w-[180px]">Захиалгын №</TableHead>
             <TableHead className="text-center w-[120px]">Үнэ (₮)</TableHead>
+            <TableHead className="text-center w-[120px]">
+              Төлбөрт жин (кг)
+            </TableHead>
             <TableHead className="text-center w-[185px]">Статус</TableHead>
             <TableHead className="text-center w-[160px]">Байршил</TableHead>
             <TableHead className="text-center w-[160px]">Огноо</TableHead>
@@ -96,6 +108,9 @@ const Tables = () => {
               </TableCell>
               <TableCell className="text-center">
                 {new Intl.NumberFormat("mn-MN").format(order.price)} ₮
+              </TableCell>
+              <TableCell className="text-center">
+                {new Intl.NumberFormat("mn-MN").format(order.weight)} кг
               </TableCell>
 
               <TableCell className="text-center">
