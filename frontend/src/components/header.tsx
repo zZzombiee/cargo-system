@@ -4,46 +4,58 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Dropdown from "./dropdown";
 import { Button } from "./ui/button";
+import Image from "next/image";
+import { useUser } from "@/context/UserContext";
 
 const Header = () => {
   const router = useRouter();
+  const { user, loading, logout } = useUser();
+
   const [userId, setUserId] = useState<string | null>(null);
 
-  // ✅ Safe way to get localStorage value after mount
   useEffect(() => {
     const storedUserId = localStorage.getItem("userid");
     setUserId(storedUserId);
-  }, []);
+  }, [user]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("userid");
-    setUserId(null);
-    router.push("/login");
+  const handleTracking = () => {
+    router.push("/user/tracks");
   };
 
   return (
     <header className="flex justify-around p-2 w-full border-b bg-white/80 backdrop-blur-md">
-      {/* 🔹 Logo */}
-      <div className="flex items-center">
+      <div
+        className="flex items-center cursor-pointer"
+        onClick={() => router.push("/user")}
+      >
+        <Image
+          src="/logo.png"
+          alt="Logo"
+          width={40}
+          height={40}
+          className="mr-2"
+        />
         <div className="flex flex-col font-bold leading-none">
           <p className="text-blue-500 text-xl">Go</p>
           <p className="text-red-500 text-xl">Cargo.</p>
         </div>
       </div>
 
-      {/* 🔹 Menu */}
       <div className="flex gap-4 items-center">
+        <Dropdown name="about" menuItems={["Profile", "Settings", "Logout"]} />
         <Dropdown
-          name="account"
-          menuItems={["Profile", "Settings", "Logout"]}
+          name="tracking"
+          menuItems={[
+            { label: "Tracking", onClick: handleTracking },
+            "Payment Methods",
+            "Billing History",
+          ]}
         />
         <Dropdown
-          name="billing"
-          menuItems={["Invoices", "Payment Methods", "Billing History"]}
+          name="contacts"
+          menuItems={["Contacts", "Groups", "Blocked"]}
         />
       </div>
-
-      {/* 🔹 Auth buttons */}
       <div className="flex items-center">
         {!userId ? (
           <>
@@ -61,11 +73,11 @@ const Header = () => {
         ) : (
           <div className="mr-4">
             <Dropdown
-              name="user"
+              name={`${user?.name}`}
               menuItems={[
                 "Profile",
                 "Settings",
-                // { label: "Logout", onClick: handleLogout },
+                { label: "Logout", onClick: logout },
               ]}
             />
           </div>

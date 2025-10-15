@@ -4,27 +4,45 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const Dropdown = ({
-  name,
-  menuItems,
-}: {
+interface DropdownItem {
+  label: string;
+  onClick?: () => void;
+}
+
+interface DropdownProps {
   name: string;
-  menuItems: string[];
-}) => {
+  menuItems: (string | DropdownItem)[];
+  onItemClick?: (item: string) => void;
+}
+
+const Dropdown = ({ name, menuItems, onItemClick }: DropdownProps) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>{name}</DropdownMenuTrigger>
+      <DropdownMenuTrigger className="capitalize font-semibold cursor-pointer">
+        {name}
+      </DropdownMenuTrigger>
+
       <DropdownMenuContent>
-        <DropdownMenuLabel>{name}</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {menuItems.map((item) => (
-          <DropdownMenuItem key={item}>{item}</DropdownMenuItem>
-        ))}
+        {menuItems.map((item, index) => {
+          const label = typeof item === "string" ? item : item.label;
+          const handleClick =
+            typeof item === "string"
+              ? () => onItemClick?.(item)
+              : item.onClick || (() => {});
+
+          return (
+            <DropdownMenuItem
+              key={index}
+              onClick={handleClick}
+              className="cursor-pointer"
+            >
+              {label}
+            </DropdownMenuItem>
+          );
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   );

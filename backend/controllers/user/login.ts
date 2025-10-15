@@ -26,6 +26,8 @@ export const login = async (req: Request, res: Response) => {
         _id: user._id,
         email: user.email,
         role: user.role,
+        name: user.name,
+        number: user.number,
       },
       process.env.JWT_SECRET as string,
       { expiresIn: "10h" }
@@ -36,6 +38,8 @@ export const login = async (req: Request, res: Response) => {
         id: user._id,
         email: user.email,
         role: user.role,
+        name: user.name,
+        number: user.number,
       },
       accessToken,
       message: "Logged in successfully!",

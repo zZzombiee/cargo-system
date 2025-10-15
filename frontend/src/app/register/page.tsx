@@ -13,6 +13,8 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
 
   const handleRegister = async () => {
     if (password !== confirmPassword) {
@@ -20,7 +22,7 @@ const Register = () => {
         description: "Please make sure both passwords are the same.",
       });
       return;
-    } else if (!email || !password) {
+    } else if (!email || !password || !name || !number) {
       toast.error("Email and password are required", {
         description: "Please fill in all the fields.",
       });
@@ -40,6 +42,8 @@ const Register = () => {
       await axios.post(`http://localhost:8000/user`, {
         email: email,
         password: password,
+        name: name,
+        number: number,
       });
 
       toast.success("Registered successfully!");
@@ -60,6 +64,20 @@ const Register = () => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+          placeholder="Name"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Input
+          placeholder="Phone Number"
+          type="tel"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          value={number}
+          onChange={(e) => setNumber(e.target.value)}
         />
         <Input
           placeholder="Password"

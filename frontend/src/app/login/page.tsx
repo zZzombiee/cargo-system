@@ -28,7 +28,7 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post(`http://host:8000/user/login`, {
+      const response = await axios.post(`http://localhost:8000/user/login`, {
         email: email,
         password: password,
       });
@@ -42,6 +42,7 @@ const Login = () => {
       }
     } catch (_error) {
       toast.error("Имэйл эсвэл Нууц үг буруу байна.");
+      console.log(email, password, _error);
     }
   };
   return (

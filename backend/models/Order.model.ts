@@ -4,9 +4,17 @@ export interface Order {
   _id: ObjectId;
   orderNumber: string;
   weight: number;
-  status: "Хятад агуулахад" | "Замд явж байна" | "Хүлээн авсан" | "Саатсан";
+  status:
+    | "Бүртгүүлсэн"
+    | "Эрээнд ирсэн"
+    | "Монголд ирсэн"
+    | "Саатсан"
+    | "Цуцалсан"
+    | "Хүргэгдсэн";
   location: "Улаанбаатар" | "Эрээн" | "Замын-Үүд" | "Хятад";
   price: number;
+  discription: string;
+  // userId: ObjectId;
 }
 
 const OrderSchema = new Schema<Order>(
@@ -14,15 +22,17 @@ const OrderSchema = new Schema<Order>(
     status: {
       type: String,
       enum: [
-        "Хятад агуулахад",
-        "Замд явж байна",
-        "Хүлээн авсан",
+        "Бүртгүүлсэн",
+        "Эрээнд ирсэн",
+        "Монголд ирсэн",
         "Хүргэгдсэн",
         "Саатсан",
+        "Цуцалсан",
       ],
-      default: "Хятад агуулахад",
+      default: "Бүртгүүлсэн",
       required: true,
     },
+    discription: { type: String },
     orderNumber: { type: String },
     weight: { type: Number },
     location: {
@@ -32,6 +42,7 @@ const OrderSchema = new Schema<Order>(
       required: true,
     },
     price: { type: Number },
+    // userId: { type: Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );

@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { UserModel } from "../../models/User.model.js";
 
 const createUser = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { email, password, name, number } = req.body;
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -15,6 +15,8 @@ const createUser = async (req: Request, res: Response) => {
     }
     const user = await new UserModel({
       email,
+      name,
+      number,
       password: hashedPassword,
     }).save();
 
@@ -24,6 +26,8 @@ const createUser = async (req: Request, res: Response) => {
         id: user._id,
         email: user.email,
         role: user.role,
+        name: user.name,
+        number: user.number,
       },
     });
   } catch (error) {
