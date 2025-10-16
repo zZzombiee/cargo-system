@@ -55,8 +55,8 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="mx-auto flex flex-col gap-4 border p-10 rounded-lg bg-white shadow-lg">
+    <div className="flex items-center justify-end h-[70vh]">
+      <div className="mx-auto flex flex-col gap-4 border p-10 rounded-lg bg-white shadow-lg dark:bg-gray-900">
         <p className="flex w-full justify-center items-center text-2xl">
           Register
         </p>
