@@ -75,7 +75,7 @@ const Tables = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto mt-10 p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border">
+    <div className="max-w-6xl mx-auto mt-10 p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-md border">
       <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
         Захиалгын жагсаалт
       </h2>

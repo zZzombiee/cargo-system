@@ -35,12 +35,13 @@ const Tab = () => {
         orderNumber,
         price,
         weight,
-        status: "Хятад агуулахад",
+        status: "Бүртгүүлсэн",
         location: "Хятад",
       });
 
       toast.success("✅ Захиалга амжилттай үүсгэлээ!");
       setOrderNumber("");
+      setDescription("");
       setPrice(0);
       setWeight(0);
     } catch (error) {
@@ -50,26 +51,39 @@ const Tab = () => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-6 max-w-7xl mx-auto mt-10">
-      <Tabs defaultValue="createOrder">
-        <TabsList>
-          <TabsTrigger value="createOrder">Create order</TabsTrigger>
-          <TabsTrigger value="tables">All orders</TabsTrigger>
+    <div className="flex flex-col w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+      <Tabs defaultValue="createOrder" className="w-full">
+        <TabsList className="flex flex-wrap justify-center sm:justify-start gap-2 mb-6">
+          <TabsTrigger
+            value="createOrder"
+            className="px-4 py-2 text-sm sm:text-base"
+          >
+            Захиалга үүсгэх
+          </TabsTrigger>
+          <TabsTrigger
+            value="tables"
+            className="px-4 py-2 text-sm sm:text-base"
+          >
+            Бүх захиалга
+          </TabsTrigger>
         </TabsList>
 
         {/* ➕ Create Order */}
         <TabsContent value="createOrder">
-          <Card>
+          <Card className="shadow-sm border">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold">Create Order</CardTitle>
+              <CardTitle className="text-xl sm:text-2xl font-bold">
+                Захиалга үүсгэх
+              </CardTitle>
               <CardDescription>
-                Fill in the form to create a new order.
+                Шинэ захиалгын мэдээллээ бөглөнө үү.
               </CardDescription>
             </CardHeader>
 
             <CardContent className="grid gap-6">
-              <div className="flex gap-6">
-                <div className="grid gap-2 w-full ">
+              {/* Input fields */}
+              <div className="flex flex-col sm:flex-row gap-6">
+                <div className="grid gap-2 w-full">
                   <Label htmlFor="orderNumber">Захиалгын дугаар</Label>
                   <Input
                     id="orderNumber"
@@ -78,18 +92,18 @@ const Tab = () => {
                     placeholder="жишээ: ORD-20251001-001"
                   />
                 </div>
-                <div className="grid gap-2 w-full ">
-                  <Label>Тэмдгэлгээ</Label>
+                <div className="grid gap-2 w-full">
+                  <Label>Тэмдэглэл</Label>
                   <Input
                     type="text"
-                    placeholder="жишээ: Хагарах аюултай, заавал дээш харуулж тавих ..."
+                    placeholder="жишээ: Хагарах аюултай, дээш харуулж тавих..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </div>
               </div>
 
-              {/* ✅ Get both price & weight */}
+              {/* ✅ Price & Weight section */}
               <Price
                 onChange={({ price, chargeableWeight }) => {
                   setPrice(price);
@@ -98,22 +112,29 @@ const Tab = () => {
               />
             </CardContent>
 
-            <CardFooter>
-              <Button onClick={handleCreateOrder}>Захиалга үүсгэх</Button>
+            <CardFooter className="flex justify-end">
+              <Button
+                onClick={handleCreateOrder}
+                className="w-full sm:w-auto shadow-md"
+              >
+                Захиалга үүсгэх
+              </Button>
             </CardFooter>
           </Card>
         </TabsContent>
 
         {/* 📋 All Orders */}
         <TabsContent value="tables">
-          <Card>
+          <Card className="shadow-sm border">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold">All Orders</CardTitle>
+              <CardTitle className="text-xl sm:text-2xl font-bold">
+                Бүх захиалгууд
+              </CardTitle>
               <CardDescription>
-                You can change status and location of orders from here.
+                Эндээс та захиалгын статус болон байршлыг удирдаж болно.
               </CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-6">
+            <CardContent className="overflow-x-auto">
               <Tables />
             </CardContent>
           </Card>

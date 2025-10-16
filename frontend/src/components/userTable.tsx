@@ -13,17 +13,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import { Status } from "@/app/user/tracks/page";
 export interface Order {
   _id: string;
   orderNumber: string;
   price: number;
-  status: "Хятад агуулахад" | "Замд явж байна" | "Хүргэгдсэн" | "Саатсан";
+
+  status:
+    | "Бүртгүүлсэн"
+    | "Эрээнд ирсэн"
+    | "Монголд ирсэн"
+    | "Хүргэгдсэн"
+    | "Саатсан"
+    | "Цуцалсан";
   location: "Улаанбаатар" | "Эрээн" | "Замын-Үүд" | "Хятад";
   createdAt: string;
 }
+interface UserTablesProps {
+  searchFor: Status | "";
+}
 
-const UserTables = () => {
+const UserTables: React.FC<UserTablesProps> = ({ searchFor }) => {
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
@@ -33,8 +43,12 @@ const UserTables = () => {
       .catch(console.error);
   }, []);
 
+  const filtered = searchFor
+    ? orders.filter((d) => d.status === searchFor)
+    : orders;
+
   return (
-    <div className="mx-auto mt-10 p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border max-w-screen">
+    <div className="mx-auto p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-md border max-w-screen">
       <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
         Захиалгын жагсаалт
       </h2>
@@ -53,7 +67,7 @@ const UserTables = () => {
         </TableHeader>
 
         <TableBody>
-          {orders.map((order, i) => (
+          {filtered.map((order, i) => (
             <TableRow
               key={order._id}
               className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
