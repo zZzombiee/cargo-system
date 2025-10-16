@@ -39,6 +39,7 @@ const statusList = [
 ] as const;
 
 type Status = (typeof statusList)[number];
+
 interface UserTablesProps {
   searchFor: Status | "";
 }
