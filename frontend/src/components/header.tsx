@@ -35,19 +35,12 @@ const Header = () => {
       </div>
 
       <div className="flex gap-4 items-center">
-        <Dropdown name="about" menuItems={["Profile", "Settings", "Logout"]} />
+        <Dropdown name="about" menuItems={["about"]} />
         <Dropdown
           name="tracking"
-          menuItems={[
-            { label: "Tracking", onClick: handleTracking },
-            "Payment Methods",
-            "Billing History",
-          ]}
+          menuItems={[{ label: "Tracking", onClick: handleTracking }]}
         />
-        <Dropdown
-          name="contacts"
-          menuItems={["Contacts", "Groups", "Blocked"]}
-        />
+        <Dropdown name="contacts" menuItems={["Contacts"]} />
       </div>
       <div className="flex items-center gap-2">
         <ModeToggle />
@@ -66,7 +59,6 @@ const Header = () => {
           </>
         ) : (
           <div className="mr-4 flex gap-2">
-            {user.role === "ADMIN" ? <p>Welcome Admin</p> : <p>Welcome</p>}
             <Dropdown
               name={`${user?.name}`}
               menuItems={[

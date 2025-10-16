@@ -34,7 +34,7 @@ const UserTables = () => {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto mt-10 p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border">
+    <div className="mx-auto mt-10 p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-sm border max-w-screen">
       <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
         Захиалгын жагсаалт
       </h2>
@@ -45,7 +45,7 @@ const UserTables = () => {
           <TableRow className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200">
             <TableHead className="text-center w-[60px]">№</TableHead>
             <TableHead className="text-center w-[180px]">Захиалгын №</TableHead>
-            <TableHead className="text-center w-[120px]">Үнэ (₮)</TableHead>
+            {/* <TableHead className="text-center w-[120px]">Үнэ (₮)</TableHead> */}
             <TableHead className="text-center w-[185px]">Статус</TableHead>
             <TableHead className="text-center w-[160px]">Байршил</TableHead>
             <TableHead className="text-center w-[160px]">Огноо</TableHead>
@@ -62,9 +62,9 @@ const UserTables = () => {
               <TableCell className="text-center font-mono">
                 {order.orderNumber}
               </TableCell>
-              <TableCell className="text-center">
+              {/* <TableCell className="text-center">
                 {new Intl.NumberFormat("mn-MN").format(order.price)} ₮
-              </TableCell>
+              </TableCell> */}
 
               <TableCell className="text-center">{order.status}</TableCell>
 
