@@ -13,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Status } from "@/app/user/tracks/page";
 export interface Order {
   _id: string;
   orderNumber: string;
@@ -29,6 +28,17 @@ export interface Order {
   location: "Улаанбаатар" | "Эрээн" | "Замын-Үүд" | "Хятад";
   createdAt: string;
 }
+
+const statusList = [
+  "Бүртгүүлсэн",
+  "Эрээнд ирсэн",
+  "Монголд ирсэн",
+  "Хүргэгдсэн",
+  "Саатсан",
+  "Цуцалсан",
+] as const;
+
+type Status = (typeof statusList)[number];
 interface UserTablesProps {
   searchFor: Status | "";
 }

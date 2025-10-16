@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-export const statusList = [
+const statusList = [
   "Бүртгүүлсэн",
   "Эрээнд ирсэн",
   "Монголд ирсэн",
@@ -21,7 +21,7 @@ export const statusList = [
   "Цуцалсан",
 ] as const;
 
-export type Status = (typeof statusList)[number];
+type Status = (typeof statusList)[number];
 
 const TracksPage = () => {
   const [searchFor, setSearchFor] = useState<Status | "">("");

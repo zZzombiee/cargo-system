@@ -48,7 +48,8 @@ const Register = () => {
 
       toast.success("Registered successfully!");
       router.push("/login");
-    } catch (error) {
+    } catch (_err) {
+      console.log(_err);
       toast.error("user not found!");
     }
   };
