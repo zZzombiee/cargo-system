@@ -42,24 +42,14 @@ const Tables = () => {
 
   useEffect(() => {
     axios
-      .get(
-        `${
-          process.env.VITE_API_URL + "/order" || "http://localhost:8000/order"
-        }`
-      )
+      .get(`${process.env.VITE_API_URL}/order`)
       .then((res) => setOrders(res.data.orders))
       .catch(console.error);
   }, []);
 
   const updateOrder = async (id: string, data: Partial<Order>) => {
     try {
-      await axios.patch(
-        `${
-          process.env.VITE_API_URL + "/" + id ||
-          `http://localhost:8000/order/${id}`
-        }`,
-        data
-      );
+      await axios.patch(`${process.env.VITE_API_URL}"/"${id}`, data);
       setOrders((prev) =>
         prev.map((order) => (order._id === id ? { ...order, ...data } : order))
       );

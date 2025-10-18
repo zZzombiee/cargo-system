@@ -29,10 +29,7 @@ const Login = () => {
     }
     try {
       const response = await axios.post(
-        `${
-          process.env.VITE_API_URL + "/user/login" ||
-          "http://localhost:8000/user/login"
-        }`,
+        `${process.env.VITE_API_URL}/user/login`,
         {
           email: email,
           password: password,

@@ -39,15 +39,12 @@ const Register = () => {
       return;
     }
     try {
-      await axios.post(
-        `${process.env.VITE_API_URL + "/user"}||http://localhost:8000/user`,
-        {
-          email: email,
-          password: password,
-          name: name,
-          number: number,
-        }
-      );
+      await axios.post(`${process.env.VITE_API_URL}/user`, {
+        email: email,
+        password: password,
+        name: name,
+        number: number,
+      });
 
       toast.success("Registered successfully!");
       router.push("/login");
