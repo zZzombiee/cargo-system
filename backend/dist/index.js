@@ -13,7 +13,11 @@ const port = 8000;
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://cargo-system-hjqk.vercel.app"],
+    origin: [
+      "http://localhost:3000",
+      "https://cargo-system-hjqk.vercel.app",
+      "https://cargo-system-iota.vercel.app",
+    ],
     credentials: true,
   })
 );
