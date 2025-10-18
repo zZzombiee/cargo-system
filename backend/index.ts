@@ -11,7 +11,12 @@ app.use(express.json());
 
 const port = 8000;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://cargo-system-hjqk.vercel.app"],
+    credentials: true,
+  })
+);
 
 app.use("/order", orderRouter);
 app.use("/user", userRouter);

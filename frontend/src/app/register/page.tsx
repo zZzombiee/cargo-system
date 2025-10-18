@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import axios from "axios";
+import api from "@/lib/axios";
 
 const Register = () => {
   const router = useRouter();
@@ -39,7 +40,7 @@ const Register = () => {
       return;
     }
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
+      await api.post(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
         email: email,
         password: password,
         name: name,

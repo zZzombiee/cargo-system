@@ -8,6 +8,7 @@ import {
   ReactNode,
 } from "react";
 import axios from "axios";
+import api from "@/lib/axios";
 
 interface User {
   _id?: string;
@@ -46,7 +47,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
-      const res = await axios.get(
+      const res = await api.get(
         `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}`
       );
       setUser(res.data.user);

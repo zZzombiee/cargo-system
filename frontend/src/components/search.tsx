@@ -6,6 +6,7 @@ import { Input } from "./ui/input";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
+import api from "@/lib/axios";
 
 interface Order {
   orderNumber: string;
@@ -21,7 +22,7 @@ const Search = () => {
 
   const getOrder = async () => {
     try {
-      const res = await axios.post(
+      const res = await api.post(
         `${process.env.NEXT_PUBLIC_API_URL}/order/order`,
         {
           orderNumber,

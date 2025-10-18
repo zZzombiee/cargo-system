@@ -20,6 +20,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import api from "@/lib/axios";
 
 export interface Order {
   _id: string;
@@ -41,7 +42,7 @@ const Tables = () => {
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-    axios
+    api
       .get(`${process.env.NEXT_PUBLIC_API_URL}/order`)
       .then((res) => setOrders(res.data.orders))
       .catch(console.error);
@@ -49,7 +50,7 @@ const Tables = () => {
 
   const updateOrder = async (id: string, data: Partial<Order>) => {
     try {
-      await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}"/"${id}`, data);
+      await api.patch(`${process.env.NEXT_PUBLIC_API_URL}"/"${id}`, data);
       setOrders((prev) =>
         prev.map((order) => (order._id === id ? { ...order, ...data } : order))
       );

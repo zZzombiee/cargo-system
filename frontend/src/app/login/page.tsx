@@ -5,7 +5,8 @@ import { Button } from "../../components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import axios from "axios";
+// import axios from "axios";
+import api from "@/lib/axios";
 
 const Login = () => {
   const router = useRouter();
@@ -28,7 +29,7 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
         {
           email: email,

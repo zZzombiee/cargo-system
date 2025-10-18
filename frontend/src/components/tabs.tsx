@@ -17,6 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Tables from "./tables";
 import Price from "./price";
 import { toast } from "sonner";
+import api from "@/lib/axios";
 
 const Tab = () => {
   const [orderNumber, setOrderNumber] = useState("");
@@ -31,7 +32,7 @@ const Tab = () => {
     }
 
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
+      await api.post(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
         orderNumber,
         price,
         weight,
