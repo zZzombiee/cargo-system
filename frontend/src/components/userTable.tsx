@@ -46,7 +46,7 @@ interface UserTablesProps {
 
 const UserTables: React.FC<UserTablesProps> = ({ searchFor }) => {
   const [orders, setOrders] = useState<Order[]>([]);
-
+  console.log(process.env.NEXT_PUBLIC_API_URL);
   useEffect(() => {
     axios
       .get(`${process.env.NEXT_PUBLIC_API_URL}/order`)
