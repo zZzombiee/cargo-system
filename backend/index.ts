@@ -11,8 +11,12 @@ app.use(express.json());
 
 const port = 8000;
 
-app.use(cors());
-
+app.use(
+  cors({
+    origin: "https://cargo-system-iota.vercel.app", // your frontend URL
+    credentials: true,
+  })
+);
 app.use("/order", orderRouter);
 app.use("/user", userRouter);
 
