@@ -7,10 +7,9 @@ import { userRouter } from "./routes/user.router.js";
 
 const app = express();
 
-app.use(express.json());
-
 const port = 8000;
 
+// CORS must be BEFORE other middleware
 app.use(
   cors({
     origin: [
@@ -19,8 +18,15 @@ app.use(
       "https://cargo-system-iota.vercel.app",
     ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// Handle preflight requests
+app.options("*", cors());
+
+app.use(express.json());
 
 app.use("/order", orderRouter);
 app.use("/user", userRouter);
