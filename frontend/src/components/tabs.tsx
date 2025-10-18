@@ -31,13 +31,18 @@ const Tab = () => {
     }
 
     try {
-      await axios.post("http://localhost:8000/order", {
-        orderNumber,
-        price,
-        weight,
-        status: "Бүртгүүлсэн",
-        location: "Хятад",
-      });
+      await axios.post(
+        `${
+          process.env.VITE_API_URL + "/order" || "http://localhost:8000/order"
+        }`,
+        {
+          orderNumber,
+          price,
+          weight,
+          status: "Бүртгүүлсэн",
+          location: "Хятад",
+        }
+      );
 
       toast.success("✅ Захиалга амжилттай үүсгэлээ!");
       setOrderNumber("");

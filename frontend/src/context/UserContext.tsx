@@ -46,7 +46,12 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
-      const res = await axios.get(`http://localhost:8000/user/${userId}`);
+      const res = await axios.get(
+        `${
+          process.env.VITE_API_URL + "/user/" + userId ||
+          `http://localhost:8000/user/${userId}`
+        }`
+      );
       setUser(res.data.user);
     } catch (error) {
       console.error("❌ Error fetching user:", error);

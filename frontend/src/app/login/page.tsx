@@ -28,10 +28,16 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post(`http://localhost:8000/user/login`, {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        `${
+          process.env.VITE_API_URL + "/user/login" ||
+          "http://localhost:8000/user/login"
+        }`,
+        {
+          email: email,
+          password: password,
+        }
+      );
       localStorage.setItem("userid", response.data.user.id);
       if (response.data.user.role === "ADMIN") {
         toast.success("Admin logged in successfully!");
