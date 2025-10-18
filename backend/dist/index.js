@@ -11,9 +11,9 @@ app.use(cors());
 app.use("/order", orderRouter);
 app.use("/user", userRouter);
 const server = async () => {
-  await connectDB();
-  app.listen(port, () => {
-    console.log(`server running at http://localhost:${port}/`);
-  });
+    await connectDB();
+    app.listen(port, () => {
+        console.log(`server running at http://localhost:${port}/`);
+    });
 };
 server();
