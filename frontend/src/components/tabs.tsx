@@ -31,7 +31,7 @@ const Tab = () => {
     }
 
     try {
-      await axios.post(`${process.env.VITE_API_URL}/order`, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
         orderNumber,
         price,
         weight,

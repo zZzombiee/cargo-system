@@ -39,7 +39,7 @@ const Register = () => {
       return;
     }
     try {
-      await axios.post(`${process.env.VITE_API_URL}/user`, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
         email: email,
         password: password,
         name: name,

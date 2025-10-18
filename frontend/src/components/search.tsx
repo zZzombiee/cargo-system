@@ -21,9 +21,12 @@ const Search = () => {
 
   const getOrder = async () => {
     try {
-      const res = await axios.post(`${process.env.VITE_API_URL}/order/order`, {
-        orderNumber,
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/order/order`,
+        {
+          orderNumber,
+        }
+      );
       if (!res.data.order) {
         toast.error(res.data.message || "Order not found");
         setOrder(null);

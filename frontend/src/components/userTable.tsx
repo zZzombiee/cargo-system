@@ -49,7 +49,7 @@ const UserTables: React.FC<UserTablesProps> = ({ searchFor }) => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.VITE_API_URL}/order`)
+      .get(`${process.env.NEXT_PUBLIC_API_URL}/order`)
       .then((res) => setOrders(res.data.orders))
       .catch(console.error);
   }, []);

@@ -46,7 +46,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
-      const res = await axios.get(`${process.env.VITE_API_URL}/user/${userId}`);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}`
+      );
       setUser(res.data.user);
     } catch (error) {
       console.error("❌ Error fetching user:", error);
