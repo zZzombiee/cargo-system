@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:3000/cargo_system";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:3000/";
 export const connectDB = async () => {
     try {
         await mongoose.connect(MONGODB_URI);
