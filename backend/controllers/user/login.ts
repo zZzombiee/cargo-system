@@ -1,39 +1,33 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { UserModel } from "../../models/User.model.js";
 import bcrypt from "bcrypt";
-import "dotenv/config";
+import { UserModel } from "../../models/User.model.js";
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    const user = await UserModel.findOne({ email }).exec();
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    const user = await UserModel.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-    const isMatchedPassword = await bcrypt.compare(password, user.password);
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword)
+      return res.status(401).json({ message: "Invalid password" });
 
-    if (!isMatchedPassword) {
-      return res.status(401).json({
-        message: `"Invalid password", ${typeof password}, ${typeof user.password}`,
-      });
-    }
-
-    const accessToken = jwt.sign(
-      {
-        _id: user._id,
-        email: user.email,
-        role: user.role,
-        name: user.name,
-        number: user.number,
-      },
-      process.env.JWT_SECRET as string,
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET!,
       { expiresIn: "10h" }
     );
 
-    return res.status(200).json({
+    // 🍪 cookie илгээх (frontend талд авахын тулд хэрэгтэй)
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    });
+
+    res.status(200).json({
       user: {
         id: user._id,
         email: user.email,
@@ -41,11 +35,9 @@ export const login = async (req: Request, res: Response) => {
         name: user.name,
         number: user.number,
       },
-      accessToken,
       message: "Logged in successfully!",
     });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal server error", error });
+    res.status(500).json({ message: "Server error", error });
   }
 };

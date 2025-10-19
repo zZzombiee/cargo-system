@@ -1,6 +1,5 @@
 "use client";
 
-// import axios from "axios";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import {
@@ -47,7 +46,7 @@ interface UserTablesProps {
 
 const UserTables: React.FC<UserTablesProps> = ({ searchFor }) => {
   const [orders, setOrders] = useState<Order[]>([]);
-  console.log(process.env.NEXT_PUBLIC_API_URL);
+
   useEffect(() => {
     api
       .get(`${process.env.NEXT_PUBLIC_API_URL}/order`)

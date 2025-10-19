@@ -7,7 +7,7 @@ import {
   useContext,
   ReactNode,
 } from "react";
-import axios from "axios";
+
 import api from "@/lib/axios";
 
 interface User {

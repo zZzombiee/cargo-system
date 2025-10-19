@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
@@ -13,136 +13,124 @@ import { useTheme } from "next-themes";
 const Header = () => {
   const router = useRouter();
   const { user, logout } = useUser();
-  const [menuOpen, setMenuOpen] = useState(false);
   const { theme } = useTheme();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   const handleNav = (path: string) => {
     router.push(path);
     setMenuOpen(false);
   };
 
+  if (!mounted) return null; // SSR hydration алдаанаас сэргийлнэ
+
   return (
-    <header className="flex justify-between items-center px-4 py-3 w-full border-b backdrop-blur-md dark:bg-gray-900">
-      {/* Logo */}
-      <div
-        className="flex items-center cursor-pointer"
-        onClick={() => handleNav("/user")}
-      >
-        {theme === "dark" ? (
-          <Image src="/logo1.png" alt="LogoDark" width={120} height={40} />
-        ) : (
-          <Image src="/logo.png" alt="Logo" width={120} height={40} />
-        )}
-      </div>
-
-      {/* Desktop Menu */}
-      <nav className="hidden md:flex gap-4 items-center">
-        <p
-          className="cursor-pointer border-r px-4 py-2"
-          onClick={() => handleNav("/user/about")}
-        >
-          Бидний тухай
-        </p>
-        <p
-          className="cursor-pointer border-r px-4 py-2"
-          onClick={() => handleNav("/user/tracks")}
-        >
-          Захиалга харах
-        </p>
-        <p
-          className="cursor-pointer px-4 py-2"
-          onClick={() => handleNav("/user/contact")}
-        >
-          Холбоо барих
-        </p>
-      </nav>
-
-      {/* Desktop Buttons */}
-      <div className="hidden md:flex items-center gap-2">
-        <ModeToggle />
-        {!user ? (
-          <>
-            <Button
-              onClick={() => router.push("/login")}
-              variant="outline"
-              className="mr-2"
-            >
-              Login
-            </Button>
-            <Button onClick={() => router.push("/register")}>Register</Button>
-          </>
-        ) : (
-          <Dropdown
-            name={`${user?.name}`}
-            menuItems={[
-              "Profile",
-              "Settings",
-              { label: "Logout", onClick: logout },
-            ]}
+    <header className="w-full border-b backdrop-blur-md dark:bg-gray-900">
+      <div className="flex justify-between items-center px-10 py-3 container mx-auto">
+        {/* Logo */}
+        <div onClick={() => handleNav("/user")} className="cursor-pointer">
+          <Image
+            src={theme === "dark" ? "/logo1.png" : "/logo.png"}
+            alt="Logo"
+            width={120}
+            height={40}
+            priority
           />
-        )}
-      </div>
+        </div>
 
-      {/* Mobile Menu Icon */}
-      <div className="md:hidden flex items-center gap-2">
-        <ModeToggle />
-        <button onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
+        {/* Desktop Menu */}
+        <nav className="hidden md:flex gap-6 items-center text-sm font-medium">
+          {[
+            { label: "Бидний тухай", path: "/user/about" },
+            { label: "Захиалга харах", path: "/user/tracks" },
+            { label: "Холбоо барих", path: "/user/contact" },
+          ].map((item) => (
+            <p
+              key={item.path}
+              onClick={() => handleNav(item.path)}
+              className="cursor-pointer hover:text-blue-600 transition-colors"
+            >
+              {item.label}
+            </p>
+          ))}
+        </nav>
 
-      {/* Mobile Dropdown */}
-      {menuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white dark:bg-gray-900 shadow-md flex flex-col items-center py-4 z-50">
-          <p
-            className="cursor-pointer py-2"
-            onClick={() => handleNav("/user/about")}
-          >
-            Бидний тухай
-          </p>
-          <p
-            className="cursor-pointer py-2"
-            onClick={() => handleNav("/user/tracks")}
-          >
-            Захиалга харах
-          </p>
-          <p
-            className="cursor-pointer py-2"
-            onClick={() => handleNav("/user/contact")}
-          >
-            Холбоо барих
-          </p>
-
+        {/* Desktop Right Side */}
+        <div className="hidden md:flex items-center gap-3">
+          <ModeToggle />
           {!user ? (
-            <div className="flex flex-col gap-2 mt-2">
-              <Button
-                onClick={() => handleNav("/login")}
-                variant="outline"
-                className="w-[150px]"
-              >
+            <>
+              <Button onClick={() => handleNav("/login")} variant="outline">
                 Login
               </Button>
-              <Button
-                onClick={() => handleNav("/register")}
-                className="w-[150px]"
-              >
-                Register
-              </Button>
-            </div>
+              <Button onClick={() => handleNav("/register")}>Register</Button>
+            </>
           ) : (
-            <div className="mt-2">
+            <Dropdown
+              name={user.name}
+              menuItems={[
+                "Profile",
+                "Settings",
+                ...(user.role === "ADMIN"
+                  ? [
+                      {
+                        label: "Admin Page",
+                        onClick: () => router.push("/admin"),
+                      },
+                    ]
+                  : []),
+                { label: "Logout", onClick: logout },
+              ]}
+            />
+          )}
+        </div>
+
+        {/* Mobile Menu Icon */}
+        <div className="md:hidden flex items-center gap-3">
+          <ModeToggle />
+          <button onClick={() => setMenuOpen(!menuOpen)}>
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {menuOpen && (
+          <div className="absolute top-16 left-0 w-full bg-white dark:bg-gray-900 shadow-md flex flex-col items-center py-4 z-50">
+            {[
+              { label: "Бидний тухай", path: "/user/about" },
+              { label: "Захиалга харах", path: "/user/tracks" },
+              { label: "Холбоо барих", path: "/user/contact" },
+            ].map((item) => (
+              <p
+                key={item.path}
+                onClick={() => handleNav(item.path)}
+                className="cursor-pointer py-2 hover:text-blue-600 transition-colors"
+              >
+                {item.label}
+              </p>
+            ))}
+            {!user ? (
+              <div className="flex flex-col gap-2 mt-4">
+                <Button onClick={() => handleNav("/login")} variant="outline">
+                  Login
+                </Button>
+                <Button onClick={() => handleNav("/register")}>Register</Button>
+              </div>
+            ) : (
               <Dropdown
-                name={`${user?.name}`}
+                name={user.name}
                 menuItems={[
                   "Profile",
                   "Settings",
                   { label: "Logout", onClick: logout },
                 ]}
               />
-            </div>
-          )}
-        </div>
-      )}
+            )}
+          </div>
+        )}
+      </div>
     </header>
   );
 };

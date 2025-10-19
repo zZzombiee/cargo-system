@@ -27,7 +27,7 @@ export default function RootLayout({
           <UserProvider>
             <div className="flex flex-col min-h-screen w-full">
               <Header />
-              <main className="flex-grow">{children}</main>
+              <main className="flex-grow container mx-auto">{children}</main>
 
               <Toaster position="bottom-right" richColors />
               <Footer />

@@ -5,7 +5,7 @@ import { Button } from "../../components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import axios from "axios";
+
 import api from "@/lib/axios";
 
 const Register = () => {
@@ -50,7 +50,6 @@ const Register = () => {
       toast.success("Registered successfully!");
       router.push("/login");
     } catch (_err) {
-      console.log(_err);
       toast.error("user not found!");
     }
   };

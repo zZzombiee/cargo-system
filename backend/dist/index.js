@@ -9,7 +9,7 @@ app.use(express.json());
 const port = 8000;
 app.use(
   cors({
-    origin: "https://cargo-system-iota.vercel.app", // your frontend URL
+    origin: ["https://cargo-system-iota.vercel.app", "http://localhost:3000"],
     credentials: true,
   })
 );

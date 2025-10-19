@@ -5,7 +5,6 @@ import { Button } from "../../components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-// import axios from "axios";
 import api from "@/lib/axios";
 
 const Login = () => {
@@ -30,12 +29,11 @@ const Login = () => {
     }
     try {
       const response = await api.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
-        {
-          email: email,
-          password: password,
-        }
+        "/user/login",
+        { email, password },
+        { withCredentials: true }
       );
+
       localStorage.setItem("userid", response.data.user.id);
       if (response.data.user.role === "ADMIN") {
         toast.success("Admin logged in successfully!");
@@ -46,7 +44,6 @@ const Login = () => {
       }
     } catch (_error) {
       toast.error("Имэйл эсвэл Нууц үг буруу байна.");
-      console.log(email, password, _error);
     }
   };
   return (
