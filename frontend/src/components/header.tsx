@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { useUser } from "@/context/UserContext";
 import Dropdown from "./dropdown";
 import ModeToggle from "./themeToggle";
 import { useTheme } from "next-themes";
+import MobileMenu from "./mobileMenu";
 
 const Header = () => {
   const router = useRouter();
@@ -28,7 +28,7 @@ const Header = () => {
 
   return (
     <header className="w-full border-b backdrop-blur-md dark:bg-gray-900">
-      <div className="flex justify-between items-center px-10 py-3 container mx-auto">
+      <div className="flex justify-between items-center px-2 md:px-10 container mx-auto">
         <div onClick={() => handleNav("/user")} className="cursor-pointer">
           <Image
             src={theme === "dark" ? "/logo1.png" : "/logo.png"}
@@ -86,48 +86,10 @@ const Header = () => {
           )}
         </div>
 
-        <div className="md:hidden flex items-center gap-3">
+        <div className="md:hidden flex items-center gap-3 ">
           <ModeToggle />
-          <button onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <MobileMenu />
         </div>
-
-        {menuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-white dark:bg-gray-900 shadow-md flex flex-col items-center py-4 z-50">
-            {[
-              { label: "Нүүр хуудас", path: "/user" },
-              { label: "Бидний тухай", path: "/user/about" },
-              { label: "Захиалга харах", path: "/user/orders" },
-              { label: "Холбоо барих", path: "/user/contact" },
-            ].map((item) => (
-              <p
-                key={item.path}
-                onClick={() => handleNav(item.path)}
-                className="cursor-pointer py-2 hover:text-blue-600 transition-colors"
-              >
-                {item.label}
-              </p>
-            ))}
-            {!user ? (
-              <div className="flex flex-col gap-2 mt-4">
-                <Button onClick={() => handleNav("/login")} variant="outline">
-                  Login
-                </Button>
-                <Button onClick={() => handleNav("/register")}>Register</Button>
-              </div>
-            ) : (
-              <Dropdown
-                name={user.name}
-                menuItems={[
-                  "Profile",
-                  "Settings",
-                  { label: "Logout", onClick: logout },
-                ]}
-              />
-            )}
-          </div>
-        )}
       </div>
     </header>
   );

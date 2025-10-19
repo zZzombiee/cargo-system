@@ -40,7 +40,7 @@ const SearchOrder = ({ setOrders }: SearchOrderProps) => {
     <div className="flex">
       <Input
         type="text"
-        placeholder="Захиалгын дугаар"
+        placeholder="Захиалгын код"
         value={orderNumber}
         onChange={(e) => setOrderNumber(e.target.value)}
       />

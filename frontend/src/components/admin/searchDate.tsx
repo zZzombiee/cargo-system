@@ -18,15 +18,25 @@ const SearchDate = ({ orders, setOrders }: SearchOrder) => {
   const [date, setDate] = useState<DateRange | undefined>();
 
   const fetchOrdersByDate = async (range: DateRange | undefined) => {
-    if (!range?.from || !range?.to) return;
+    if (!range?.from || !range?.to) {
+      // 👇 No date selected → fetch all orders
+      try {
+        const res = await api.get(`/order`);
+        setOrders(res.data.orders);
+      } catch (err) {
+        console.error("Failed to fetch all orders", err);
+      }
+      return;
+    }
+
     try {
       const res = await api.post(`/order/date`, {
         startDate: range.from,
         endDate: range.to,
       });
       setOrders(res.data.orders);
-    } catch (_err) {
-      setOrders(orders);
+    } catch (err) {
+      console.error("Failed to fetch by date", err);
     }
   };
 
@@ -40,23 +50,31 @@ const SearchDate = ({ orders, setOrders }: SearchOrder) => {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-[220px] justify-center text-left font-normal"
+          className="
+            w-fit 
+            justify-center text-left font-normal
+            text-sm sm:text-base
+            px-3 py-2
+          "
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {date?.from ? (
-            date.to ? (
-              <>
-                {format(date.from, "yyyy/MM/dd")} -{" "}
-                {format(date.to, "yyyy/MM/dd")}
-              </>
+          <CalendarIcon className="mr-0 sm:mr-2 h-4 w-4" />
+          <span className="hidden sm:inline">
+            {date?.from ? (
+              date.to ? (
+                <>
+                  {format(date.from, "yyyy/MM/dd")} -{" "}
+                  {format(date.to, "yyyy/MM/dd")}
+                </>
+              ) : (
+                format(date.from, "yyyy/MM/dd")
+              )
             ) : (
-              format(date.from, "yyyy/MM/dd")
-            )
-          ) : (
-            <span>Pick a date range</span>
-          )}
+              "Огноогоор шүүх"
+            )}
+          </span>
         </Button>
       </PopoverTrigger>
+
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="range"

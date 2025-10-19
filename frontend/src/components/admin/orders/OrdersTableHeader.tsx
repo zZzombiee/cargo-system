@@ -31,10 +31,10 @@ const OrdersTableHeader = ({
           }
         >
           <SelectTrigger className="w-full border-0 shadow-none">
-            <SelectValue placeholder="Статус" />
+            <SelectValue placeholder="Төлөв" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Статус</SelectItem>
+            <SelectItem value="all">Төлөв</SelectItem>
             {statusList.map((s) => (
               <SelectItem key={s} value={s}>
                 {s}

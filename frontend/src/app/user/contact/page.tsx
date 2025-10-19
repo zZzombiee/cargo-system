@@ -5,8 +5,8 @@ import Twitter from "../../../../public/svg/twitter";
 
 const Contacts = () => {
   return (
-    <div className="flex flex-col p-2 md:p-10 gap-10 max-w-screen mx-auto justify-center items-center">
-      <h1 className="text-3xl font-bold mb-2">Холбоо барих</h1>
+    <div className="flex flex-col p-2 md:p-10 md:gap-10 max-w-screen mx-auto justify-center items-center">
+      <h1 className="text-3xl font-bold my-2 pb-2">Холбоо барих</h1>
       <div className="flex gap-10 border p-4 rounded-2xl shadow-md flex-col md:flex-row">
         <div className="flex flex-col gap-6 p-4">
           <div className="flex flex-col border-b pb-6">
