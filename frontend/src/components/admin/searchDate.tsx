@@ -14,12 +14,11 @@ import {
 import api from "@/lib/axios";
 import { SearchOrder } from "@/types/order";
 
-const SearchDate = ({ orders, setOrders }: SearchOrder) => {
+const SearchDate = ({ setOrders }: SearchOrder) => {
   const [date, setDate] = useState<DateRange | undefined>();
 
   const fetchOrdersByDate = async (range: DateRange | undefined) => {
     if (!range?.from || !range?.to) {
-      // 👇 No date selected → fetch all orders
       try {
         const res = await api.get(`/order`);
         setOrders(res.data.orders);

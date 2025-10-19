@@ -14,7 +14,7 @@ const Header = () => {
   const router = useRouter();
   const { user, logout } = useUser();
   const { theme } = useTheme();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [_menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);

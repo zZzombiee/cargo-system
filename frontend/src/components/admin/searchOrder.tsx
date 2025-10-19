@@ -25,7 +25,7 @@ const SearchOrder = ({ setOrders }: SearchOrderProps) => {
           } else {
             setOrders(res.data.orders);
           }
-        } catch (err) {
+        } catch (_err) {
           return;
         }
       };
