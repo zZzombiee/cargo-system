@@ -80,7 +80,7 @@ const Tables = () => {
       <h2 className="flex justify-between text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
         Захиалгын жагсаалт
         <SearchOrder orders={orders} setOrders={setOrders} />
-        <SearchDate setOrders={setOrders} />
+        <SearchDate orders={orders} setOrders={setOrders} />
       </h2>
 
       <Table>
@@ -98,7 +98,7 @@ const Tables = () => {
         </TableHeader>
 
         <TableBody>
-          {orders.map((order, i) => (
+          {orders?.map((order, i) => (
             <TableRow
               key={order._id}
               className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
