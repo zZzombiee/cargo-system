@@ -1,50 +1,57 @@
 "use client";
 
 import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { ArrowRight } from "lucide-react";
 import api from "@/lib/axios";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Order } from "./tables";
 
-interface SearchOrder {
-  orders: Order[];
+interface SearchOrderProps {
   setOrders: React.Dispatch<React.SetStateAction<Order[]>>;
 }
 
-const SearchOrder = ({ setOrders }: SearchOrder) => {
+const SearchOrder = ({ setOrders }: SearchOrderProps) => {
   const [orderNumber, setOrderNumber] = useState("");
 
-  const getOrder = async () => {
-    try {
-      const res = await api.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/order/order`,
-        { orderNumber }
-      );
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      const fetchOrders = async () => {
+        try {
+          // If empty → get all orders
+          if (orderNumber.trim() === "") {
+            const res = await api.get(`/order`);
+            setOrders(res.data.orders || []);
+            return;
+          }
 
-      if (!res.data.order) {
-        toast.error(res.data.message || "Order not found");
-        setOrders([]);
-      } else {
-        setOrders([res.data.order]);
-      }
-    } catch (err) {
-      console.error("Error fetching order:", err);
-    }
-  };
+          // Partial search → get all matches
+          const res = await api.post(`/order/orders`, { orderNumber });
+
+          if (!res.data.orders || res.data.orders.length === 0) {
+            toast.error("No matching orders found");
+            setOrders([]);
+          } else {
+            setOrders(res.data.orders);
+          }
+        } catch (err) {
+          setOrders([]);
+        }
+      };
+
+      fetchOrders();
+    }, 500); // debounce delay
+
+    return () => clearTimeout(delay);
+  }, [orderNumber, setOrders]);
 
   return (
-    <div className="flex gap-2 mb-4">
+    <div className="flex">
       <Input
         type="text"
-        placeholder="Захиалгийн дугаар"
+        placeholder="Захиалгын дугаар"
         value={orderNumber}
         onChange={(e) => setOrderNumber(e.target.value)}
       />
-      <Button onClick={getOrder}>
-        <ArrowRight />
-      </Button>
     </div>
   );
 };

@@ -43,14 +43,14 @@ const Tables = () => {
 
   useEffect(() => {
     api
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/order`)
+      .get(`/order`)
       .then((res) => setOrders(res.data.orders))
       .catch((err) => console.error("Failed to fetch orders:", err));
   }, []);
 
   const updateOrder = async (id: string, data: Partial<Order>) => {
     try {
-      await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`, data);
+      await api.patch(`/order/${id}`, data);
       setOrders((prev) =>
         prev.map((order) => (order._id === id ? { ...order, ...data } : order))
       );
@@ -79,7 +79,6 @@ const Tables = () => {
     <div className="max-w-6xl mx-auto p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-md border">
       <h2 className="flex justify-between text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
         Захиалгын жагсаалт
-        <SearchOrder orders={orders} setOrders={setOrders} />
         <SearchDate orders={orders} setOrders={setOrders} />
       </h2>
 
@@ -88,7 +87,9 @@ const Tables = () => {
         <TableHeader>
           <TableRow className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200">
             <TableHead className="text-center w-[60px]">№</TableHead>
-            <TableHead className="text-center w-[180px]">Захиалгын №</TableHead>
+            <TableHead className="text-center w-[180px] flex justify-center items-center">
+              <SearchOrder setOrders={setOrders} />
+            </TableHead>
             <TableHead className="text-center w-[120px]">Үнэ (₮)</TableHead>
             <TableHead className="text-center w-[120px]">Жин (кг)</TableHead>
             <TableHead className="text-center w-[185px]">Статус</TableHead>
@@ -103,7 +104,9 @@ const Tables = () => {
               key={order._id}
               className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
-              <TableCell className="text-center font-medium">{i + 1}</TableCell>
+              <TableCell className="text-center font-medium">
+                {orders.length - i}
+              </TableCell>
               <TableCell className="text-center font-mono">
                 {order.orderNumber}
               </TableCell>

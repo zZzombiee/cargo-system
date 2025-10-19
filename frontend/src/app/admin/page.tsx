@@ -28,8 +28,8 @@ const AdminPage = () => {
   // Зөвхөн ADMIN-д харагдах хэсэг
   if (user.role === "ADMIN") {
     return (
-      <div className="flex w-full flex-col gap-3 max-w-7xl mx-auto my-10">
-        <p className="text-4xl font-extrabold px-4 md:px-6 lg:mx-auto">
+      <div className="flex w-full flex-col max-w-7xl mx-auto mt-4">
+        <p className="text-2xl font-extrabold px-4 md:px-6 lg:mx-auto">
           Admin Page
         </p>
         <Tab />

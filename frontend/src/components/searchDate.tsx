@@ -49,7 +49,7 @@ const SearchDate = ({ orders, setOrders }: SearchOrder) => {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-[280px] justify-start text-left font-normal"
+          className="w-[220px] justify-center text-left font-normal"
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date?.from ? (
