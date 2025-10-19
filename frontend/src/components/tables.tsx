@@ -98,7 +98,7 @@ const Tables = () => {
         </TableHeader>
 
         <TableBody>
-          {orders.map((order, i) => (
+          {orders?.map((order, i) => (
             <TableRow
               key={order._id}
               className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"

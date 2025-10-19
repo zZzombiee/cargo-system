@@ -68,12 +68,11 @@ export const getOrdersByDate = async (req: Request, res: Response) => {
     }).sort({ createdAt: -1 });
 
     if (orders.length === 0) {
-      return res.status(404).json({ message: "No orders found in this range" });
+      return res.status(200).json({ message: "No orders found in this range" });
     }
 
     res.status(200).json({ orders });
   } catch (error) {
-    console.error("Error fetching orders by date:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
