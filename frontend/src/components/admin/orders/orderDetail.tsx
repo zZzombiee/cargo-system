@@ -75,7 +75,6 @@ export const OrderDetailDialog = ({ order, setOpen, open }: PropsDetail) => {
             </span>
           </div>
         </div>
-
         <div className="flex justify-end gap-3 border-t pt-4">
           <Button
             variant="outline"
