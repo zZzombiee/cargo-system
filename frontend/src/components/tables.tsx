@@ -7,7 +7,6 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -20,6 +19,8 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import api from "@/lib/axios";
+import SearchOrder from "./searchOrder";
+import SearchDate from "./searchDate";
 
 export interface Order {
   _id: string;
@@ -44,17 +45,17 @@ const Tables = () => {
     api
       .get(`${process.env.NEXT_PUBLIC_API_URL}/order`)
       .then((res) => setOrders(res.data.orders))
-      .catch(console.error);
+      .catch((err) => console.error("Failed to fetch orders:", err));
   }, []);
 
   const updateOrder = async (id: string, data: Partial<Order>) => {
     try {
-      await api.patch(`${process.env.NEXT_PUBLIC_API_URL}"/"${id}`, data);
+      await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`, data);
       setOrders((prev) =>
         prev.map((order) => (order._id === id ? { ...order, ...data } : order))
       );
     } catch (error) {
-      console.error(error);
+      console.error("Failed to update order:", error);
     }
   };
 
@@ -75,9 +76,11 @@ const Tables = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto mt-10 p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-md border">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+    <div className="max-w-6xl mx-auto p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-md border">
+      <h2 className="flex justify-between text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
         Захиалгын жагсаалт
+        <SearchOrder orders={orders} setOrders={setOrders} />
+        <SearchDate setOrders={setOrders} />
       </h2>
 
       <Table>
@@ -87,9 +90,7 @@ const Tables = () => {
             <TableHead className="text-center w-[60px]">№</TableHead>
             <TableHead className="text-center w-[180px]">Захиалгын №</TableHead>
             <TableHead className="text-center w-[120px]">Үнэ (₮)</TableHead>
-            <TableHead className="text-center w-[120px]">
-              Төлбөрт жин (кг)
-            </TableHead>
+            <TableHead className="text-center w-[120px]">Жин (кг)</TableHead>
             <TableHead className="text-center w-[185px]">Статус</TableHead>
             <TableHead className="text-center w-[160px]">Байршил</TableHead>
             <TableHead className="text-center w-[160px]">Огноо</TableHead>
@@ -159,8 +160,6 @@ const Tables = () => {
             </TableRow>
           ))}
         </TableBody>
-
-        <TableFooter />
       </Table>
     </div>
   );

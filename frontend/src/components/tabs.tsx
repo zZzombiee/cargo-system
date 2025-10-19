@@ -18,6 +18,7 @@ import Tables from "./tables";
 import Price from "./price";
 import { toast } from "sonner";
 import api from "@/lib/axios";
+import Search from "./search";
 
 const Tab = () => {
   const [orderNumber, setOrderNumber] = useState("");
