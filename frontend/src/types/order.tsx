@@ -91,3 +91,8 @@ export interface PropsLocation {
   order: Order;
   updateOrder: (id: string, data: Partial<Order>) => void;
 }
+export interface PropsDetail {
+  order: Order;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
