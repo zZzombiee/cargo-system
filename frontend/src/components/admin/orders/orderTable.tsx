@@ -5,8 +5,8 @@ import { Table, TableBody, TableCaption } from "@/components/ui/table";
 import api from "@/lib/axios";
 import SearchDate from "../searchDate";
 import { Order, Status, statusList } from "@/types/order";
-import OrdersTableHeader from "./OrdersTableHeader";
-import OrdersTableRow from "./OrdersTableRow";
+import OrdersTableHeader from "./ordersTableHeader";
+import OrdersTableRow from "./ordersTableRow";
 
 const OrdersTable = () => {
   const [orders, setOrders] = useState<Order[]>([]);
