@@ -16,7 +16,6 @@ export const OrderDetailDialog = ({ order, setOpen, open }: PropsDetail) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-md sm:max-w-xl rounded-2xl shadow-lg">
-        {/* Header */}
         <DialogHeader className="pb-4 border-b">
           <DialogTitle className="flex items-center justify-between text-lg font-semibold">
             <span>Захиалгын дэлгэрэнгүй</span>
@@ -39,38 +38,44 @@ export const OrderDetailDialog = ({ order, setOpen, open }: PropsDetail) => {
           </DialogDescription>
         </DialogHeader>
 
-        {/* Content */}
         <div className="grid gap-4 py-4">
           <div className="flex justify-between border-b pb-2">
-            <span className="font-medium text-gray-600">Үнэ</span>
+            <span className="font-medium text-gray-600 dark:text-gray-200">
+              Үнэ
+            </span>
             <span className="font-semibold text-gray-800 dark:text-gray-100">
               {order.price.toLocaleString()} ₮
             </span>
           </div>
 
           <div className="flex justify-between border-b pb-2">
-            <span className="font-medium text-gray-600">Жин</span>
+            <span className="font-medium text-gray-600 dark:text-gray-200">
+              Жин
+            </span>
             <span className="font-semibold text-gray-800 dark:text-gray-100">
               {order.weight} кг
             </span>
           </div>
 
           <div className="flex justify-between border-b pb-2">
-            <span className="font-medium text-gray-600">Огноо</span>
-            <span className="text-gray-700 dark:text-gray-300">
+            <span className="font-medium text-gray-600 dark:text-gray-200">
+              Огноо
+            </span>
+            <span className="text-gray-700 dark:text-gray-100">
               {moment(order.createdAt).format("YYYY/MM/DD")}
             </span>
           </div>
 
           <div className="flex justify-between">
-            <span className="font-medium text-gray-600">Байршил</span>
-            <span className="text-gray-700 dark:text-gray-300">
+            <span className="font-medium text-gray-600 dark:text-gray-200">
+              Байршил
+            </span>
+            <span className="text-gray-700 dark:text-gray-100">
               {order.location}
             </span>
           </div>
         </div>
 
-        {/* Footer */}
         <div className="flex justify-end gap-3 border-t pt-4">
           <Button
             variant="outline"

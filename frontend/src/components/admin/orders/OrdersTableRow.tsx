@@ -6,7 +6,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { PropsRow } from "@/types/order";
 import StatusSelect from "./statusSelect";
 import LocationSelect from "./locationSelect";
-import { OrderDetailDialog } from "./orderDeatail";
+import { OrderDetailDialog } from "./orderDetail";
 
 const OrdersTableRow = ({
   order,
