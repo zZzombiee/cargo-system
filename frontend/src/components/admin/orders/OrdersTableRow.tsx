@@ -19,7 +19,6 @@ const OrdersTableRow = ({
   return (
     <>
       <OrderDetailDialog order={order} setOpen={setOpen} open={open} />
-      {/* 📦 Table Row */}
       <TableRow
         onClick={() => setOpen(true)}
         className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
