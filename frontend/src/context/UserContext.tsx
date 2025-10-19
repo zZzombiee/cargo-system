@@ -10,25 +10,7 @@ import {
 import api from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
-interface User {
-  _id?: string;
-  email: string;
-  name: string;
-  number?: string;
-  role?: string;
-}
-
-interface UserContextType {
-  user: User | null;
-  loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (
-    data: Omit<User, "_id" | "role"> & { password: string }
-  ) => Promise<void>;
-  logout: () => void;
-  fetchUser: () => Promise<void>;
-}
+import { User, UserContextType } from "@/types/user";
 
 const UserContext = createContext<UserContextType>({
   user: null,
@@ -55,11 +37,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
-      const res = await api.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}`
-      );
+      const res = await api.get(`/user/${userId}`);
       setUser(res.data.user);
-    } catch {
+    } catch (err) {
+      console.error("❌ Fetch user failed:", err);
       setUser(null);
     } finally {
       setLoading(false);
@@ -71,22 +52,23 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       const res = await api.post("/user/login", { email, password });
       const user = res.data.user;
 
+      localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("userid", user.id);
       setUser(user);
       toast.success("Logged in successfully!");
 
       if (user.role === "ADMIN") router.push("/admin");
       else router.push("/user");
-    } catch (err) {
+    } catch (_err) {
       toast.error("Имэйл эсвэл нууц үг буруу байна.");
     }
   };
 
   const register = async (
-    data: Omit<User, "_id" | "role"> & { password: string }
+    data: Omit<User, "id" | "role"> & { password: string }
   ) => {
     try {
-      await api.post(`${process.env.NEXT_PUBLIC_API_URL}/user`, data);
+      await api.post(`/user`, data);
       toast.success("Registered successfully!");
       router.push("/login");
     } catch {
@@ -95,6 +77,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
+    localStorage.removeItem("user");
     localStorage.removeItem("userid");
     setUser(null);
     router.push("/login");

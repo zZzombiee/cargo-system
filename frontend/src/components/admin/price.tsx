@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 interface PriceProps {
   onChange?: (data: { price: number; chargeableWeight: number }) => void;
@@ -72,7 +72,6 @@ const Price = ({ onChange, ratePerKg = 8000 }: PriceProps) => {
         </div>
       </div>
 
-      {/* 🔹 Chargeable weight */}
       <div className="grid gap-2">
         <Label>Төлбөрт жин (кг)</Label>
         <p className="flex items-center h-10 px-3 border rounded-md bg-gray-50 dark:bg-gray-800">
@@ -80,7 +79,6 @@ const Price = ({ onChange, ratePerKg = 8000 }: PriceProps) => {
         </p>
       </div>
 
-      {/* 🔹 Total price */}
       <div className="grid gap-2">
         <Label>Нийт үнэ (₮)</Label>
         <p className="flex items-center h-10 px-3 border rounded-md bg-gray-50 font-medium dark:bg-gray-800">

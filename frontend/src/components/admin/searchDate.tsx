@@ -12,11 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import api from "@/lib/axios";
-import { Order } from "./tables";
-interface SearchOrder {
-  orders: Order[];
-  setOrders: React.Dispatch<React.SetStateAction<Order[]>>;
-}
+import { SearchOrder } from "@/types/order";
 
 const SearchDate = ({ orders, setOrders }: SearchOrder) => {
   const [date, setDate] = useState<DateRange | undefined>();
@@ -24,13 +20,10 @@ const SearchDate = ({ orders, setOrders }: SearchOrder) => {
   const fetchOrdersByDate = async (range: DateRange | undefined) => {
     if (!range?.from || !range?.to) return;
     try {
-      const res = await api.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/order/date`,
-        {
-          startDate: range.from,
-          endDate: range.to,
-        }
-      );
+      const res = await api.post(`/order/date`, {
+        startDate: range.from,
+        endDate: range.to,
+      });
       setOrders(res.data.orders);
     } catch (_err) {
       setOrders(orders);
@@ -70,7 +63,7 @@ const SearchDate = ({ orders, setOrders }: SearchOrder) => {
           mode="range"
           selected={date}
           onSelect={handleSelect}
-          numberOfMonths={1} // ✅ Only show one month
+          numberOfMonths={1}
         />
       </PopoverContent>
     </Popover>

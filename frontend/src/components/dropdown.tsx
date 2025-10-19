@@ -6,17 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-interface DropdownItem {
-  label: string;
-  onClick?: () => void;
-}
-
-interface DropdownProps {
-  name: string;
-  menuItems: (string | DropdownItem)[];
-  onItemClick?: (item: string) => void;
-}
+import { DropdownProps } from "@/types/order";
 
 const Dropdown = ({ name, menuItems, onItemClick }: DropdownProps) => {
   return (

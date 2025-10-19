@@ -1,19 +1,12 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import { useState } from "react";
 import { toast } from "sonner";
 import api from "@/lib/axios";
-
-interface Order {
-  orderNumber: string;
-  status?: string;
-  destination?: string;
-  createdAt?: string;
-  location?: string;
-}
+import { Order } from "@/types/order";
 
 const Search = () => {
   const [orderNumber, setOrderNumber] = useState("");
@@ -21,12 +14,9 @@ const Search = () => {
 
   const getOrder = async () => {
     try {
-      const res = await api.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/order/order`,
-        {
-          orderNumber,
-        }
-      );
+      const res = await api.post(`/order/order`, {
+        orderNumber,
+      });
       if (!res.data.order) {
         toast.error(res.data.message || "Order not found");
         setOrder(null);
@@ -60,11 +50,6 @@ const Search = () => {
           {fetchedOrder.status && (
             <p>
               <strong>Status:</strong> {fetchedOrder.status}
-            </p>
-          )}
-          {fetchedOrder.destination && (
-            <p>
-              <strong>Destination:</strong> {fetchedOrder.destination}
             </p>
           )}
           {fetchedOrder.location && (

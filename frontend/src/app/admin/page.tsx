@@ -1,43 +1,28 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Tab from "@/components/tabs";
-import { useUser } from "@/context/UserContext";
+import Tab from "@/components/admin/tabs";
+import { useAdminGuard } from "@/hooks/useAdminGuard";
+import { Spinner } from "@/components/ui/shadcn-io/spinner";
 
 const AdminPage = () => {
-  const router = useRouter();
-  const { user } = useUser();
+  const { isChecking } = useAdminGuard();
 
-  useEffect(() => {
-    // Хэрвээ хэрэглэгч байхгүй эсвэл role нь ADMIN биш бол redirect хийнэ
-    if (!user || user.role !== "ADMIN") {
-      router.push("/user");
-    }
-  }, [user, router]);
-
-  // Хэрэглэгч байхгүй үед ачаалж байгаа мэт харуулах
-  if (!user) {
+  if (isChecking) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <p>Түр хүлээнэ үү...</p>
+      <div className="flex justify-center items-end h-[40vh]">
+        <Spinner variant={"ring"} size={64} />
       </div>
     );
   }
 
-  // Зөвхөн ADMIN-д харагдах хэсэг
-  if (user.role === "ADMIN") {
-    return (
-      <div className="flex w-full flex-col max-w-7xl mx-auto mt-4">
-        <p className="text-2xl font-extrabold px-4 md:px-6 lg:mx-auto">
-          Admin Page
-        </p>
-        <Tab />
-      </div>
-    );
-  }
-
-  return null; // redirect хийгдэх үед хоосон буцаана
+  return (
+    <div className="flex w-full flex-col max-w-7xl mx-auto mt-4">
+      <p className="text-2xl font-extrabold px-4 md:px-6 lg:mx-auto">
+        Admin Page
+      </p>
+      <Tab />
+    </div>
+  );
 };
 
 export default AdminPage;

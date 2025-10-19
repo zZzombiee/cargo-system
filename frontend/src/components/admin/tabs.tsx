@@ -14,10 +14,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Tables from "./tables";
 import Price from "./price";
 import { toast } from "sonner";
 import api from "@/lib/axios";
+import OrdersTable from "./orders/orderTable";
 
 const Tab = () => {
   const [orderNumber, setOrderNumber] = useState("");
@@ -32,7 +32,7 @@ const Tab = () => {
     }
 
     try {
-      await api.post(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
+      await api.post(`/order`, {
         orderNumber,
         price,
         weight,
@@ -69,7 +69,6 @@ const Tab = () => {
           </TabsTrigger>
         </TabsList>
 
-        {/* ➕ Create Order */}
         <TabsContent value="createOrder">
           <Card className="shadow-sm border">
             <CardHeader>
@@ -82,7 +81,6 @@ const Tab = () => {
             </CardHeader>
 
             <CardContent className="grid gap-4">
-              {/* Input fields */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="grid gap-2 w-full">
                   <Label htmlFor="orderNumber">Захиалгын дугаар</Label>
@@ -104,7 +102,6 @@ const Tab = () => {
                 </div>
               </div>
 
-              {/* ✅ Price & Weight section */}
               <Price
                 onChange={({ price, chargeableWeight }) => {
                   setPrice(price);
@@ -124,7 +121,6 @@ const Tab = () => {
           </Card>
         </TabsContent>
 
-        {/* 📋 All Orders */}
         <TabsContent value="tables">
           <Card className="shadow-sm border">
             <CardHeader>
@@ -136,7 +132,7 @@ const Tab = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="overflow-x-auto">
-              <Tables />
+              <OrdersTable />
             </CardContent>
           </Card>
         </TabsContent>

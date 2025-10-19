@@ -13,43 +13,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import api from "@/lib/axios";
-export interface Order {
-  _id: string;
-  orderNumber: string;
-  price: number;
-
-  status:
-    | "Бүртгүүлсэн"
-    | "Эрээнд ирсэн"
-    | "Монголд ирсэн"
-    | "Хүргэгдсэн"
-    | "Саатсан"
-    | "Цуцалсан";
-  location: "Улаанбаатар" | "Эрээн" | "Замын-Үүд" | "Хятад";
-  createdAt: string;
-}
-
-const statusList = [
-  "Бүртгүүлсэн",
-  "Эрээнд ирсэн",
-  "Монголд ирсэн",
-  "Хүргэгдсэн",
-  "Саатсан",
-  "Цуцалсан",
-] as const;
-
-type Status = (typeof statusList)[number];
-
-interface UserTablesProps {
-  searchFor: Status | "";
-}
+import { Order, UserTablesProps } from "@/types/order";
 
 const UserTables: React.FC<UserTablesProps> = ({ searchFor }) => {
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     api
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/order`)
+      .get(`/order`)
       .then((res) => setOrders(res.data.orders))
       .catch(console.error);
   }, []);

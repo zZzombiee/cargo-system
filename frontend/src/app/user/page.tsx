@@ -1,6 +1,6 @@
 "use client";
 
-import Search from "@/components/search";
+import Search from "@/components/client/search";
 
 const UserPage = () => {
   return (

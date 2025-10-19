@@ -24,12 +24,11 @@ const Header = () => {
     setMenuOpen(false);
   };
 
-  if (!mounted) return null; // SSR hydration алдаанаас сэргийлнэ
+  if (!mounted) return null;
 
   return (
     <header className="w-full border-b backdrop-blur-md dark:bg-gray-900">
       <div className="flex justify-between items-center px-10 py-3 container mx-auto">
-        {/* Logo */}
         <div onClick={() => handleNav("/user")} className="cursor-pointer">
           <Image
             src={theme === "dark" ? "/logo1.png" : "/logo.png"}
@@ -37,15 +36,15 @@ const Header = () => {
             width={120}
             height={40}
             priority
+            style={{ height: "auto", width: "auto" }}
           />
         </div>
 
-        {/* Desktop Menu */}
         <nav className="hidden md:flex gap-6 items-center text-sm font-medium">
           {[
             { label: "Нүүр хуудас", path: "/user" },
             { label: "Бидний тухай", path: "/user/about" },
-            { label: "Захиалга харах", path: "/user/tracks" },
+            { label: "Захиалга харах", path: "/user/orders" },
             { label: "Холбоо барих", path: "/user/contact" },
           ].map((item) => (
             <p
@@ -58,7 +57,6 @@ const Header = () => {
           ))}
         </nav>
 
-        {/* Desktop Right Side */}
         <div className="hidden md:flex items-center gap-3">
           <ModeToggle />
           {!user ? (
@@ -88,7 +86,6 @@ const Header = () => {
           )}
         </div>
 
-        {/* Mobile Menu Icon */}
         <div className="md:hidden flex items-center gap-3">
           <ModeToggle />
           <button onClick={() => setMenuOpen(!menuOpen)}>
@@ -96,12 +93,12 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {menuOpen && (
           <div className="absolute top-16 left-0 w-full bg-white dark:bg-gray-900 shadow-md flex flex-col items-center py-4 z-50">
             {[
+              { label: "Нүүр хуудас", path: "/user" },
               { label: "Бидний тухай", path: "/user/about" },
-              { label: "Захиалга харах", path: "/user/tracks" },
+              { label: "Захиалга харах", path: "/user/orders" },
               { label: "Холбоо барих", path: "/user/contact" },
             ].map((item) => (
               <p
