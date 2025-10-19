@@ -28,13 +28,12 @@ const SearchOrder = ({ setOrders }: SearchOrderProps) => {
           const res = await api.post(`/order/orders`, { orderNumber });
 
           if (!res.data.orders || res.data.orders.length === 0) {
-            toast.error("No matching orders found");
             setOrders([]);
           } else {
             setOrders(res.data.orders);
           }
         } catch (err) {
-          setOrders([]);
+          return;
         }
       };
 

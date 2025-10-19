@@ -9,7 +9,7 @@ const GetOrderByOrderNumber = async (req: Request, res: Response) => {
       orderNumber: { $regex: orderNumber, $options: "i" }, // 'i' = case-insensitive
     }).sort({ createdAt: -1 });
     if (!orders || orders.length === 0) {
-      return res.status(404).json({ message: "Order not found" });
+      return res.status(200).json({ message: "Order not found" });
     }
 
     res.status(200).json({ orders });

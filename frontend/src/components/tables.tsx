@@ -58,7 +58,6 @@ const Tables = () => {
       console.error("Failed to update order:", error);
     }
   };
-
   const statuses: Order["status"][] = [
     "Бүртгүүлсэн",
     "Эрээнд ирсэн",
@@ -68,12 +67,14 @@ const Tables = () => {
     "Цуцалсан",
   ];
 
-  const locations: Order["location"][] = [
-    "Хятад",
-    "Эрээн",
-    "Замын-Үүд",
-    "Улаанбаатар",
-  ];
+  const statusLocationMap: Record<Order["status"], Order["location"][]> = {
+    Бүртгүүлсэн: ["Хятад"],
+    "Эрээнд ирсэн": ["Эрээн"],
+    "Монголд ирсэн": ["Замын-Үүд", "Улаанбаатар"],
+    Хүргэгдсэн: ["Улаанбаатар"],
+    Саатсан: ["Эрээн", "Замын-Үүд", "Улаанбаатар"],
+    Цуцалсан: ["Хятад", "Эрээн", "Замын-Үүд", "Улаанбаатар"],
+  };
 
   return (
     <div className="max-w-6xl mx-auto p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-md border">
@@ -148,7 +149,7 @@ const Tables = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {locations.map((loc) => (
+                    {(statusLocationMap[order.status] || []).map((loc) => (
                       <SelectItem key={loc} value={loc}>
                         {loc}
                       </SelectItem>

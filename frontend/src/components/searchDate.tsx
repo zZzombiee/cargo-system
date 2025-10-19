@@ -32,9 +32,8 @@ const SearchDate = ({ orders, setOrders }: SearchOrder) => {
         }
       );
       setOrders(res.data.orders);
-    } catch (error) {
+    } catch (_err) {
       setOrders(orders);
-
       console.log("Failed to fetch orders by date:");
     }
   };

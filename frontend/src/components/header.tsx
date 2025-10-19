@@ -43,6 +43,7 @@ const Header = () => {
         {/* Desktop Menu */}
         <nav className="hidden md:flex gap-6 items-center text-sm font-medium">
           {[
+            { label: "Нүүр хуудас", path: "/user" },
             { label: "Бидний тухай", path: "/user/about" },
             { label: "Захиалга харах", path: "/user/tracks" },
             { label: "Холбоо барих", path: "/user/contact" },
