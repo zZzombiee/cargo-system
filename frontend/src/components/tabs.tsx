@@ -18,7 +18,6 @@ import Tables from "./tables";
 import Price from "./price";
 import { toast } from "sonner";
 import api from "@/lib/axios";
-import Search from "./search";
 
 const Tab = () => {
   const [orderNumber, setOrderNumber] = useState("");
@@ -53,9 +52,9 @@ const Tab = () => {
   };
 
   return (
-    <div className="flex flex-col w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+    <div className="flex flex-col w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
       <Tabs defaultValue="createOrder" className="w-full">
-        <TabsList className="flex flex-wrap justify-center sm:justify-start gap-2 mb-6">
+        <TabsList className="flex flex-wrap justify-center sm:justify-start gap-2 mb-4">
           <TabsTrigger
             value="createOrder"
             className="px-4 py-2 text-sm sm:text-base"
@@ -82,9 +81,9 @@ const Tab = () => {
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="grid gap-6">
+            <CardContent className="grid gap-4">
               {/* Input fields */}
-              <div className="flex flex-col sm:flex-row gap-6">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <div className="grid gap-2 w-full">
                   <Label htmlFor="orderNumber">Захиалгын дугаар</Label>
                   <Input
