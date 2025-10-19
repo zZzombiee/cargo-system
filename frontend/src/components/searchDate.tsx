@@ -2,69 +2,76 @@
 
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
-import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import { toast } from "sonner";
+import { CalendarIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
-  PopoverTrigger,
   PopoverContent,
+  PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
 import api from "@/lib/axios";
-
-interface SearchDateProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setOrders: React.Dispatch<React.SetStateAction<any[]>>;
+import { Order } from "./tables";
+interface SearchOrder {
+  orders: Order[];
+  setOrders: React.Dispatch<React.SetStateAction<Order[]>>;
 }
 
-const SearchDate = ({ setOrders }: SearchDateProps) => {
+const SearchDate = ({ orders, setOrders }: SearchOrder) => {
   const [date, setDate] = useState<DateRange | undefined>();
 
-  const handleSelect = async (range: DateRange | undefined) => {
-    setDate(range);
-
+  const fetchOrdersByDate = async (range: DateRange | undefined) => {
     if (!range?.from || !range?.to) return;
-
     try {
-      const res = await api.post(`/order/date`, {
-        startDate: range.from,
-        endDate: range.to,
-      });
-
-      if (res.data.orders.length === 0) {
-        toast.error("No orders found in this range");
-        setOrders([]);
-      } else {
-        setOrders(res.data.orders);
-        toast.success("Orders filtered successfully!");
-      }
+      const res = await api.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/order/date`,
+        {
+          startDate: range.from,
+          endDate: range.to,
+        }
+      );
+      setOrders(res.data.orders);
     } catch (error) {
-      console.error("Failed to fetch orders by date:", error);
-      toast.error("Error fetching orders by date");
+      setOrders(orders);
+
+      console.log("Failed to fetch orders by date:");
     }
+  };
+
+  const handleSelect = (range: DateRange | undefined) => {
+    setDate(range);
+    fetchOrdersByDate(range);
   };
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="flex items-center gap-2">
-          <CalendarIcon className="h-4 w-4" />
-          {date?.from && date?.to
-            ? `${format(date.from, "yyyy/MM/dd")} - ${format(
-                date.to,
-                "yyyy/MM/dd"
-              )}`
-            : "Select date range"}
+        <Button
+          variant="outline"
+          className="w-[280px] justify-start text-left font-normal"
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {date?.from ? (
+            date.to ? (
+              <>
+                {format(date.from, "yyyy/MM/dd")} -{" "}
+                {format(date.to, "yyyy/MM/dd")}
+              </>
+            ) : (
+              format(date.from, "yyyy/MM/dd")
+            )
+          ) : (
+            <span>Pick a date range</span>
+          )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="p-0">
+      <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="range"
           selected={date}
           onSelect={handleSelect}
-          numberOfMonths={2}
+          numberOfMonths={1} // ✅ Only show one month
         />
       </PopoverContent>
     </Popover>
