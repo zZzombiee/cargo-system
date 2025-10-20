@@ -20,7 +20,6 @@ export const login = async (req: Request, res: Response) => {
       { expiresIn: "10h" }
     );
 
-    // 🍪 cookie илгээх (frontend талд авахын тулд хэрэгтэй)
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

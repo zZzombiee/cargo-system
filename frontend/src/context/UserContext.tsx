@@ -49,6 +49,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
+      setLoading(true);
       const res = await api.post("/user/login", { email, password });
       const user = res.data.user;
 
@@ -59,19 +60,24 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
       if (user.role === "ADMIN") router.push("/admin");
       else router.push("/user");
+      setLoading(false);
     } catch (_err) {
       toast.error("Имэйл эсвэл нууц үг буруу байна.");
+      setLoading(false);
     }
   };
 
   const register = async (
     data: Omit<User, "id" | "role"> & { password: string }
   ) => {
+    setLoading(true);
     try {
       await api.post(`/user`, data);
       toast.success("Registered successfully!");
       router.push("/login");
+      setLoading(false);
     } catch {
+      setLoading(false);
       toast.error("Registration failed!");
     }
   };

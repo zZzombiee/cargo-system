@@ -2,7 +2,7 @@
 
 const About = () => {
   return (
-    <section className="w-full bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 py-16 px-6 sm:px-10">
+    <section className="w-full bg-gradient-to-b dark:from-gray-900 dark:to-gray-950 py-16 px-6 sm:px-10">
       <div className="max-w-5xl mx-auto text-center space-y-8">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white">
           Бидний тухай
@@ -15,7 +15,6 @@ const About = () => {
         </p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-          {/* Card 1 */}
           <div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow hover:shadow-xl transition-all duration-300">
             <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
               Манай зорилго
@@ -26,7 +25,6 @@ const About = () => {
             </p>
           </div>
 
-          {/* Card 2 */}
           <div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow hover:shadow-xl transition-all duration-300">
             <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
               Манай үйлчилгээ
@@ -37,7 +35,6 @@ const About = () => {
             </p>
           </div>
 
-          {/* Card 3 */}
           <div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow hover:shadow-xl transition-all duration-300">
             <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
               Манай үнэт зүйлс
