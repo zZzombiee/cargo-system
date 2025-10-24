@@ -27,7 +27,7 @@ const Register = () => {
     if (user) {
       router.push("/");
     }
-  }, [user]);
+  }, [router, user]);
 
   const toggleShowPassword = (field: "password" | "confirmPassword") => {
     setShowPassword((prev) => ({

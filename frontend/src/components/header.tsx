@@ -14,6 +14,7 @@ const Header = () => {
   const router = useRouter();
   const { user, logout } = useUser();
   const { theme } = useTheme();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 

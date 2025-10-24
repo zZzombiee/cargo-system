@@ -61,6 +61,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       if (user.role === "ADMIN") router.push("/admin");
       else router.push("/user");
       setLoading(false);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_err) {
       toast.error("Имэйл эсвэл нууц үг буруу байна.");
       setLoading(false);

@@ -14,7 +14,7 @@ export interface Order {
   location: "Улаанбаатар" | "Эрээн" | "Замын-Үүд" | "Хятад";
   price: number;
   discription: string;
-  // userId: ObjectId;
+  userId: ObjectId;
 }
 
 const OrderSchema = new Schema<Order>(
@@ -42,7 +42,7 @@ const OrderSchema = new Schema<Order>(
       required: true,
     },
     price: { type: Number },
-    // userId: { type: Schema.Types.ObjectId, ref: "User" },
+    userId: { type: Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
