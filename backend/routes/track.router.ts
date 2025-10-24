@@ -4,6 +4,7 @@ import {
   deleteTrack,
   getTrack,
   getTracks,
+  getTracksByUser,
   updateTrack,
 } from "../controllers/track.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
@@ -16,6 +17,7 @@ trackRoutes
   .get("/", getTracks)
   .get("/:id", getTrack)
   .put("/:id", updateTrack)
-  .delete("/:id", deleteTrack);
+  .delete("/:id", deleteTrack)
+  .get("/user/:id", getTracksByUser);
 
 export default trackRoutes;

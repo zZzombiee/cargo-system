@@ -2,6 +2,7 @@ import { UserProvider } from "@/context/UserContext";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/context/ThemeProvider";
+import { TrackProvider } from "@/context/TrackContext";
 
 export const metadata = {
   title: "GoCargo",
@@ -23,10 +24,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <UserProvider>
-            <div className="flex flex-col min-h-screen w-full">
-              <main className="flex-grow container ">{children}</main>
-              <Toaster position="bottom-right" richColors />
-            </div>
+            <TrackProvider>
+              <div className="flex flex-col min-h-screen w-full">
+                <main className="flex-grow container ">{children}</main>
+                <Toaster position="bottom-right" richColors />
+              </div>
+            </TrackProvider>
           </UserProvider>
         </ThemeProvider>
       </body>

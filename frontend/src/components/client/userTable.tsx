@@ -12,22 +12,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import api from "@/lib/axios";
-import { Order, UserTablesProps } from "@/types/order";
+import { UserTablesProps } from "@/types/order";
+import { useTrack } from "@/context/TrackContext";
 
 const UserTables: React.FC<UserTablesProps> = ({ searchFor }) => {
-  const [orders, setOrders] = useState<Order[]>([]);
-
-  useEffect(() => {
-    api
-      .get(`/order`)
-      .then((res) => setOrders(res.data.orders))
-      .catch(console.error);
-  }, []);
-
+  const { userTracks } = useTrack();
   const filtered = searchFor
-    ? orders.filter((d) => d.status === searchFor)
-    : orders;
+    ? userTracks.filter((d) => d.status === searchFor)
+    : userTracks;
 
   return (
     <div className="mx-auto p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-md border max-w-screen">
@@ -49,25 +41,25 @@ const UserTables: React.FC<UserTablesProps> = ({ searchFor }) => {
         </TableHeader>
 
         <TableBody>
-          {filtered.map((order, i) => (
+          {filtered.map((track, i) => (
             <TableRow
-              key={order._id}
+              key={track._id}
               className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
               <TableCell className="text-center font-medium">{i + 1}</TableCell>
               <TableCell className="text-center font-mono">
-                {order.orderNumber}
+                {track.trackingNumber}
               </TableCell>
               {/* <TableCell className="text-center">
-                {new Intl.NumberFormat("mn-MN").format(order.price)} ₮
+                {new Intl.NumberFormat("mn-MN").format(track.price)} ₮
               </TableCell> */}
 
-              <TableCell className="text-center">{order.status}</TableCell>
+              <TableCell className="text-center">{track.status}</TableCell>
 
-              <TableCell className="text-center">{order.location}</TableCell>
+              <TableCell className="text-center">{track.location}</TableCell>
 
               <TableCell className="text-center text-gray-500 dark:text-gray-400">
-                {moment(order.createdAt).format("YYYY/MM/DD")}
+                {moment(track.createdAt).format("YYYY/MM/DD")}
               </TableCell>
             </TableRow>
           ))}

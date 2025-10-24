@@ -77,3 +77,16 @@ export const deleteTrack = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const getTracksByUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params; // user id
+    const tracks = await TrackModel.find({ user: id })
+      .populate("user", "name email number role")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({ success: true, tracks });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

@@ -18,7 +18,9 @@ export const registerUser = async (req: Request, res: Response) => {
         .json({ success: false, message: "All fields required" });
 
     // Check if email already exists
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    const existingUser = await User.findOne({
+      email: email.trim().toLowerCase(),
+    });
     if (existingUser)
       return res
         .status(400)
@@ -30,7 +32,7 @@ export const registerUser = async (req: Request, res: Response) => {
     // Create user
     const newUser = await User.create({
       name,
-      email: email.toLowerCase(),
+      email: email.trim().toLowerCase(),
       number,
       password: hashedPassword,
     });
@@ -63,7 +65,7 @@ export const loginUser = async (req: Request, res: Response) => {
         .status(400)
         .json({ success: false, message: "Email and password required" });
 
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const user = await User.findOne({ email: email.trim().toLowerCase() });
     if (!user)
       return res
         .status(404)
@@ -115,16 +117,18 @@ export const getAllUsers = async (_req: Request, res: Response) => {
 // ============================
 // 👁️ Get user by ID
 // ============================
-export const getUserById = async (req: Request, res: Response) => {
+export const getCurrentUser = async (req: any, res: Response) => {
   try {
-    const { id } = req.params;
-    const user = await User.findById(id).select("-password");
+    // ✅ The verifyToken middleware adds `req.user`
+    const userId = req.user.id;
+
+    const user = await User.findById(userId).select("-password");
     if (!user)
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
 
-    res.status(200).json({ success: true, data: user });
+    res.status(200).json({ success: true, user });
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.message });
   }
