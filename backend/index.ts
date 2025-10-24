@@ -18,6 +18,7 @@ app.use(
       "http://localhost:3000",
     ],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -27,7 +28,7 @@ app.get("/", (_req, res) => {
 });
 // app.use("/order", orderRouter);
 app.use("/user", userRouter);
-app.use("/api/tracks", trackRoutes);
+app.use("/track", trackRoutes);
 
 // Global Error Handler
 interface ApiError extends Error {

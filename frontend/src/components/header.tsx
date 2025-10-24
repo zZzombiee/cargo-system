@@ -71,9 +71,7 @@ const Header = () => {
             <Dropdown
               name={user.name}
               menuItems={[
-                // "Profile",
-                // "Settings",
-                ...(user.role === "ADMIN"
+                ...(user.role === "admin"
                   ? [
                       {
                         label: "Admin Page",

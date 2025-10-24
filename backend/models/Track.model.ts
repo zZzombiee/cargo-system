@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
 export interface ITrack extends Document {
-  orderNumber: string;
+  trackingNumber: string;
   location: string;
   status: string;
   price: number;
@@ -12,9 +12,9 @@ export interface ITrack extends Document {
 
 const trackSchema = new Schema<ITrack>(
   {
-    orderNumber: {
+    trackingNumber: {
       type: String,
-      required: [true, "Order number is required"],
+      required: [true, "Tracking number is required"],
       unique: true,
     },
     location: {

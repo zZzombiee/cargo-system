@@ -28,64 +28,71 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // ✅ Fetch current user using token
   const fetchUser = async () => {
-    const userId = localStorage.getItem("userid");
-    if (!userId) {
+    const token = localStorage.getItem("token");
+    if (!token) {
       setUser(null);
       setLoading(false);
       return;
     }
 
     try {
-      const res = await api.get(`/user/${userId}`);
+      const res = await api.get(`/user/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setUser(res.data.user);
     } catch (err) {
       console.error("❌ Fetch user failed:", err);
+      localStorage.removeItem("token");
       setUser(null);
     } finally {
       setLoading(false);
     }
   };
 
+  // ✅ Login
   const login = async (email: string, password: string) => {
     try {
       setLoading(true);
       const res = await api.post("/user/login", { email, password });
-      const user = res.data.user;
 
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("userid", user.id);
+      const { token, user } = res.data;
+
+      localStorage.setItem("token", token);
       setUser(user);
-      toast.success("Logged in successfully!");
 
-      if (user.role === "ADMIN") router.push("/admin");
+      toast.success("Logged in successfully!");
+      if (user.role === "admin") router.push("/admin");
       else router.push("/user");
-      setLoading(false);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_err) {
+    } catch (err) {
       toast.error("Имэйл эсвэл нууц үг буруу байна.");
+      console.error("Login error:", err);
+    } finally {
       setLoading(false);
     }
   };
 
+  // ✅ Register
   const register = async (
     data: Omit<User, "id" | "role"> & { password: string }
   ) => {
-    setLoading(true);
     try {
-      await api.post(`/user`, data);
+      setLoading(true);
+      await api.post("/user/register", data);
       toast.success("Registered successfully!");
       router.push("/login");
-      setLoading(false);
-    } catch {
-      setLoading(false);
+    } catch (err) {
+      console.error("Register error:", err);
       toast.error("Registration failed!");
+    } finally {
+      setLoading(false);
     }
   };
 
+  // ✅ Logout
   const logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("userid");
+    localStorage.removeItem("token");
     setUser(null);
     router.push("/login");
   };

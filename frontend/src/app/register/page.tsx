@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 const Register = () => {
   const router = useRouter();
   const { register, loading, user } = useUser();
+
   const [form, setForm] = useState({
     email: "",
     name: "",
@@ -18,6 +19,7 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirmPassword: false,
@@ -39,6 +41,7 @@ const Register = () => {
   const handleRegister = async () => {
     const { email, name, number, password, confirmPassword } = form;
 
+    // ✅ Validate inputs
     if (!email || !name || !number || !password || !confirmPassword)
       return toast.error("Please fill in all fields");
 
@@ -55,16 +58,16 @@ const Register = () => {
     if (!phoneRegex.test(number))
       return toast.error("Invalid phone number format");
 
-    const normalizedEmail = email.trim().toLowerCase();
-
-    await register({ email, name, number, password: normalizedEmail });
+    // ✅ Backend will normalize email itself
+    await register({ email, name, number, password });
   };
 
   return (
-    <div className="flex items-center justify-center h-[70vh]">
-      <div className="mx-auto flex flex-col gap-4 border p-10 rounded-lg bg-white shadow-lg dark:bg-gray-900 ">
+    <div className="flex items-center justify-center h-screen">
+      <div className="mx-auto flex flex-col gap-4 border p-10 rounded-lg bg-white shadow-lg dark:bg-gray-900 w-[90%] sm:w-[400px]">
         <h1 className="text-2xl text-center font-semibold">Register</h1>
 
+        {/* Input fields */}
         {Object.keys(form).map((key) => {
           const field = key as keyof typeof form;
           const isPassword = key.toLowerCase().includes("password");
@@ -90,6 +93,7 @@ const Register = () => {
                 onChange={(e) => setForm({ ...form, [field]: e.target.value })}
               />
 
+              {/* 👁️ Password toggle */}
               {isPassword && (
                 <button
                   type="button"
@@ -109,9 +113,11 @@ const Register = () => {
           );
         })}
 
+        {/* Buttons */}
         <Button onClick={handleRegister} disabled={loading}>
           {loading ? "Loading..." : "Register"}
         </Button>
+
         <Button onClick={() => router.push("/login")} variant="outline">
           Login
         </Button>
