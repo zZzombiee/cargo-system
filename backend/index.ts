@@ -4,6 +4,7 @@ import "dotenv/config";
 import { connectDB } from "./database/index.js";
 import { orderRouter } from "./routes/order.router.js";
 import { userRouter } from "./routes/user.router.js";
+import trackRoutes from "./routes/track.router.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(
 );
 app.use("/order", orderRouter);
 app.use("/user", userRouter);
+app.use("/api/tracks", trackRoutes);
 
 const server = async () => {
   await connectDB();

@@ -2,8 +2,6 @@ import { UserProvider } from "@/context/UserContext";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/context/ThemeProvider";
-import Footer from "@/components/footer";
-import Header from "@/components/header";
 
 export const metadata = {
   title: "GoCargo",
@@ -26,11 +24,8 @@ export default function RootLayout({
         >
           <UserProvider>
             <div className="flex flex-col min-h-screen w-full">
-              <Header />
-              <main className="flex-grow container mx-auto">{children}</main>
-
+              <main className="flex-grow container ">{children}</main>
               <Toaster position="bottom-right" richColors />
-              <Footer />
             </div>
           </UserProvider>
         </ThemeProvider>
