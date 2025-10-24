@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { UserModel } from "../../models/User.model.js";
+import UserModel from "../../models/User.model.js";
 
 const getUsers = async (_req: Request, res: Response) => {
   try {
