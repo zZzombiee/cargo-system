@@ -1,13 +1,18 @@
 import express from "express";
-import getUsers from "../controllers/user/getUsers.js";
-import createUser from "../controllers/user/createUser.js";
-import { login } from "../controllers/user/login.js";
-import getUser from "../controllers/user/getUser.js";
+import {
+  registerUser,
+  loginUser,
+  getAllUsers,
+  getUserById,
+} from "../controllers/user.controller.js";
+import { verifyToken, isAdmin } from "../middleware/auth.middleware.js";
 
-export const userRouter = express.Router();
+const userRouter = express.Router();
 
 userRouter
-  .get("/", getUsers)
-  .post("/", createUser)
-  .post("/login", login)
-  .get("/:id", getUser);
+  .post("/register", registerUser)
+  .post("/login", loginUser)
+  .get("/", verifyToken, isAdmin, getAllUsers)
+  .get("/:id", verifyToken, getUserById);
+
+export default userRouter;
