@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import { connectDB } from "./database/index.js";
-import { orderRouter } from "./routes/order.router.js";
 import trackRoutes from "./routes/track.router.js";
 import userRouter from "./routes/user.router.js";
 
@@ -26,7 +25,6 @@ app.use(
 app.get("/", (_req, res) => {
   res.json({ message: "Cargo backend running 🚀" });
 });
-// app.use("/order", orderRouter);
 app.use("/user", userRouter);
 app.use("/track", trackRoutes);
 
