@@ -17,8 +17,11 @@ import { useTrack } from "@/context/TrackContext";
 
 const UserTables: React.FC<UserTablesProps> = ({ searchFor }) => {
   const { userTracks } = useTrack();
-  const filtered = searchFor
-    ? userTracks.filter((d) => d.status === searchFor)
+  const searchStatus = searchFor as unknown as
+    | (typeof userTracks)[number]["status"]
+    | undefined;
+  const filtered = searchStatus
+    ? userTracks.filter((d) => d.status === searchStatus)
     : userTracks;
 
   return (

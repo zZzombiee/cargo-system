@@ -23,6 +23,6 @@ const OrderSchema = new Schema({
         required: true,
     },
     price: { type: Number },
-    // userId: { type: Schema.Types.ObjectId, ref: "User" },
+    userId: { type: Schema.Types.ObjectId, ref: "User" },
 }, { timestamps: true });
 export const OrderModel = mongoose.model("Order", OrderSchema);

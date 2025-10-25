@@ -13,7 +13,7 @@ import { authMiddleware } from "../middleware/auth.middleware.js";
 const trackRoutes = express.Router();
 
 trackRoutes
-  // .use(authMiddleware)
+  .use(authMiddleware)
   .post("/user/create", createTrackByUser)
   .post("/admin-scan", adminScanTrack)
   .get("/", getTracks)
