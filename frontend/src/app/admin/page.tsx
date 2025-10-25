@@ -39,41 +39,50 @@ export default function AdminDashboardPage() {
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow>
+                  <TableRow className="text-center">
                     <TableHead className="min-w-[100px]">Order #</TableHead>
-                    <TableHead>Sender</TableHead>
-                    <TableHead>Receiver</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Weight</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead className="text-center">Track Number</TableHead>
+                    <TableHead className="text-center">Price</TableHead>
+                    <TableHead className="text-center">Status</TableHead>
+                    <TableHead className="text-center">Weight</TableHead>
+                    <TableHead className="text-center">Location</TableHead>
+                    <TableHead className="text-center">Date</TableHead>
+                    <TableHead className="text-center">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
 
                 <TableBody>
-                  {allTracks.map((track) => (
+                  {allTracks.map((track, index) => (
                     <TableRow
                       key={track._id}
-                      className="hover:bg-muted/50 transition-colors"
+                      className="hover:bg-muted/50 transition-colors text-center"
                     >
-                      <TableCell>{track.status}</TableCell>
+                      <TableCell>{allTracks.length - index}</TableCell>
                       <TableCell>{track.trackingNumber}</TableCell>
-                      <TableCell>{track.price}</TableCell>
-                      <TableCell>{track.location}</TableCell>
-                      <TableCell>{track.weight}</TableCell>
                       <TableCell>
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            track.status === "Delivered"
-                              ? "bg-green-100 text-green-700"
-                              : track.status === "Pending"
-                              ? "bg-yellow-100 text-yellow-700"
-                              : "bg-gray-100 text-gray-700"
-                          }`}
-                        >
-                          {track.status}
-                        </span>
+                        {track.price === 0 ? "-" : track.price}
+                      </TableCell>
+                      <TableCell>{track.location}</TableCell>
+                      <TableCell>
+                        {track.weight === 0 ? "-" : track.weight}
+                      </TableCell>
+                      <TableCell>
+                        {(() => {
+                          const statusClassMap: Record<string, string> = {
+                            Хүргэгдсэн: "bg-green-100 text-green-700",
+                            Саатсан: "bg-yellow-100 text-yellow-700",
+                          };
+                          const statusClass =
+                            statusClassMap[String(track.status)] ??
+                            "bg-gray-100 text-gray-700";
+                          return (
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs font-medium ${statusClass}`}
+                            >
+                              {track.status}
+                            </span>
+                          );
+                        })()}
                       </TableCell>
                       <TableCell>
                         {new Date(track.createdAt).toLocaleDateString()}

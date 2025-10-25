@@ -1,6 +1,7 @@
 import express from "express";
 import {
-  createTrack,
+  adminScanTrack,
+  createTrackByUser,
   deleteTrack,
   getTrack,
   getTracks,
@@ -13,7 +14,8 @@ const trackRoutes = express.Router();
 
 trackRoutes
   .use(authMiddleware)
-  .post("/", createTrack)
+  .post("/user/create", createTrackByUser)
+  .post("/admin-scan", adminScanTrack)
   .get("/", getTracks)
   .get("/:id", getTrack)
   .put("/:id", updateTrack)

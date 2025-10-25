@@ -12,14 +12,32 @@ import { toast } from "sonner";
 import { useUser } from "@/context/UserContext";
 
 export interface Track {
+  updatedAt: string | number | Date;
   _id: string;
   trackingNumber: string;
   location: string;
-  status: string;
+  status: [
+    "Хятад",
+    "Эрээн агуулах",
+    "Замын-Үүд",
+    "Салбар хувиарлагдсан",
+    "Салбар дээр",
+    "Хүргэлтэнд гарсан",
+    "Хүргэгдсэн",
+    "Саатсан"
+  ];
   price: number;
   weight: number;
-  user: string;
   createdAt: Date;
+  statusHistory?: {
+    status: string;
+    updatedAt: Date;
+  }[];
+  user?: {
+    _id: string;
+    name: string;
+    email: string;
+  };
 }
 
 export interface TrackContextType {

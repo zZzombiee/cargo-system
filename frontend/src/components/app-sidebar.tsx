@@ -31,7 +31,7 @@ import Link from "next/link";
 const CargoAdminSidebar = () => {
   const menuItems = [
     { title: "Dashboard", icon: LayoutDashboard, href: "/admin" },
-    { title: "Orders", icon: Package, href: "/admin/orders" },
+    { title: "Tracks", icon: Package, href: "/admin/tracks" },
     { title: "Customers", icon: Users, href: "/admin/customers" },
     { title: "Tracking", icon: Truck, href: "/admin/tracking" },
     { title: "Reports", icon: BarChart3, href: "/admin/reports" },
