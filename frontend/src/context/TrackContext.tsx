@@ -6,6 +6,7 @@ import {
   useContext,
   ReactNode,
   useEffect,
+  use,
 } from "react";
 import api from "@/lib/axios";
 import { toast } from "sonner";
@@ -166,6 +167,10 @@ export const TrackProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (user) fetchUserTracks();
   }, [user]);
+
+  useEffect(() => {
+    fetchAllTracks();
+  }, []);
 
   return (
     <TrackContext.Provider

@@ -6,7 +6,6 @@ import {
   IconDashboard,
   IconFolder,
   IconHelp,
-  IconInnerShadowTop,
   IconPackage,
   IconSearch,
   IconSettings,

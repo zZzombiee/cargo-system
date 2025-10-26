@@ -1,36 +1,11 @@
 "use client";
 
 import * as React from "react";
-import {
-  closestCenter,
-  DndContext,
-  KeyboardSensor,
-  MouseSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-  type DragEndEvent,
-  type UniqueIdentifier,
-} from "@dnd-kit/core";
+import * as DnD from "@dnd-kit/core";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import * as Sortable from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import {
-  IconChevronDown,
-  IconChevronLeft,
-  IconChevronRight,
-  IconChevronsLeft,
-  IconChevronsRight,
-  IconDotsVertical,
-  IconGripVertical,
-  IconLayoutColumns,
-  IconPlus,
-} from "@tabler/icons-react";
+import * as Icons from "@tabler/icons-react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -49,34 +24,32 @@ import {
 
 import { z } from "zod";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-
 import {
+  Badge,
+  Button,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Label } from "@/components/ui/label";
-import {
+  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui";
 import moment from "moment";
 
 export const schema = z.object({
@@ -91,7 +64,7 @@ export const schema = z.object({
 
 // Create a separate component for the drag handle
 function DragHandle({ id }: { id: string }) {
-  const { attributes, listeners } = useSortable({
+  const { attributes, listeners } = Sortable.useSortable({
     id,
   });
 
@@ -103,7 +76,7 @@ function DragHandle({ id }: { id: string }) {
       size="icon"
       className="text-muted-foreground size-7 hover:bg-transparent"
     >
-      <IconGripVertical className="text-muted-foreground size-3" />
+      <Icons.IconGripVertical className="text-muted-foreground size-3" />
       <span className="sr-only">Drag to reorder</span>
     </Button>
   );
@@ -173,7 +146,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
             className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
             size="icon"
           >
-            <IconDotsVertical />
+            <Icons.IconDotsVertical />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
@@ -190,9 +163,10 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
 ];
 
 function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
-  const { transform, transition, setNodeRef, isDragging } = useSortable({
-    id: row.original._id,
-  });
+  const { transform, transition, setNodeRef, isDragging } =
+    Sortable.useSortable({
+      id: row.original._id,
+    });
 
   return (
     <TableRow
@@ -233,13 +207,13 @@ export function DataTable({
     pageSize: 10,
   });
   const sortableId = React.useId();
-  const sensors = useSensors(
-    useSensor(MouseSensor, {}),
-    useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {})
+  const sensors = DnD.useSensors(
+    DnD.useSensor(DnD.MouseSensor, {}),
+    DnD.useSensor(DnD.TouchSensor, {}),
+    DnD.useSensor(DnD.KeyboardSensor, {})
   );
 
-  const dataIds = React.useMemo<UniqueIdentifier[]>(
+  const dataIds = React.useMemo<DnD.UniqueIdentifier[]>(
     () => data?.map(({ _id }) => _id) || [],
     [data]
   );
@@ -269,13 +243,13 @@ export function DataTable({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  function handleDragEnd(event: DragEndEvent) {
+  function handleDragEnd(event: DnD.DragEndEvent) {
     const { active, over } = event;
     if (active && over && active.id !== over.id) {
       setData((data) => {
         const oldIndex = dataIds.indexOf(active.id);
         const newIndex = dataIds.indexOf(over.id);
-        return arrayMove(data, oldIndex, newIndex);
+        return Sortable.arrayMove(data, oldIndex, newIndex);
       });
     }
   }
@@ -318,10 +292,10 @@ export function DataTable({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
-                <IconLayoutColumns />
+                <Icons.IconLayoutColumns />
                 <span className="hidden lg:inline">Customize Columns</span>
                 <span className="lg:hidden">Columns</span>
-                <IconChevronDown />
+                <Icons.IconChevronDown />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
@@ -349,7 +323,7 @@ export function DataTable({
             </DropdownMenuContent>
           </DropdownMenu>
           <Button variant="outline" size="sm">
-            <IconPlus />
+            <Icons.IconPlus />
             <span className="hidden lg:inline">Add Section</span>
           </Button>
         </div>
@@ -359,8 +333,8 @@ export function DataTable({
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
         <div className="overflow-hidden rounded-lg border">
-          <DndContext
-            collisionDetection={closestCenter}
+          <DnD.DndContext
+            collisionDetection={DnD.closestCenter}
             modifiers={[restrictToVerticalAxis]}
             onDragEnd={handleDragEnd}
             sensors={sensors}
@@ -387,14 +361,14 @@ export function DataTable({
               </TableHeader>
               <TableBody className="**:data-[slot=table-cell]:first:w-8">
                 {table.getRowModel().rows?.length ? (
-                  <SortableContext
+                  <Sortable.SortableContext
                     items={dataIds}
-                    strategy={verticalListSortingStrategy}
+                    strategy={Sortable.verticalListSortingStrategy}
                   >
                     {table.getRowModel().rows.map((row) => (
                       <DraggableRow key={row.id} row={row} />
                     ))}
-                  </SortableContext>
+                  </Sortable.SortableContext>
                 ) : (
                   <TableRow>
                     <TableCell
@@ -407,7 +381,7 @@ export function DataTable({
                 )}
               </TableBody>
             </Table>
-          </DndContext>
+          </DnD.DndContext>
         </div>
         <div className="flex items-center justify-between px-4">
           <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
@@ -451,7 +425,7 @@ export function DataTable({
                 disabled={!table.getCanPreviousPage()}
               >
                 <span className="sr-only">Go to first page</span>
-                <IconChevronsLeft />
+                <Icons.IconChevronsLeft />
               </Button>
               <Button
                 variant="outline"
@@ -461,7 +435,7 @@ export function DataTable({
                 disabled={!table.getCanPreviousPage()}
               >
                 <span className="sr-only">Go to previous page</span>
-                <IconChevronLeft />
+                <Icons.IconChevronLeft />
               </Button>
               <Button
                 variant="outline"
@@ -471,7 +445,7 @@ export function DataTable({
                 disabled={!table.getCanNextPage()}
               >
                 <span className="sr-only">Go to next page</span>
-                <IconChevronRight />
+                <Icons.IconChevronRight />
               </Button>
               <Button
                 variant="outline"
@@ -481,7 +455,7 @@ export function DataTable({
                 disabled={!table.getCanNextPage()}
               >
                 <span className="sr-only">Go to last page</span>
-                <IconChevronsRight />
+                <Icons.IconChevronsRight />
               </Button>
             </div>
           </div>
