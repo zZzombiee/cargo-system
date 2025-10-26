@@ -1,0 +1,29 @@
+[
+  {
+    "_id": 1,
+    "trackingNumber": "ORD-123123-1DSA",
+    "location": "Замын-Үүд",
+    "status": "Монголд ирсэн",
+    "weight": "18",
+    "price": "5'000",
+    "date": "Oct 10, 2023"
+  },
+  {
+    "_id": 2,
+    "trackingNumber": "ORD-456456-2DSA",
+    "location": "Улаанбаатар",
+    "status": "Хүргэлтэнд бэлэн",
+    "weight": "25",
+    "price": "7'500",
+    "date": "Oct 12, 2023"
+  },
+  {
+    "_id": 3,
+    "trackingNumber": "ORD-789789-3DSA",
+    "location": "Эрээн",
+    "status": "Хятадад илгээгдсэн",
+    "weight": "10",
+    "price": "3'000",
+    "date": "Oct 15, 2023"
+  }
+]
