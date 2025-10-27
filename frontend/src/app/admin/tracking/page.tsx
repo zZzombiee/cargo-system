@@ -54,10 +54,6 @@ export default function AdminTrackDialog() {
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
-        {/* <button className="bg-[#101828] text-white w-full flex justify-start p-2 rounded-md hover:bg-[#1D2939] transition-colors gap-2 items-center flex-row max-h-8">
-          <IconCirclePlusFilled className="w-4 h-4 text-center" />
-          {open ? <span>Quick Create</span> : null}
-        </button> */}
         <SidebarMenuButton
           tooltip={"Quick Create"}
           className="bg-[#101828] text-white w-full flex justify-start p-2 rounded-md hover:bg-[#1D2939] transition-colors gap-2 items-center flex-row max-h-8 hover:text-white"
