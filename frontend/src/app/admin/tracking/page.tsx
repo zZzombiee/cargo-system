@@ -14,12 +14,14 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import api from "@/lib/axios";
 import { IconCirclePlusFilled } from "@tabler/icons-react";
+import { SidebarMenuButton, useSidebar } from "@/components/ui";
 
 export default function AdminTrackDialog() {
   const [trackingNumber, setTrackingNumber] = useState("");
   const [status, setStatus] = useState("Эрээн агуулах");
   const [submitting, setSubmitting] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const { open } = useSidebar();
 
   const handleScan = async () => {
     if (!trackingNumber.trim()) {
@@ -39,7 +41,7 @@ export default function AdminTrackDialog() {
       toast.dismiss(loadingToast);
       toast.success(res.data.message || "Амжилттай шинэчлэгдлээ!");
       setTrackingNumber("");
-      setOpen(false);
+      setOpenDialog(false);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error("❌ Admin scan error:", err);
@@ -50,12 +52,19 @@ export default function AdminTrackDialog() {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
-        <Button className="bg-[#101828] text-white w-full flex justify-start px-1 py-2">
+        {/* <button className="bg-[#101828] text-white w-full flex justify-start p-2 rounded-md hover:bg-[#1D2939] transition-colors gap-2 items-center flex-row max-h-8">
+          <IconCirclePlusFilled className="w-4 h-4 text-center" />
+          {open ? <span>Quick Create</span> : null}
+        </button> */}
+        <SidebarMenuButton
+          tooltip={"Quick Create"}
+          className="bg-[#101828] text-white w-full flex justify-start p-2 rounded-md hover:bg-[#1D2939] transition-colors gap-2 items-center flex-row max-h-8 hover:text-white"
+        >
           <IconCirclePlusFilled className="w-4 h-4 text-center" />
           <span>Quick Create</span>
-        </Button>
+        </SidebarMenuButton>
       </DialogTrigger>
 
       <DialogContent className="max-w-md">
