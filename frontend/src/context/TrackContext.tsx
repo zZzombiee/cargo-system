@@ -1,35 +1,36 @@
 "use client";
 
-import {
+import React, {
   createContext,
   useState,
   useContext,
-  ReactNode,
   useEffect,
-  use,
+  ReactNode,
 } from "react";
 import api from "@/lib/axios";
 import { toast } from "sonner";
 import { useUser } from "@/context/UserContext";
 
+/* ========================
+   🧩 Track Type Definition
+   ======================== */
 export interface Track {
-  updatedAt: string | number | Date;
   _id: string;
   trackingNumber: string;
   location: string;
-  status: [
-    "Хятад",
-    "Эрээн агуулах",
-    "Замын-Үүд",
-    "Салбар хувиарлагдсан",
-    "Салбар дээр",
-    "Хүргэлтэнд гарсан",
-    "Хүргэгдсэн",
-    "Саатсан"
-  ];
+  status:
+    | "Хятад"
+    | "Эрээн агуулах"
+    | "Замын-Үүд"
+    | "Салбар хувиарлагдсан"
+    | "Салбар дээр"
+    | "Хүргэлтэнд гарсан"
+    | "Хүргэгдсэн"
+    | "Саатсан";
   price: number;
   weight: number;
   createdAt: Date;
+  updatedAt: string | number | Date;
   statusHistory?: {
     status: string;
     updatedAt: Date;
@@ -41,6 +42,9 @@ export interface Track {
   };
 }
 
+/* ========================
+   ⚙️ Context Type
+   ======================== */
 export interface TrackContextType {
   allTracks: Track[];
   userTracks: Track[];
@@ -52,6 +56,9 @@ export interface TrackContextType {
   deleteTrack: (id: string) => Promise<void>;
 }
 
+/* ========================
+   🌐 Context Creation
+   ======================== */
 const TrackContext = createContext<TrackContextType>({
   allTracks: [],
   userTracks: [],
@@ -65,23 +72,31 @@ const TrackContext = createContext<TrackContextType>({
 
 export const useTrack = () => useContext(TrackContext);
 
-export const TrackProvider = ({ children }: { children: ReactNode }) => {
+/* ========================
+   🧠 Provider Component
+   ======================== */
+interface TrackProviderProps {
+  children: ReactNode;
+}
+
+export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
   const { user } = useUser();
+
   const [allTracks, setAllTracks] = useState<Track[]>([]);
   const [userTracks, setUserTracks] = useState<Track[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  /** ✅ Fetch all tracks (admin) */
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem("token");
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  };
+
+  /* ✅ Fetch all tracks (Admin only) */
   const fetchAllTracks = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
+      const res = await api.get("/track", { headers: getAuthHeaders() });
 
-      const res = await api.get("/track", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      // Safely extract array
       const data = Array.isArray(res.data)
         ? res.data
         : Array.isArray(res.data.tracks)
@@ -89,88 +104,114 @@ export const TrackProvider = ({ children }: { children: ReactNode }) => {
         : [];
 
       setAllTracks(data);
-    } catch (error: unknown) {
-      console.error("❌ Failed to fetch tracks:", error);
+    } catch (error) {
+      console.error("❌ Failed to fetch all tracks:", error);
       toast.error("Failed to load tracking data");
     } finally {
       setLoading(false);
     }
   };
 
-  /** ✅ Fetch tracks for logged-in user */
+  /* ✅ Fetch tracks for logged-in user */
   const fetchUserTracks = async () => {
     if (!user?._id) return;
     try {
       setLoading(true);
-      const res = await api.get(`/track/user/${user._id}`);
-      setUserTracks(res.data.tracks || []);
-    } catch (err) {
-      console.error("❌ Failed to fetch user tracks:", err);
+      const res = await api.get(`/track/user/${user._id}`, {
+        headers: getAuthHeaders(),
+      });
+
+      const data = Array.isArray(res.data.tracks)
+        ? res.data.tracks
+        : Array.isArray(res.data)
+        ? res.data
+        : [];
+
+      setUserTracks(data);
+    } catch (error) {
+      console.error("❌ Failed to fetch user tracks:", error);
       toast.error("Failed to load your tracks");
     } finally {
       setLoading(false);
     }
   };
 
-  /** ✅ Create a new track */
+  /* ✅ Create new track */
   const createTrack = async (trackData: Omit<Track, "_id" | "user">) => {
     try {
       setLoading(true);
-      const res = await api.post("/track", {
-        ...trackData,
-        user: user?._id, // match backend model
-      });
+      const res = await api.post(
+        "/track",
+        { ...trackData, user: user?._id },
+        { headers: getAuthHeaders() }
+      );
+
+      const newTrack = res.data.data || res.data.track || res.data;
+
+      setUserTracks((prev) => [...prev, newTrack]);
+      setAllTracks((prev) => [...prev, newTrack]);
+
       toast.success("Track created successfully!");
-      // Update local state
-      setUserTracks((prev) => [...prev, res.data.data]);
-      setAllTracks((prev) => [...prev, res.data.data]);
-    } catch (err) {
-      console.error("❌ Failed to create track:", err);
+    } catch (error) {
+      console.error("❌ Failed to create track:", error);
       toast.error("Failed to create track");
     } finally {
       setLoading(false);
     }
   };
 
-  /** ✅ Update existing track */
+  /* ✅ Update existing track */
   const updateTrack = async (id: string, data: Partial<Track>) => {
     try {
-      const res = await api.put(`/track/${id}`, data);
-      toast.success("Track updated!");
+      setLoading(true);
+      const res = await api.put(`/track/${id}`, data, {
+        headers: getAuthHeaders(),
+      });
+
+      const updated = res.data.data || res.data.track || res.data;
 
       setUserTracks((prev) =>
-        prev.map((track) => (track._id === id ? res.data.data : track))
+        prev.map((track) => (track._id === id ? updated : track))
       );
       setAllTracks((prev) =>
-        prev.map((track) => (track._id === id ? res.data.data : track))
+        prev.map((track) => (track._id === id ? updated : track))
       );
-    } catch (err) {
-      console.error("❌ Failed to update track:", err);
+
+      toast.success("Track updated successfully!");
+    } catch (error) {
+      console.error("❌ Failed to update track:", error);
       toast.error("Failed to update track");
+    } finally {
+      setLoading(false);
     }
   };
 
-  /** ✅ Delete track */
+  /* ✅ Delete track */
   const deleteTrack = async (id: string) => {
     try {
-      await api.delete(`/track/${id}`);
+      setLoading(true);
+      await api.delete(`/track/${id}`, { headers: getAuthHeaders() });
+
       setUserTracks((prev) => prev.filter((t) => t._id !== id));
       setAllTracks((prev) => prev.filter((t) => t._id !== id));
-      toast.success("Track deleted");
-    } catch (err) {
-      console.error("❌ Failed to delete track:", err);
+
+      toast.success("Track deleted successfully!");
+    } catch (error) {
+      console.error("❌ Failed to delete track:", error);
       toast.error("Failed to delete track");
+    } finally {
+      setLoading(false);
     }
   };
 
-  /** Auto-fetch user tracks when user logs in */
+  /* ✅ Auto-fetch logic */
   useEffect(() => {
-    if (user) fetchUserTracks();
-  }, [user]);
+    if (!user) return;
 
-  useEffect(() => {
-    fetchAllTracks();
-  }, []);
+    // Fetch depending on user role
+    if (user.role === "admin") fetchAllTracks();
+    else fetchUserTracks();
+  }, [user]);
 
   return (
     <TrackContext.Provider
@@ -189,3 +230,6 @@ export const TrackProvider = ({ children }: { children: ReactNode }) => {
     </TrackContext.Provider>
   );
 };
+
+/* ✅ Default export for convenience */
+export default TrackProvider;
