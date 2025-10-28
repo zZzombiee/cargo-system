@@ -14,14 +14,13 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import api from "@/lib/axios";
 import { IconCirclePlusFilled } from "@tabler/icons-react";
-import { SidebarMenuButton, useSidebar } from "@/components/ui";
+import { SidebarMenuButton } from "@/components/ui";
 
 export default function AdminTrackDialog() {
   const [trackingNumber, setTrackingNumber] = useState("");
   const [status, setStatus] = useState("Эрээн агуулах");
   const [submitting, setSubmitting] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const { open } = useSidebar();
 
   const handleScan = async () => {
     if (!trackingNumber.trim()) {
