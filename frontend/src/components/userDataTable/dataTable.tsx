@@ -27,7 +27,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  Input,
 } from "@/components/ui";
 import React from "react";
 import { DataTablePagination } from "./tablePagination";
