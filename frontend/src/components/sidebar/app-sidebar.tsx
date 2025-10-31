@@ -52,6 +52,17 @@ const data = {
       title: "Customers",
       href: "/admin/customers",
       icon: IconUsers,
+      isActive: true,
+      items: [
+        {
+          title: "Administrators",
+          url: "/admin/customers/admins",
+        },
+        {
+          title: "Customers",
+          url: "/admin/customers/client",
+        },
+      ],
     },
   ],
 
@@ -76,7 +87,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" {...props} className="group/collapsible">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
