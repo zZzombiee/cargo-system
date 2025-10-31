@@ -71,11 +71,6 @@ export const columns: ColumnDef<User>[] = [
     meta: { className: "w-[20px] text-left" },
   },
   {
-    accessorKey: "role",
-    header: "Role",
-    meta: { className: "w-[20px] text-left" },
-  },
-  {
     accessorKey: "createdAt",
     header: "Date",
     cell: ({ row }) => moment(row.original.createdAt).format("YYYY-MM-DD"),
