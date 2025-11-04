@@ -1,13 +1,10 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import User, { IUser } from "../models/User.model.js";
+import User from "../models/User.model.js";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key"; // 👈 secure this in .env
+const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
 
-// ============================
-// 🧱 Register
-// ============================
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const { name, email, number, password } = req.body;
@@ -17,7 +14,6 @@ export const registerUser = async (req: Request, res: Response) => {
         .status(400)
         .json({ success: false, message: "All fields required" });
 
-    // Check if email already exists
     const existingUser = await User.findOne({
       email: email.trim().toLowerCase(),
     });
@@ -26,10 +22,8 @@ export const registerUser = async (req: Request, res: Response) => {
         .status(400)
         .json({ success: false, message: "Email already in use" });
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
     const newUser = await User.create({
       name,
       email: email.trim().toLowerCase(),
@@ -53,9 +47,6 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-// ============================
-// 🔐 Login
-// ============================
 export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -71,14 +62,12 @@ export const loginUser = async (req: Request, res: Response) => {
         .status(404)
         .json({ success: false, message: "User not found" });
 
-    // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
       return res
         .status(400)
         .json({ success: false, message: "Invalid credentials" });
 
-    // Create JWT
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
       JWT_SECRET,
@@ -102,9 +91,6 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-// ============================
-// 👤 Get all users (Admin only)
-// ============================
 export const getAllUsers = async (_req: Request, res: Response) => {
   try {
     const users = await User.find().select("-password").sort({ createdAt: -1 });
@@ -114,12 +100,8 @@ export const getAllUsers = async (_req: Request, res: Response) => {
   }
 };
 
-// ============================
-// 👁️ Get user by ID
-// ============================
 export const getCurrentUser = async (req: any, res: Response) => {
   try {
-    // ✅ The verifyToken middleware adds `req.user`
     const userId = req.user.id;
 
     const user = await User.findById(userId).select("-password");

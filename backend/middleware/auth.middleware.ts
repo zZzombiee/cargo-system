@@ -52,7 +52,7 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as any;
-    req.user = decoded; // decoded contains user id and email
+    req.user = decoded;
     next();
   } catch (err) {
     return res

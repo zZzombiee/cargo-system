@@ -7,7 +7,6 @@ import userRouter from "./routes/user.router.js";
 
 const app = express();
 
-// Middleware
 app.use(express.json());
 app.use(
   cors({
@@ -21,14 +20,12 @@ app.use(
   })
 );
 
-// Routes
 app.get("/", (_req, res) => {
   res.json({ message: "Cargo backend running 🚀" });
 });
 app.use("/user", userRouter);
 app.use("/track", trackRoutes);
 
-// Global Error Handler
 interface ApiError extends Error {
   status?: number;
 }
@@ -57,7 +54,6 @@ app.use(
 
 const port = process.env.PORT || 8000;
 
-// Start Server
 const startServer = async () => {
   try {
     await connectDB();

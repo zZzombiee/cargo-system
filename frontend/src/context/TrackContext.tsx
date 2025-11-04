@@ -11,9 +11,6 @@ import api from "@/lib/axios";
 import { toast } from "sonner";
 import { useUser } from "@/context/UserContext";
 
-/* ========================
-   🧩 Track Type Definition
-   ======================== */
 export interface Track {
   _id: string;
   trackingNumber: string;
@@ -30,7 +27,7 @@ export interface Track {
   price: number;
   weight: number;
   createdAt: Date;
-  updatedAt: string | number | Date;
+  updatedAt: Date;
   statusHistory?: {
     status: string;
     updatedAt: Date;
@@ -42,9 +39,6 @@ export interface Track {
   };
 }
 
-/* ========================
-   ⚙️ Context Type
-   ======================== */
 export interface TrackContextType {
   allTracks: Track[];
   userTracks: Track[];
@@ -56,9 +50,6 @@ export interface TrackContextType {
   deleteTrack: (id: string) => Promise<void>;
 }
 
-/* ========================
-   🌐 Context Creation
-   ======================== */
 const TrackContext = createContext<TrackContextType>({
   allTracks: [],
   userTracks: [],
@@ -72,9 +63,6 @@ const TrackContext = createContext<TrackContextType>({
 
 export const useTrack = () => useContext(TrackContext);
 
-/* ========================
-   🧠 Provider Component
-   ======================== */
 interface TrackProviderProps {
   children: ReactNode;
 }
@@ -112,7 +100,6 @@ export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
     }
   };
 
-  /* ✅ Fetch tracks for logged-in user */
   const fetchUserTracks = async () => {
     if (!user?._id) return;
     try {
@@ -136,7 +123,6 @@ export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
     }
   };
 
-  /* ✅ Create new track */
   const createTrack = async (trackData: Omit<Track, "_id" | "user">) => {
     try {
       setLoading(true);
@@ -160,7 +146,6 @@ export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
     }
   };
 
-  /* ✅ Update existing track */
   const updateTrack = async (id: string, data: Partial<Track>) => {
     try {
       setLoading(true);
@@ -186,7 +171,6 @@ export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
     }
   };
 
-  /* ✅ Delete track */
   const deleteTrack = async (id: string) => {
     try {
       setLoading(true);
@@ -204,11 +188,9 @@ export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
     }
   };
 
-  /* ✅ Auto-fetch logic */
   useEffect(() => {
     if (!user) return;
 
-    // Fetch depending on user role
     if (user.role === "admin") fetchAllTracks();
     else fetchUserTracks();
   }, [user]);
@@ -231,5 +213,4 @@ export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
   );
 };
 
-/* ✅ Default export for convenience */
 export default TrackProvider;

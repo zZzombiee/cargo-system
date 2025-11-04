@@ -20,7 +20,7 @@ const trackSchema = new Schema<ITrack>(
     },
     location: {
       type: String,
-      default: "Хятад", // 👈 default байршил
+      default: "Хятад",
     },
     status: {
       type: String,
@@ -38,7 +38,7 @@ const trackSchema = new Schema<ITrack>(
     },
     price: {
       type: Number,
-      default: 0, // 👈 default price = 0 (дараа тооцно)
+      default: 0,
     },
     weight: {
       type: Number,
@@ -46,7 +46,7 @@ const trackSchema = new Schema<ITrack>(
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // ✅ Reference to user
+      ref: "User",
       required: false,
     },
   },

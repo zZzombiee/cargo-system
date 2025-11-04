@@ -44,11 +44,9 @@ export const adminScanTrack = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Бүрэн мэдээлэл оруулна уу!" });
     }
 
-    // Find track by trackingNumber
     const track = await TrackModel.findOne({ trackingNumber });
 
     if (track) {
-      // ✅ Update location only
       track.status = status;
       await track.save();
 
@@ -60,7 +58,6 @@ export const adminScanTrack = async (req: Request, res: Response) => {
     }
     if (!track) {
       console.log("❌ Track not found for admin-scan:", trackingNumber);
-      // ✅ If not found, create new track with location
       const newTrack = await TrackModel.create({
         trackingNumber,
         status: status,
@@ -79,7 +76,6 @@ export const adminScanTrack = async (req: Request, res: Response) => {
   }
 };
 
-// controllers/track.controller.ts
 export const getTracks = async (req: Request, res: Response) => {
   try {
     const tracks = await TrackModel.find()
@@ -88,7 +84,7 @@ export const getTracks = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       success: true,
-      tracks, // ✅ key matches frontend expectation
+      tracks,
     });
   } catch (error: any) {
     console.error("❌ getTracks error:", error);
@@ -115,7 +111,6 @@ export const getTrack = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Update track
 export const updateTrack = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -136,7 +131,6 @@ export const updateTrack = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Delete track
 export const deleteTrack = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -171,7 +165,7 @@ export const getTracksByUser = async (req: Request, res: Response) => {
 
 export const getTrackByTrackingNumber = async (req: Request, res: Response) => {
   try {
-    const { trackingNumber } = req.body;
+    const { trackingNumber } = req.params;
 
     const track = await TrackModel.findOne({ trackingNumber });
 
@@ -181,7 +175,7 @@ export const getTrackByTrackingNumber = async (req: Request, res: Response) => {
         .json({ success: false, message: "Track not found" });
     }
 
-    res.status(200).json({ success: true, track });
+    res.status(200).json({ success: true, data: track });
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.message });
   }

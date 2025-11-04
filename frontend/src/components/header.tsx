@@ -79,6 +79,10 @@ const Header = () => {
                       },
                     ]
                   : []),
+                {
+                  label: "Add Track",
+                  onClick: () => router.push("/user/addTrack"),
+                },
                 { label: "Logout", onClick: logout },
               ]}
             />

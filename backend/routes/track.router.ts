@@ -13,15 +13,15 @@ import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const trackRoutes = express.Router();
 
-trackRoutes.post("/tracking-number", getTrackByTrackingNumber);
 trackRoutes
-  .use(authMiddleware)
+  // .use(authMiddleware)
   .post("/user/create", createTrackByUser)
   .post("/admin-scan", adminScanTrack)
   .get("/", getTracks)
   .get("/:id", getTrack)
   .put("/:id", updateTrack)
   .delete("/:id", deleteTrack)
-  .get("/user/:id", getTracksByUser);
+  .get("/user/:id", getTracksByUser)
+  .get("/trackNumber/:trackingNumber", getTrackByTrackingNumber);
 
 export default trackRoutes;

@@ -1,7 +1,6 @@
 "use client";
 
 import { IconMail, type Icon } from "@tabler/icons-react";
-import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
