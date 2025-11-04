@@ -6,25 +6,31 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import { toast } from "sonner";
 import api from "@/lib/axios";
-import { Order } from "@/types/order";
+import { Track } from "@/context/TrackContext";
 
 const Search = () => {
-  const [orderNumber, setOrderNumber] = useState("");
-  const [fetchedOrder, setOrder] = useState<Order | null>(null);
+  const [trackingNumber, setTrackingNumber] = useState("");
+  const [fetchedTrack, setFetchedTrack] = useState<Track | null>(null);
 
-  const getOrder = async () => {
+  const getTrack = async () => {
+    if (!trackingNumber.trim()) {
+      toast.error("Please enter a tracking number");
+      return;
+    }
     try {
-      const res = await api.post(`/order/order`, {
-        orderNumber,
+      const { data } = await api.post(`/track/tracking-number`, {
+        trackingNumber,
       });
-      if (!res.data.order) {
-        toast.error(res.data.message || "Order not found");
-        setOrder(null);
+      console.log(data);
+
+      if (!data.track) {
+        toast.error(data.message || "Track not found");
+        setFetchedTrack(null);
       } else {
-        setOrder(res.data.order);
+        setFetchedTrack(data.track);
       }
     } catch (err) {
-      console.error("Error fetching order:", err);
+      console.error("Error fetching track:", err);
     }
   };
 
@@ -34,27 +40,27 @@ const Search = () => {
         <Input
           type="text"
           placeholder="Search from delivery code..."
-          value={orderNumber}
-          onChange={(e) => setOrderNumber(e.target.value)}
+          value={trackingNumber}
+          onChange={(e) => setTrackingNumber(e.target.value)}
         />
-        <Button onClick={getOrder}>
+        <Button onClick={getTrack}>
           <ArrowRight />
         </Button>
       </div>
 
-      {fetchedOrder && (
+      {fetchedTrack && (
         <div className="border rounded-lg p-4 mt-4 shadow-sm bg-gray-50 dark:bg-gray-800">
           <p>
-            <strong>Order Number:</strong> {fetchedOrder.orderNumber}
+            <strong>Tracking Number:</strong> {fetchedTrack.trackingNumber}
           </p>
-          {fetchedOrder.status && (
+          {fetchedTrack.status && (
             <p>
-              <strong>Status:</strong> {fetchedOrder.status}
+              <strong>Status:</strong> {fetchedTrack.status}
             </p>
           )}
-          {fetchedOrder.location && (
+          {fetchedTrack.location && (
             <p>
-              <strong>Location:</strong> {fetchedOrder.location}
+              <strong>Location:</strong> {fetchedTrack.location}
             </p>
           )}
         </div>

@@ -149,3 +149,18 @@ export const getTracksByUser = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+export const getTrackByTrackingNumber = async (req, res) => {
+    try {
+        const { trackingNumber } = req.body;
+        const track = await TrackModel.findOne({ trackingNumber });
+        if (!track) {
+            return res
+                .status(404)
+                .json({ success: false, message: "Track not found" });
+        }
+        res.status(200).json({ success: true, track });
+    }
+    catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};

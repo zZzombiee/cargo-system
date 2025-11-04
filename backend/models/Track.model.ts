@@ -1,12 +1,12 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
 export interface ITrack extends Document {
-  trackingNumber: string; // Баркод эсвэл tracking код
-  location: string; // Одоогийн байршил
-  status: string; // Төлөв
-  price?: number; // Зарим үед үнийн дүн хараахан тодорхойгүй байж болно
+  trackingNumber: string;
+  location: string;
+  status: string;
+  price?: number;
   weight?: number;
-  user?: Types.ObjectId; // Зарим track хэрэглэгчидтэй холбогдоогүй байж болно
+  user?: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }

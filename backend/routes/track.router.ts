@@ -4,6 +4,7 @@ import {
   createTrackByUser,
   deleteTrack,
   getTrack,
+  getTrackByTrackingNumber,
   getTracks,
   getTracksByUser,
   updateTrack,
@@ -12,6 +13,7 @@ import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const trackRoutes = express.Router();
 
+trackRoutes.post("/tracking-number", getTrackByTrackingNumber);
 trackRoutes
   .use(authMiddleware)
   .post("/user/create", createTrackByUser)

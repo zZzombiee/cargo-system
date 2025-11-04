@@ -1,8 +1,10 @@
 import express from "express";
-import { adminScanTrack, createTrackByUser, deleteTrack, getTrack, getTracks, getTracksByUser, updateTrack, } from "../controllers/track.controller.js";
+import { adminScanTrack, createTrackByUser, deleteTrack, getTrack, getTrackByTrackingNumber, getTracks, getTracksByUser, updateTrack, } from "../controllers/track.controller.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
 const trackRoutes = express.Router();
+trackRoutes.post("/tracking-number", getTrackByTrackingNumber);
 trackRoutes
-    // .use(authMiddleware)
+    .use(authMiddleware)
     .post("/user/create", createTrackByUser)
     .post("/admin-scan", adminScanTrack)
     .get("/", getTracks)

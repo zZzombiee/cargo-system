@@ -43,7 +43,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       });
       setUser(res.data.user);
     } catch (err) {
-      console.error("❌ Fetch user failed:", err);
+      router.push("/login");
       localStorage.removeItem("token");
       setUser(null);
     } finally {
