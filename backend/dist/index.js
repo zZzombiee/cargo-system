@@ -5,7 +5,6 @@ import { connectDB } from "./database/index.js";
 import trackRoutes from "./routes/track.router.js";
 import userRouter from "./routes/user.router.js";
 const app = express();
-// Middleware
 app.use(express.json());
 app.use(cors({
     origin: [
@@ -16,7 +15,6 @@ app.use(cors({
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
-// Routes
 app.get("/", (_req, res) => {
     res.json({ message: "Cargo backend running 🚀" });
 });
@@ -32,7 +30,6 @@ app.use((err, _req, res, _next) => {
     res.status(status).json(response);
 });
 const port = process.env.PORT || 8000;
-// Start Server
 const startServer = async () => {
     try {
         await connectDB();

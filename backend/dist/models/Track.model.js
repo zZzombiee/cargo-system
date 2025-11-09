@@ -4,37 +4,54 @@ const trackSchema = new Schema({
         type: String,
         required: [true, "Tracking number is required"],
         unique: true,
+        trim: true,
+        uppercase: true,
     },
     location: {
         type: String,
-        default: "Хятад", // 👈 default байршил
+        default: "Хятад",
+        enum: [
+            "Хятад",
+            "Эрээн",
+            "Замын-Үүд",
+            "Улаанбаатар",
+            "Салбар1",
+            "Салбар2",
+            "Салбар3",
+        ],
     },
     status: {
         type: String,
+        default: "Хятадад байгаа",
         enum: [
-            "Хятад",
-            "Эрээн агуулах",
-            "Замын-Үүд",
-            "Салбар хувиарлагдсан",
-            "Салбар дээр",
-            "Хүргэлтэнд гарсан",
-            "Хүргэгдсэн",
+            "Хятадад байгаа",
+            "Хятадаас гарсан",
+            "Монголд ирсэн",
+            "Салбарт очсон",
             "Саатсан",
+            "Хүргэгдсэн",
         ],
-        default: "Хятад",
     },
     price: {
         type: Number,
-        default: 0, // 👈 default price = 0 (дараа тооцно)
+        default: 0,
+        min: [0, "Price cannot be negative"],
     },
     weight: {
         type: Number,
         default: 0,
+        min: [0, "Weight cannot be negative"],
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User", // ✅ Reference to user
+        ref: "User",
         required: false,
     },
+    statusHistory: [
+        {
+            status: { type: String },
+            updatedAt: { type: Date, default: Date.now },
+        },
+    ],
 }, { timestamps: true });
 export default mongoose.model("Track", trackSchema);

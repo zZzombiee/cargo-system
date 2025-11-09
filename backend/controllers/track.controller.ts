@@ -53,13 +53,14 @@ export const adminScanTrack = async (req: Request, res: Response) => {
     let track = await TrackModel.findOne({ trackingNumber });
 
     if (track) {
-      track.status = status;
       track.location = location;
+      await track.save();
+      track.status = status;
       await track.save();
 
       return res.status(200).json({
         success: true,
-        message: `Track байршил шинэчлэгдлээ (${location})`,
+        message: `Track шинэчлэгдлээ`,
         data: track,
       });
     }
@@ -67,7 +68,7 @@ export const adminScanTrack = async (req: Request, res: Response) => {
     const newTrack = await TrackModel.create({
       trackingNumber,
       location,
-      status: status,
+      status,
       user: null,
     });
 
