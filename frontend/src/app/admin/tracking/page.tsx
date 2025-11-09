@@ -36,10 +36,14 @@ export default function AdminTrackDialog() {
   const handleLocationChange = (value: string) => {
     setLocation(value);
 
-    if (["Хятад", "Эрээн"].includes(value)) {
+    if (["Хятад"].includes(value)) {
       setStatus("Хятадад байгаа");
-    } else if (["Замын-Үүд", "Улаанбаатар"].includes(value)) {
+    } else if (["Эрээн"].includes(value)) {
+      setStatus("Эрээнд ирсэн");
+    } else if (["Замын-Үүд"].includes(value)) {
       setStatus("Монголд ирсэн");
+    } else if (["Улаанбаатар"].includes(value)) {
+      setStatus("Улаанбаатарт ирсэн");
     } else if (["Салбар1", "Салбар2", "Салбар3"].includes(value)) {
       setStatus("Салбарт очсон");
     } else {

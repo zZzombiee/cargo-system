@@ -1,57 +1,61 @@
 import mongoose, { Schema } from "mongoose";
-const trackSchema = new Schema({
+const trackSchema = new Schema(
+  {
     trackingNumber: {
-        type: String,
-        required: [true, "Tracking number is required"],
-        unique: true,
-        trim: true,
-        uppercase: true,
+      type: String,
+      required: [true, "Tracking number is required"],
+      unique: true,
+      trim: true,
+      uppercase: true,
     },
     location: {
-        type: String,
-        default: "Хятад",
-        enum: [
-            "Хятад",
-            "Эрээн",
-            "Замын-Үүд",
-            "Улаанбаатар",
-            "Салбар1",
-            "Салбар2",
-            "Салбар3",
-        ],
+      type: String,
+      default: "Хятад",
+      enum: [
+        "Хятад",
+        "Эрээн",
+        "Замын-Үүд",
+        "Улаанбаатар",
+        "Салбар1",
+        "Салбар2",
+        "Салбар3",
+      ],
     },
     status: {
-        type: String,
-        default: "Хятадад байгаа",
-        enum: [
-            "Хятадад байгаа",
-            "Хятадаас гарсан",
-            "Монголд ирсэн",
-            "Салбарт очсон",
-            "Саатсан",
-            "Хүргэгдсэн",
-        ],
+      type: String,
+      default: "Хятадад байгаа",
+      enum: [
+        "Хятадад байгаа",
+        "Эрээнд ирсэн",
+        "Монголд ирсэн",
+        "Улаанбаатарт ирсэн",
+        "Салбарт ирсэн",
+        "Саатсан",
+        "Хүргэгдсэн",
+      ],
     },
     price: {
-        type: Number,
-        default: 0,
-        min: [0, "Price cannot be negative"],
+      type: Number,
+      default: 0,
+      min: [0, "Price cannot be negative"],
     },
     weight: {
-        type: Number,
-        default: 0,
-        min: [0, "Weight cannot be negative"],
+      type: Number,
+      default: 0,
+      min: [0, "Weight cannot be negative"],
     },
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: false,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
     },
     statusHistory: [
-        {
-            status: { type: String },
-            updatedAt: { type: Date, default: Date.now },
-        },
+      {
+        status: { type: String },
+        updatedAt: { type: Date, default: Date.now },
+      },
     ],
-}, { timestamps: true });
+  },
+  { timestamps: true }
+);
 export default mongoose.model("Track", trackSchema);
