@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import api from "@/lib/axios";
-import { columns, User } from "@/components/userDataTable/columns";
-import { DataTable } from "@/components/userDataTable/dataTable";
+import { columns, User } from "@/components/admin/userDataTable/columns";
+import { DataTable } from "@/components/admin/userDataTable/dataTable";
 
 const Page = () => {
   const [users, setUsers] = useState<User[]>([]);

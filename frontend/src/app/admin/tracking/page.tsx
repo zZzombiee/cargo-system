@@ -16,11 +16,37 @@ import api from "@/lib/axios";
 import { IconCirclePlusFilled } from "@tabler/icons-react";
 import { SidebarMenuButton } from "@/components/ui";
 
+const locationList = [
+  "Хятад",
+  "Эрээн",
+  "Замын-Үүд",
+  "Улаанбаатар",
+  "Салбар1",
+  "Салбар2",
+  "Салбар3",
+];
+
 export default function AdminTrackDialog() {
   const [trackingNumber, setTrackingNumber] = useState("");
-  const [status, setStatus] = useState("Эрээн агуулах");
+  const [location, setLocation] = useState("Хятад");
+  const [status, setStatus] = useState("Хятадад байгаа");
   const [submitting, setSubmitting] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+
+  // ✅ Automatically update status when location changes
+  const handleLocationChange = (value: string) => {
+    setLocation(value);
+
+    if (["Хятад", "Эрээн"].includes(value)) {
+      setStatus("Хятадад байгаа");
+    } else if (["Замын-Үүд", "Улаанбаатар"].includes(value)) {
+      setStatus("Монголд ирсэн");
+    } else if (["Салбар1", "Салбар2", "Салбар3"].includes(value)) {
+      setStatus("Салбарт очсон");
+    } else {
+      setStatus("Саатсан");
+    }
+  };
 
   const handleScan = async () => {
     if (!trackingNumber.trim()) {
@@ -34,6 +60,7 @@ export default function AdminTrackDialog() {
 
       const res = await api.post("/track/admin-scan", {
         trackingNumber,
+        location,
         status,
       });
 
@@ -77,19 +104,26 @@ export default function AdminTrackDialog() {
 
             <select
               className="border rounded-md p-2"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              value={location}
+              onChange={(e) => handleLocationChange(e.target.value)}
             >
-              <option value="Эрээн агуулах">Эрээн агуулах</option>
-              <option value="Замын-Үүд">Замын-Үүд</option>
-              <option value="Салбар хувиарлагдсан">Салбар хувиарлагдсан</option>
-              <option value="Салбар дээр">Салбар дээр</option>
-              <option value="Хүргэлтэнд гарсан">Хүргэлтэнд гарсан</option>
-              <option value="Хүргэгдсэн">Хүргэгдсэн</option>
-              <option value="Саатсан">Саатсан</option>
+              {locationList.map((loc, i) => (
+                <option key={i} value={loc}>
+                  {loc}
+                </option>
+              ))}
             </select>
 
-            <Button onClick={handleScan} disabled={submitting}>
+            {/* ✅ Display the auto-updated status */}
+            {/* <div className="text-sm text-gray-600 bg-gray-50 border rounded-md px-3 py-2">
+              <strong>Auto Status:</strong> <span>{status}</span>
+            </div> */}
+
+            <Button
+              onClick={handleScan}
+              disabled={submitting}
+              className="w-full bg-blue-600 hover:bg-blue-700"
+            >
               {submitting ? "Шинэчилж байна..." : "Scan / Update"}
             </Button>
           </CardContent>

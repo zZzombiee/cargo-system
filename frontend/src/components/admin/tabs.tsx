@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Price from "./price";
 import { toast } from "sonner";
 import api from "@/lib/axios";
-import OrdersTable from "./orders/orderTable";
+import OrdersTable from "./orderDataTable/orderTable";
 
 const Tab = () => {
   const [orderNumber, setOrderNumber] = useState("");
