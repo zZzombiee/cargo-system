@@ -22,6 +22,7 @@ import {
 import moment from "moment";
 import { DataTableColumnHeader } from "./dataTableColumnHeader";
 import { Track } from "@/types/track";
+import TrackDetail from "./trackDetail";
 export const columns: ColumnDef<Track>[] = [
   {
     id: "index",
@@ -79,7 +80,7 @@ export const columns: ColumnDef<Track>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const user = row.original;
+      const track = row.original;
 
       return (
         <DropdownMenu>
@@ -92,7 +93,7 @@ export const columns: ColumnDef<Track>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem>!Edit</DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Sheet>
                 <SheetTrigger asChild>
@@ -102,13 +103,19 @@ export const columns: ColumnDef<Track>[] = [
                 </SheetTrigger>
                 <SheetContent side="right" className="w-[400px]">
                   <SheetHeader>
-                    <SheetTitle>{user.trackingNumber}&apos;s Tracks</SheetTitle>
+                    <SheetTitle>
+                      #{track.trackingNumber} <p>Тээврийн дэлгэрэнгүй</p>
+                    </SheetTitle>
                   </SheetHeader>
+
+                  <div className="mt-4 px-2">
+                    <TrackDetail trackId={track._id} />
+                  </div>
                 </SheetContent>
               </Sheet>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive">!Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

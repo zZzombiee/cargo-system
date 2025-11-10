@@ -38,16 +38,7 @@ const data = {
       href: "/admin/tracks",
       icon: IconPackage,
     },
-    {
-      title: "Analytics",
-      href: "#",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      href: "#",
-      icon: IconFolder,
-    },
+
     {
       title: "Customers",
       href: "/admin/customers",
@@ -68,19 +59,9 @@ const data = {
 
   navSecondary: [
     {
-      title: "Settings",
-      url: "#",
-      icon: IconSettings,
-    },
-    {
-      title: "Get Help",
+      title: "!Get Help",
       url: "#",
       icon: IconHelp,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: IconSearch,
     },
   ],
 };

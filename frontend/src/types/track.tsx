@@ -41,7 +41,15 @@ export const statusLocationMap: Record<Status, Location[]> = {
   Саатсан: ["Эрээн", "Замын-Үүд", "Улаанбаатар"],
   Хүргэгдсэн: ["Улаанбаатар"],
 };
-
+export const statusColors: Record<Status, string> = {
+  "Хятадад байгаа": "bg-gray-200 text-gray-800",
+  "Эрээнд ирсэн": "bg-blue-100 text-blue-700",
+  "Монголд ирсэн": "bg-yellow-100 text-yellow-700",
+  "Улаанбаатарт ирсэн": "bg-purple-100 text-purple-700",
+  "Салбарт очсон": "bg-indigo-100 text-indigo-700",
+  Саатсан: "bg-red-100 text-red-700",
+  Хүргэгдсэн: "bg-green-100 text-green-700",
+};
 export interface SearchTrack {
   tracks: Track[];
   setTracks: React.Dispatch<React.SetStateAction<Track[]>>;

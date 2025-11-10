@@ -95,7 +95,7 @@ export const columns: ColumnDef<User>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(user._id)}
             >
-              Copy ID
+              !Copy ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
@@ -107,7 +107,7 @@ export const columns: ColumnDef<User>[] = [
                 </SheetTrigger>
                 <SheetContent side="right" className="w-[400px]">
                   <SheetHeader>
-                    <SheetTitle>{user.name}&apos;s Tracks</SheetTitle>
+                    <SheetTitle>{user.name}-ийн тээврийн бүртгэл</SheetTitle>
                   </SheetHeader>
                   {/* ✅ You can render your customer track component here */}
                   <div className="mt-4 px-2">
@@ -116,7 +116,7 @@ export const columns: ColumnDef<User>[] = [
                 </SheetContent>
               </Sheet>
             </DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>!View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

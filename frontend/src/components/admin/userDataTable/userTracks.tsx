@@ -4,17 +4,7 @@ import { Track } from "@/context/TrackContext";
 import api from "@/lib/axios";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-
-const statusColors: Record<Track["status"], string> = {
-  Хятад: "bg-gray-200 text-gray-800",
-  "Эрээн агуулах": "bg-blue-100 text-blue-700",
-  "Замын-Үүд": "bg-yellow-100 text-yellow-700",
-  "Салбар хувиарлагдсан": "bg-purple-100 text-purple-700",
-  "Салбар дээр": "bg-indigo-100 text-indigo-700",
-  "Хүргэлтэнд гарсан": "bg-orange-100 text-orange-700",
-  Хүргэгдсэн: "bg-green-100 text-green-700",
-  Саатсан: "bg-red-100 text-red-700",
-};
+import { statusColors } from "@/types/track";
 
 const UserTracks = ({ userId }: { userId: string }) => {
   const [loading, setLoading] = useState(false);
@@ -25,8 +15,8 @@ const UserTracks = ({ userId }: { userId: string }) => {
       setLoading(true);
       const res = await api.get(`/track/user/${userId}`);
 
-      const data = Array.isArray(res.data.tracks)
-        ? res.data.tracks
+      const data = Array.isArray(res.data.data)
+        ? res.data.data
         : Array.isArray(res.data)
         ? res.data
         : [];
@@ -55,8 +45,6 @@ const UserTracks = ({ userId }: { userId: string }) => {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold">Customer Tracks</h2>
-
       {userTracks.length === 0 ? (
         <p className="text-muted-foreground text-sm">
           Энэ хэрэглэгчид тээврийн бүртгэл алга байна.
@@ -71,8 +59,8 @@ const UserTracks = ({ userId }: { userId: string }) => {
               <div className="flex justify-between items-center mb-1">
                 <span className="font-semibold">№ {track.trackingNumber}</span>
                 <span
-                  className={`text-xs px-2 py-1 rounded-full font-medium ${
-                    statusColors[track.status]
+                  className={`text-sm px-3 py-1 rounded-full font-medium ${
+                    statusColors[track.status as keyof typeof statusColors]
                   }`}
                 >
                   {track.status}

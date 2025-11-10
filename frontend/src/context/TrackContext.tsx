@@ -108,8 +108,8 @@ export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
         headers: getAuthHeaders(),
       });
 
-      const data = Array.isArray(res.data.tracks)
-        ? res.data.tracks
+      const data = Array.isArray(res.data.data)
+        ? res.data.data
         : Array.isArray(res.data)
         ? res.data
         : [];
