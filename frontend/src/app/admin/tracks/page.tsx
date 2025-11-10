@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTrack } from "@/context/TrackContext";
 import { Loader2, MapPin, Scale, Wallet, User2 } from "lucide-react";
-import { statusList } from "@/types/order";
+import { statusList } from "@/types/track";
 
 export default function TrackingPage() {
   const { allTracks, fetchAllTracks, loading } = useTrack();

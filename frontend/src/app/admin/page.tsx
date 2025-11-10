@@ -1,18 +1,35 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTrack } from "@/context/TrackContext";
 import { useUser } from "@/context/UserContext";
-import { DataTable } from "@/components/sidebar/data-table";
-import TableSkeleton from "@/components/tableSkeleton"; // new component
+import TableSkeleton from "@/components/tableSkeleton";
 import { motion } from "framer-motion";
+import { TrackTable } from "@/components/admin/trackTable/trackTable";
+import { columns } from "@/components/admin/trackTable/columns";
+import { Track } from "@/types/track";
+import api from "@/lib/axios";
+import SearchDate from "@/components/admin/searchDate";
 
 export default function AdminDashboardPage() {
-  const { allTracks, fetchAllTracks, loading } = useTrack();
+  const { loading } = useTrack();
   const { user } = useUser();
+  const [tracks, setTracks] = useState<Track[]>([]);
+  const [filteredTracks, setFilteredTracks] = useState<Track[]>([]);
+
+  const fetchTracks = async () => {
+    try {
+      const res = await api.get("/track");
+      const all = res.data.data || res.data.tracks || [];
+      setTracks(all);
+      setFilteredTracks(all); // ✅ show all by default
+    } catch (err) {
+      console.error("❌ Error fetching track:", err);
+    }
+  };
 
   useEffect(() => {
-    if (user?.role === "admin") fetchAllTracks();
+    if (user?.role === "admin") fetchTracks();
   }, [user]);
 
   if (loading)
@@ -28,26 +45,13 @@ export default function AdminDashboardPage() {
       </div>
     );
 
-  if (!allTracks?.length)
-    return (
-      <div className="text-center text-gray-500 py-10">
-        No tracking data found.
-      </div>
-    );
-
-  const tableData = allTracks.map((t) => ({
-    _id: t._id,
-    trackingNumber: t.trackingNumber,
-    location: t.location,
-    status: Array.isArray(t.status) ? t.status.join(", ") : t.status || "",
-    weight: +t.weight || 0,
-    price: +t.price || 0,
-    date: new Date(t.createdAt),
-  }));
-
   return (
     <div className="p-6 space-y-6">
-      <DataTable data={tableData} />
+      <div className="flex justify-between items-center mb-4">
+        <SearchDate tracks={tracks} setTracks={setFilteredTracks} />
+      </div>
+
+      <TrackTable columns={columns} data={filteredTracks} />
     </div>
   );
 }

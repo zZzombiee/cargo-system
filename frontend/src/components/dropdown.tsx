@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DropdownProps } from "@/types/order";
+import { DropdownProps } from "@/types/track";
 
 const Dropdown = ({ name, menuItems, onItemClick }: DropdownProps) => {
   return (

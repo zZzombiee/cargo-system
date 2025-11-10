@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { UserTablesProps } from "@/types/order";
+import { UserTablesProps } from "@/types/track";
 import { useTrack } from "@/context/TrackContext";
 
 const UserTables: React.FC<UserTablesProps> = ({ searchFor }) => {

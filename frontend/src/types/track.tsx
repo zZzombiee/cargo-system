@@ -1,6 +1,3 @@
-// =======================
-// 📦 STATUS & LOCATION
-// =======================
 export const statusList = [
   "Хятадад байгаа",
   "Эрээнд ирсэн",
@@ -25,7 +22,6 @@ export const locationList = [
 
 export type Location = (typeof locationList)[number];
 
-// ✅ Location → Status mapping
 export const locationStatusMap: Record<Location, Status> = {
   Хятад: "Хятадад байгаа",
   Эрээн: "Хятадад байгаа",
@@ -36,9 +32,8 @@ export const locationStatusMap: Record<Location, Status> = {
   Салбар3: "Салбарт очсон",
 };
 
-// ✅ Optional reverse mapping if needed (Status → Locations)
 export const statusLocationMap: Record<Status, Location[]> = {
-  "Хятадад байгаа": ["Хятад", "Эрээн"],
+  "Хятадад байгаа": ["Хятад"],
   "Эрээнд ирсэн": ["Эрээн"],
   "Монголд ирсэн": ["Замын-Үүд"],
   "Улаанбаатарт ирсэн": ["Улаанбаатар"],
@@ -47,27 +42,9 @@ export const statusLocationMap: Record<Status, Location[]> = {
   Хүргэгдсэн: ["Улаанбаатар"],
 };
 
-// =======================
-// 📦 SHARED INTERFACES
-// =======================
-
-export interface Order {
-  _id: string;
-  orderNumber: string;
-  price: number;
-  status: Status;
-  location: Location;
-  weight: number;
-  createdAt: string;
-}
-
-export interface SearchOrder {
-  orders: Order[];
-  setOrders: React.Dispatch<React.SetStateAction<Order[]>>;
-}
-
-export interface SearchOrderProps {
-  setOrders: React.Dispatch<React.SetStateAction<Order[]>>;
+export interface SearchTrack {
+  tracks: Track[];
+  setTracks: React.Dispatch<React.SetStateAction<Track[]>>;
 }
 
 export interface UserTablesProps {
@@ -85,40 +62,8 @@ export interface DropdownProps {
   onItemClick?: (item: string) => void;
 }
 
-export interface PropsHeader {
-  searchFor: Status | "";
-  setSearchFor: (s: Status | "") => void;
-  statusList: readonly Status[];
-  setOrders: React.Dispatch<React.SetStateAction<Order[]>>;
-}
-
-export interface PropsRow {
-  order: Order;
-  index: number;
-  ordersCount: number;
-  updateOrder: (id: string, data: Partial<Order>) => void;
-}
-
-export interface PropsStatus {
-  order: Order;
-  updateOrder: (id: string, data: Partial<Order>) => void;
-}
-
-export interface PropsLocation {
-  order: Order;
-  updateOrder: (id: string, data: Partial<Order>) => void;
-}
-
-export interface PropsDetail {
-  order: Order;
-  open: boolean;
-  setOpen: (open: boolean) => void;
-}
-
-// =======================
-// 📦 TRACK MODEL SYNC
-// =======================
 export interface Track {
+  _id: string;
   trackingNumber: string;
   location: Location;
   status: Status;

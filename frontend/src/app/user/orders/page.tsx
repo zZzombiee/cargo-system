@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
-import { Status, statusList } from "@/types/order";
+import { Status, statusList } from "@/types/track";
 
 const TracksPage = () => {
   const [searchFor, setSearchFor] = useState<Status | "">("");

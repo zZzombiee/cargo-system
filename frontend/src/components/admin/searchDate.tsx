@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DateRange } from "react-day-picker";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
@@ -11,37 +11,35 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import api from "@/lib/axios";
-import { SearchOrder } from "@/types/order";
+import { SearchTrack } from "@/types/track";
 
-const SearchDate = ({ setOrders }: SearchOrder) => {
+const SearchDate = ({ tracks, setTracks }: SearchTrack) => {
   const [date, setDate] = useState<DateRange | undefined>();
+  const [originalTracks, setOriginalTracks] = useState(tracks);
 
-  const fetchOrdersByDate = async (range: DateRange | undefined) => {
-    if (!range?.from || !range?.to) {
-      try {
-        const res = await api.get(`/order`);
-        setOrders(res.data.orders);
-      } catch (err) {
-        console.error("Failed to fetch all orders", err);
-      }
-      return;
-    }
-
-    try {
-      const res = await api.post(`/order/date`, {
-        startDate: range.from,
-        endDate: range.to,
-      });
-      setOrders(res.data.orders);
-    } catch (err) {
-      console.error("Failed to fetch by date", err);
-    }
-  };
+  useEffect(() => {
+    setOriginalTracks(tracks);
+  }, [tracks]);
 
   const handleSelect = (range: DateRange | undefined) => {
     setDate(range);
-    fetchOrdersByDate(range);
+
+    if (!range?.from && !range?.to) {
+      setTracks(originalTracks);
+      return;
+    }
+
+    const from = range?.from ? new Date(range.from).getTime() : 0;
+    const to = range?.to
+      ? new Date(range.to).setHours(23, 59, 59, 999)
+      : new Date().getTime();
+
+    const filtered = originalTracks.filter((track) => {
+      const createdAt = new Date(track.createdAt).getTime();
+      return createdAt >= from && createdAt <= to;
+    });
+
+    setTracks(filtered);
   };
 
   return (
