@@ -23,13 +23,14 @@ import moment from "moment";
 import { DataTableColumnHeader } from "./dataTableColumnHeader";
 import { Track } from "@/types/track";
 import TrackDetail from "./trackDetail";
+import { DataTableDateFilter } from "./DataTableDateFilter";
 export const columns: ColumnDef<Track>[] = [
   {
     id: "index",
     accessorFn: (row) => row._id,
     header: () => <div className="text-center">№</div>,
     cell: ({ row }) => <div className="text-center">{row.index + 1}</div>,
-    meta: { className: "w-[60px] text-center" },
+    meta: { className: "w-[20px] text-center" },
   },
   {
     accessorKey: "trackingNumber",
@@ -44,12 +45,44 @@ export const columns: ColumnDef<Track>[] = [
     meta: { className: "w-[220px]" },
   },
   {
+    accessorKey: "user",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="User" />
+    ),
+    cell: ({ row }) => {
+      const user = row.getValue("user") as {
+        name?: string;
+        number?: string;
+        email?: string;
+      };
+      return (
+        <div className="flex flex-col">
+          <span className="font-medium">{user?.name || "No name"}</span>
+          <span className="text-xs text-gray-500">
+            {user?.number || "No number"}
+          </span>
+        </div>
+      );
+    },
+    filterFn: (row, _columnId, filterValue) => {
+      const user = row.getValue("user") as { name?: string; number?: string };
+      if (!filterValue) return true;
+
+      const search = String(filterValue).toLowerCase();
+      const name = (user?.name ?? "").toLowerCase();
+      const number = (user?.number ?? "").toLowerCase();
+
+      return name.includes(search) || number.includes(search);
+    },
+    meta: { className: "w-[180px]" },
+  },
+  {
     accessorKey: "location",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Location" />
     ),
     cell: ({ row }) => <div>{row.getValue("location")}</div>,
-    meta: { className: "w-[180px]" },
+    meta: { className: "w-[140px]" },
   },
   {
     accessorKey: "status",
@@ -63,19 +96,34 @@ export const columns: ColumnDef<Track>[] = [
     accessorKey: "weight",
     header: "Weight",
     cell: ({ row }) => <div>{row.getValue("weight")}</div>,
-    meta: { className: "w-[100px] text-right" },
+    meta: { className: "w-[80px] text-right" },
   },
   {
     accessorKey: "price",
     header: "Price",
     cell: ({ row }) => <div>{row.getValue("price")}</div>,
-    meta: { className: "w-[100px] text-right" },
+    meta: { className: "w-[80px] text-right" },
   },
   {
     accessorKey: "createdAt",
-    header: "Date",
+    header: ({ column }) => (
+      <DataTableDateFilter column={column} title="Date" />
+    ),
     cell: ({ row }) => moment(row.original.createdAt).format("YYYY-MM-DD"),
-    meta: { className: "w-[140px]" },
+    filterFn: (row, _columnId, filterValue) => {
+      if (!filterValue?.from || !filterValue?.to) return true;
+
+      const rowDate = new Date(row.original.createdAt);
+      const from = new Date(filterValue.from);
+      const to = new Date(filterValue.to);
+
+      // Ignore time zone offsets
+      from.setHours(0, 0, 0, 0);
+      to.setHours(23, 59, 59, 999);
+
+      return rowDate >= from && rowDate <= to;
+    },
+    meta: { className: "w-[100px]" },
   },
   {
     id: "actions",
@@ -86,7 +134,7 @@ export const columns: ColumnDef<Track>[] = [
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div className="flex items-center justify-end w-full">
-              <Button variant="ghost" className="h-8 w-8 p-0">
+              <Button variant="ghost" className="h-8 w-4 p-0">
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </div>
@@ -120,6 +168,6 @@ export const columns: ColumnDef<Track>[] = [
         </DropdownMenu>
       );
     },
-    meta: { className: "w-[80px] text-right" },
+    meta: { className: "w-8 text-right" },
   },
 ];

@@ -9,7 +9,6 @@ import { TrackTable } from "@/components/admin/trackTable/trackTable";
 import { columns } from "@/components/admin/trackTable/columns";
 import { Track } from "@/types/track";
 import api from "@/lib/axios";
-import SearchDate from "@/components/admin/searchDate";
 
 export default function AdminDashboardPage() {
   const { loading } = useTrack();
@@ -47,10 +46,6 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center mb-4">
-        <SearchDate tracks={tracks} setTracks={setFilteredTracks} />
-      </div>
-
       <TrackTable columns={columns} data={filteredTracks} />
     </div>
   );

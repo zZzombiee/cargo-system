@@ -24,7 +24,12 @@ export function DataTableColumnHeader<TData, TValue>({
   };
 
   return (
-    <div className={cn("flex items-center justify-between w-full", className)}>
+    <div
+      className={cn(
+        "flex items-center justify-between w-full gap-1",
+        className
+      )}
+    >
       <Input
         placeholder={title}
         value={(column.getFilterValue() as string) ?? ""}
