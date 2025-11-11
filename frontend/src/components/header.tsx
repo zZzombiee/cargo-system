@@ -45,7 +45,7 @@ const Header = () => {
           {[
             { label: "Нүүр хуудас", path: "/user" },
             { label: "Бидний тухай", path: "/user/about" },
-            { label: "Захиалга харах", path: "/user/orders" },
+            { label: "Захиалга харах", path: "/user/tracks" },
             { label: "Холбоо барих", path: "/user/contact" },
           ].map((item) => (
             <p

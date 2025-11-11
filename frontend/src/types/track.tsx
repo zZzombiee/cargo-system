@@ -56,7 +56,7 @@ export interface SearchTrack {
 }
 
 export interface UserTablesProps {
-  searchFor: Status | "";
+  searchFor: Status | undefined;
 }
 
 export interface DropdownItem {

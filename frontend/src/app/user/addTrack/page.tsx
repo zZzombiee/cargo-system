@@ -18,7 +18,7 @@ const AddTrack = () => {
       toast.error("Track code оруулна уу!");
       return;
     }
-    if (!user?._id) {
+    if (!user?.id) {
       toast.error("Хэрэглэгчийн мэдээлэл олдсонгүй!");
       return;
     }
@@ -27,7 +27,7 @@ const AddTrack = () => {
       setLoading(true);
       const res = await api.post("/track/user/create", {
         trackingNumber,
-        userId: user._id,
+        userId: user.id,
       });
       toast.success(res.data.message || "Амжилттай үүсгэлээ!");
       setTrackingNumber("");

@@ -101,12 +101,13 @@ export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
   };
 
   const fetchUserTracks = async () => {
-    if (!user?._id) return;
+    if (!user?.id) return console.log(user);
     try {
       setLoading(true);
-      const res = await api.get(`/track/user/${user._id}`, {
+      const res = await api.get(`/track/user/${user.id}`, {
         headers: getAuthHeaders(),
       });
+      console.log(user);
 
       const data = Array.isArray(res.data.data)
         ? res.data.data
@@ -128,7 +129,7 @@ export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
       setLoading(true);
       const res = await api.post(
         "/track",
-        { ...trackData, user: user?._id },
+        { ...trackData, user: user?.id },
         { headers: getAuthHeaders() }
       );
 
