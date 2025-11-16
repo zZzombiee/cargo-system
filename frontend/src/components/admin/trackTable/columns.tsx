@@ -9,7 +9,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -24,6 +23,8 @@ import { DataTableColumnHeader } from "./dataTableColumnHeader";
 import { Track } from "@/types/track";
 import TrackDetail from "./trackDetail";
 import { DataTableDateFilter } from "./DataTableDateFilter";
+import TrackDelete from "./trackDelete";
+
 export const columns: ColumnDef<Track>[] = [
   {
     id: "index",
@@ -117,7 +118,6 @@ export const columns: ColumnDef<Track>[] = [
       const from = new Date(filterValue.from);
       const to = new Date(filterValue.to);
 
-      // Ignore time zone offsets
       from.setHours(0, 0, 0, 0);
       to.setHours(23, 59, 59, 999);
 
@@ -163,7 +163,13 @@ export const columns: ColumnDef<Track>[] = [
               </Sheet>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">!Delete</DropdownMenuItem>
+            <DropdownMenuItem
+              asChild
+              variant="destructive"
+              onSelect={(e) => e.preventDefault()}
+            >
+              <TrackDelete id={track._id} />
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

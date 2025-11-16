@@ -22,16 +22,6 @@ export const locationList = [
 
 export type Location = (typeof locationList)[number];
 
-export const locationStatusMap: Record<Location, Status> = {
-  Хятад: "Хятадад байгаа",
-  Эрээн: "Хятадад байгаа",
-  "Замын-Үүд": "Монголд ирсэн",
-  Улаанбаатар: "Монголд ирсэн",
-  Салбар1: "Салбарт очсон",
-  Салбар2: "Салбарт очсон",
-  Салбар3: "Салбарт очсон",
-};
-
 export const statusLocationMap: Record<Status, Location[]> = {
   "Хятадад байгаа": ["Хятад"],
   "Эрээнд ирсэн": ["Эрээн"],
@@ -78,9 +68,10 @@ export interface Track {
   price?: number;
   weight?: number;
   user?: string;
-  statusHistory?: {
+  history?: {
+    location: string;
     status: Status;
-    updatedAt: Date;
+    date: Date;
   }[];
   createdAt: Date;
   updatedAt: Date;

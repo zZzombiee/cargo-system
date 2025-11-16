@@ -8,17 +8,20 @@ export const createTrackByUser = async (req: Request, res: Response) => {
     if (!trackingNumber || !userId) {
       return res.status(400).json({
         success: false,
-        message: "Tracking number болон user ID шаардлагатай!",
+        message: "Tracking number болон User ID шаардлагатай!",
       });
     }
 
-    let track = await TrackModel.findOne({ trackingNumber });
+    const trackingUpper = trackingNumber.toUpperCase();
+
+    let track = await TrackModel.findOne({ trackingNumber: trackingUpper });
 
     if (track) {
       if (!track.user) {
         track.user = userId;
         await track.save();
       }
+
       return res.json({
         success: true,
         message: "Track already exists and linked to your account.",
@@ -26,12 +29,15 @@ export const createTrackByUser = async (req: Request, res: Response) => {
       });
     }
 
-    track = await TrackModel.create({ trackingNumber, user: userId });
+    const newTrack = await TrackModel.create({
+      trackingNumber: trackingUpper,
+      user: userId,
+    });
 
     return res.status(201).json({
       success: true,
       message: "New track created successfully.",
-      data: track,
+      data: newTrack,
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -40,36 +46,63 @@ export const createTrackByUser = async (req: Request, res: Response) => {
     });
   }
 };
+
 export const adminScanTrack = async (req: Request, res: Response) => {
   try {
     const { trackingNumber, location, status } = req.body;
+
     if (!trackingNumber || !location || !status) {
       return res.status(400).json({
         success: false,
-        message: "Tracking number болон байршил оруулна уу!",
+        message: "Tracking number, байршил, статус шаардлагатай!",
       });
     }
 
-    let track = await TrackModel.findOne({ trackingNumber });
+    const trackingUpper = trackingNumber.toUpperCase();
+
+    let track = await TrackModel.findOne({ trackingNumber: trackingUpper });
 
     if (track) {
       track.location = location;
-      await track.save();
       track.status = status;
+
+      const lastHistory = track.history?.[track.history.length - 1];
+
+      if (
+        lastHistory &&
+        lastHistory.location === location &&
+        lastHistory.status === status
+      ) {
+        lastHistory.date = new Date();
+      } else {
+        track.history?.push({
+          location,
+          status,
+          date: new Date(),
+        });
+      }
+
       await track.save();
 
       return res.status(200).json({
         success: true,
-        message: `Track шинэчлэгдлээ`,
+        message: "Track амжилттай шинэчлэгдлээ.",
         data: track,
       });
     }
 
     const newTrack = await TrackModel.create({
-      trackingNumber,
+      trackingNumber: trackingUpper,
       location,
       status,
       user: null,
+      history: [
+        {
+          location,
+          status,
+          date: new Date(),
+        },
+      ],
     });
 
     return res.status(201).json({
@@ -78,7 +111,7 @@ export const adminScanTrack = async (req: Request, res: Response) => {
       data: newTrack,
     });
   } catch (error) {
-    console.error("❌ admin-scan error:", error);
+    console.error("❌ adminScanTrack error:", error);
     return res.status(500).json({
       success: false,
       message: "Серверийн алдаа гарлаа!",
@@ -89,34 +122,30 @@ export const adminScanTrack = async (req: Request, res: Response) => {
 export const getTracks = async (req: Request, res: Response) => {
   try {
     const tracks = await TrackModel.find()
-      .populate("user", "name email number")
+      .populate("user", "name email number role")
       .sort({ createdAt: -1 });
 
-    return res.status(200).json({
-      success: true,
-      tracks,
-    });
+    return res.status(200).json({ success: true, tracks });
   } catch (error: any) {
     console.error("❌ getTracks error:", error);
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
 export const getTrack = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+
     const track = await TrackModel.findById(id).populate(
       "user",
-      "name email number"
+      "name email number role"
     );
 
     if (!track) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Track not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Track not found",
+      });
     }
 
     return res.status(200).json({ success: true, data: track });
@@ -128,8 +157,19 @@ export const getTrack = async (req: Request, res: Response) => {
 export const updateTrack = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    const update = req.body;
 
-    const updatedTrack = await TrackModel.findByIdAndUpdate(id, req.body, {
+    if (update.location || update.status) {
+      update.$push = {
+        history: {
+          location: update.location,
+          status: update.status,
+          date: new Date(),
+        },
+      };
+    }
+
+    const updatedTrack = await TrackModel.findByIdAndUpdate(id, update, {
       new: true,
       runValidators: true,
     });
@@ -158,9 +198,10 @@ export const deleteTrack = async (req: Request, res: Response) => {
     const deletedTrack = await TrackModel.findByIdAndDelete(id);
 
     if (!deletedTrack) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Track not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Track not found",
+      });
     }
 
     return res.status(200).json({
@@ -190,15 +231,23 @@ export const getTrackByTrackingNumber = async (req: Request, res: Response) => {
   try {
     const { trackingNumber } = req.params;
 
-    const track = await TrackModel.findOne({ trackingNumber });
+    const trackingUpper = trackingNumber.toUpperCase();
+
+    const track = await TrackModel.findOne({
+      trackingNumber: trackingUpper,
+    }).populate("user", "name email number role");
 
     if (!track) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Track not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Track not found",
+      });
     }
 
-    return res.status(200).json({ success: true, data: track });
+    return res.status(200).json({
+      success: true,
+      data: track,
+    });
   } catch (error: any) {
     return res.status(500).json({ success: false, message: error.message });
   }
