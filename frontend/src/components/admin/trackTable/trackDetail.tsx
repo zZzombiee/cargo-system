@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, MapPin, User, Package, CalendarDays } from "lucide-react";
 import api from "@/lib/axios";
-import { Track, statusColors, locationStatusMap } from "@/types/track";
+import { Track, statusColors } from "@/types/track";
 
 interface TrackDetailProps {
   trackId: string;
@@ -86,20 +86,19 @@ const TrackDetail = ({ trackId }: TrackDetailProps) => {
           <MapPin className="h-4 w-4" /> Байршлын түүх
         </h3>
 
-        {track.statusHistory && track.statusHistory.length > 0 ? (
+        {track.history && track.history.length > 0 ? (
           <ul className="space-y-2">
-            {track.statusHistory.map((entry, i) => {
-              const location = locationStatusMap[track.location];
+            {track.history.map((entry, i) => {
               return (
                 <li
                   key={i}
                   className="flex justify-between items-center border-b pb-1"
                 >
                   <span className="text-sm">
-                    {entry.status} — {location || "Тодорхойгүй байршил"}
+                    {entry.status || "Тодорхойгүй байршил"}
                   </span>
                   <span className="text-xs text-gray-500">
-                    {new Date(entry.updatedAt).toLocaleString()}
+                    {new Date(entry.date).toLocaleString()}
                   </span>
                 </li>
               );

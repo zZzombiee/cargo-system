@@ -1,4 +1,10 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
+
+interface IHistory {
+  location: string;
+  status: string;
+  date: Date;
+}
 
 export interface ITrack extends Document {
   trackingNumber: string;
@@ -20,14 +26,21 @@ export interface ITrack extends Document {
     | "Хүргэгдсэн";
   price?: number;
   weight?: number;
-  user?: Types.ObjectId;
-  statusHistory?: {
-    status: string;
-    updatedAt: Date;
-  }[];
+  itemName?: string;
+  user?: mongoose.Types.ObjectId; // <-- reference to User model
+  history?: IHistory[];
   createdAt: Date;
   updatedAt: Date;
 }
+
+const HistorySchema = new Schema<IHistory>(
+  {
+    location: { type: String, required: true },
+    status: { type: String, required: true },
+    date: { type: Date, required: true },
+  },
+  { _id: false }
+);
 
 const trackSchema = new Schema<ITrack>(
   {
@@ -38,6 +51,7 @@ const trackSchema = new Schema<ITrack>(
       trim: true,
       uppercase: true,
     },
+
     location: {
       type: String,
       default: "Хятад",
@@ -51,6 +65,7 @@ const trackSchema = new Schema<ITrack>(
         "Салбар3",
       ],
     },
+
     status: {
       type: String,
       default: "Хятадад байгаа",
@@ -64,27 +79,35 @@ const trackSchema = new Schema<ITrack>(
         "Хүргэгдсэн",
       ],
     },
+
     price: {
       type: Number,
       default: 0,
       min: [0, "Price cannot be negative"],
     },
+
     weight: {
       type: Number,
       default: 0,
       min: [0, "Weight cannot be negative"],
     },
+
+    itemName: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: false,
     },
-    statusHistory: [
-      {
-        status: { type: String },
-        updatedAt: { type: Date, default: Date.now },
-      },
-    ],
+
+    history: {
+      type: [HistorySchema],
+      default: [],
+    },
   },
   { timestamps: true }
 );
