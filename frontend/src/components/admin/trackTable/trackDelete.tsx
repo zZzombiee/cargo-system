@@ -14,15 +14,16 @@ import {
 
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import api from "@/lib/axios";
+import { Track } from "@/types/track";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export default function TrackDelete({ id }: { id: string }) {
+export default function TrackDelete({ track }: { track: Track }) {
   const router = useRouter();
 
   const handleDelete = async () => {
     try {
-      const { data } = await api.delete(`/track/${id}`);
+      const { data } = await api.delete(`/track/${track._id}`);
 
       if (!data.success) {
         toast.error(data.message || "Алдаа гарлаа.");
@@ -44,9 +45,10 @@ export default function TrackDelete({ id }: { id: string }) {
 
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
+          <AlertDialogTitle>Энэ track-ийг устгах уу?</AlertDialogTitle>
           <AlertDialogDescription>
-            Энэ track-ийг устгах уу?
+            &apos;{track.trackingNumber}&apos; дугаартай Track-ийг устгах гэж
+            байна.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
