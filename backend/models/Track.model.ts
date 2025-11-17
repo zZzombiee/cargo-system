@@ -31,6 +31,8 @@ export interface ITrack extends Document {
   history?: IHistory[];
   createdAt: Date;
   updatedAt: Date;
+  userName?: string;
+  userNumber?: string;
 }
 
 const HistorySchema = new Schema<IHistory>(
@@ -108,6 +110,8 @@ const trackSchema = new Schema<ITrack>(
       type: [HistorySchema],
       default: [],
     },
+    userName: { type: String, required: false },
+    userNumber: { type: String, required: false },
   },
   { timestamps: true }
 );

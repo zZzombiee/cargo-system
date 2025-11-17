@@ -24,6 +24,7 @@ import { Track } from "@/types/track";
 import TrackDetail from "./trackDetail";
 import { DataTableDateFilter } from "./DataTableDateFilter";
 import TrackDelete from "./trackDelete";
+import TrackEdit from "./trackEdit";
 
 export const columns: ColumnDef<Track>[] = [
   {
@@ -141,7 +142,9 @@ export const columns: ColumnDef<Track>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>!Edit</DropdownMenuItem>
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
+              <TrackEdit track={track} />
+            </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Sheet>
                 <SheetTrigger asChild>
@@ -168,7 +171,7 @@ export const columns: ColumnDef<Track>[] = [
               variant="destructive"
               onSelect={(e) => e.preventDefault()}
             >
-              <TrackDelete id={track._id} />
+              <TrackDelete track={track} />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

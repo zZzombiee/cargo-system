@@ -156,38 +156,34 @@ export const getTrack = async (req: Request, res: Response) => {
 
 export const updateTrack = async (req: Request, res: Response) => {
   try {
+    const { weight, price, name, number } = req.body;
     const { id } = req.params;
-    const update = req.body;
 
-    if (update.location || update.status) {
-      update.$push = {
-        history: {
-          location: update.location,
-          status: update.status,
-          date: new Date(),
-        },
-      };
+    const track = await TrackModel.findById(id);
+    if (!track) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Track not found" });
     }
 
-    const updatedTrack = await TrackModel.findByIdAndUpdate(id, update, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!updatedTrack) {
-      return res.status(404).json({
-        success: false,
-        message: "Track not found",
-      });
+    if (weight !== undefined) track.weight = weight;
+    if (price !== undefined) track.price = price;
+    if (name !== undefined) {
+      track.userName = name;
+    }
+    if (number !== undefined) {
+      track.userNumber = number;
     }
 
-    return res.status(200).json({
+    await track.save();
+
+    res.status(200).json({
       success: true,
-      message: "Track updated successfully.",
-      data: updatedTrack,
+      message: "Track updated",
+      data: track,
     });
-  } catch (error: any) {
-    return res.status(400).json({ success: false, message: error.message });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
