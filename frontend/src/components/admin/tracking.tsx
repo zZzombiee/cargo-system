@@ -117,15 +117,10 @@ export default function AdminTrackDialog() {
               ))}
             </select>
 
-            {/* ✅ Display the auto-updated status */}
-            {/* <div className="text-sm text-gray-600 bg-gray-50 border rounded-md px-3 py-2">
-              <strong>Auto Status:</strong> <span>{status}</span>
-            </div> */}
-
             <Button
               onClick={handleScan}
               disabled={submitting}
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="w-full"
             >
               {submitting ? "Шинэчилж байна..." : "Scan / Update"}
             </Button>

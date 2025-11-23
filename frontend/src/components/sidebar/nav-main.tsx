@@ -13,7 +13,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import AdminTrackDialog from "@/app/admin/tracking/page";
+import AdminTrackDialog from "@/components/admin/tracking";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui";
 import { ChevronRight } from "lucide-react";
 
