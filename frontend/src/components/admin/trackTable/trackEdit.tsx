@@ -24,12 +24,9 @@ export default function TrackEdit({ track }: { track: any }) {
 
   const [userNumber, setUserNumber] = useState(track.user?.number || "");
   const [userName, setUserName] = useState(track.user?.name || "");
-
-  // Price component → бидэнд price ба chargeableWeight өгөх
   const [calculatedPrice, setCalculatedPrice] = useState(0);
   const [chargeableWeight, setChargeableWeight] = useState(0);
 
-  // Price component-с өгөгдөл авах callback
   const handlePriceChange = (data: {
     price: number;
     chargeableWeight: number;
@@ -41,7 +38,7 @@ export default function TrackEdit({ track }: { track: any }) {
   const handleSubmit = async () => {
     try {
       const { data } = await api.put(`/track/${track._id}`, {
-        weight: chargeableWeight, // Төлбөрт жин backend рүү явна
+        weight: chargeableWeight,
         price: calculatedPrice,
         userName,
         userNumber,
@@ -73,10 +70,8 @@ export default function TrackEdit({ track }: { track: any }) {
         </SheetHeader>
 
         <div className="mt-4 flex flex-col gap-6">
-          {/* ---- Price Component ---- */}
           <Price onChange={handlePriceChange} />
 
-          {/* ---- User Info ---- */}
           <div className="grid gap-3">
             <Label>User Name</Label>
             <Input

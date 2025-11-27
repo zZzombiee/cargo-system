@@ -22,6 +22,7 @@ import {
 import moment from "moment";
 import UserTracks from "./userTracks";
 import { DataTableColumnHeader } from "./dataTableColumnHeader";
+import UpdateRole from "./updateRole";
 
 export type User = {
   _id: string;
@@ -95,7 +96,7 @@ export const columns: ColumnDef<User>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(user._id)}
             >
-              !Copy ID
+              <UpdateRole user={user} />
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
@@ -109,7 +110,6 @@ export const columns: ColumnDef<User>[] = [
                   <SheetHeader>
                     <SheetTitle>{user.name}-ийн тээврийн бүртгэл</SheetTitle>
                   </SheetHeader>
-                  {/* ✅ You can render your customer track component here */}
                   <div className="mt-4 px-2">
                     <UserTracks userId={user._id} />
                   </div>

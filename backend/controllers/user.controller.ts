@@ -115,3 +115,29 @@ export const getCurrentUser = async (req: any, res: Response) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const updateUserRole = async (req: Request, res: Response) => {
+  try {
+    const { userId, role } = req.body;
+
+    if (!userId || !role)
+      return res
+        .status(400)
+        .json({ success: false, message: "User ID and role are required" });
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+
+    user.role = role;
+    await user.save();
+
+    res
+      .status(200)
+      .json({ success: true, message: "User role updated successfully" });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
