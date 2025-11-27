@@ -1,9 +1,16 @@
+"use client";
 import { useState } from "react";
-import api from "@/lib/axios";
 import { User } from "@/types/user";
+import api from "@/lib/axios";
 import { toast } from "sonner";
 
-const UpdateRole = ({ user }: { user: User }) => {
+const UpdateRole = ({
+  user,
+  onRoleUpdated,
+}: {
+  user: User;
+  onRoleUpdated?: () => void;
+}) => {
   const [loading, setLoading] = useState(false);
 
   const handleRoleChange = async () => {
@@ -15,6 +22,10 @@ const UpdateRole = ({ user }: { user: User }) => {
       });
 
       toast.success("Role updated successfully!");
+
+      if (onRoleUpdated) {
+        onRoleUpdated();
+      }
     } catch (error) {
       console.error("Error updating user role:", error);
       toast.error("Error updating role");

@@ -79,8 +79,10 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
       const user = row.original;
+      const onRefresh = (table.options.meta as { onRefresh?: () => void })
+        ?.onRefresh;
 
       return (
         <DropdownMenu>
@@ -96,7 +98,7 @@ export const columns: ColumnDef<User>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(user._id)}
             >
-              <UpdateRole user={user} />
+              <UpdateRole user={user} onRoleUpdated={onRefresh} />
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>

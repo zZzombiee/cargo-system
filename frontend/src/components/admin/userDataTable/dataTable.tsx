@@ -35,11 +35,13 @@ import { cn } from "@/lib/utils";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  onRefresh?: () => void; // Add this
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  onRefresh, // Add this
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -58,7 +60,9 @@ export function DataTable<TData, TValue>({
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-
+    meta: {
+      onRefresh, // Pass it through meta
+    },
     state: {
       sorting,
       columnFilters,
